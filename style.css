@@ -1,7 +1,7 @@
 /* Intentionally ugly design choices */
 body {
     background: linear-gradient(to bottom right, neonpink, lime, yellow);
-    font-family: "Comic Sans MS", cursive, sans-serif;
+    font-family: "Comic Sans MS", Arial, sans-serif;
     margin: 0;
     padding: 0;
   }
