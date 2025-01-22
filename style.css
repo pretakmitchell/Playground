@@ -1,0 +1,131 @@
+/* Intentionally ugly design choices */
+body {
+    background: linear-gradient(to bottom right, neonpink, lime, yellow);
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    color: #ff00ff;
+    text-align: center;
+    margin: 20px 20px 0 20px;
+    text-shadow: 2px 2px #00ffff;
+    font-size: 2em;
+  }
+  
+  .intro-steps {
+    margin: 0 auto;
+    width: 90%;
+    background: rgba(255, 255, 255, 0.4);
+    border: 5px dashed red;
+    padding: 10px 15px;
+    font-size: 1em;
+  }
+  
+  /* Container with a hideous border */
+  .container {
+    position: relative;
+    width: 80%;
+    margin: 20px auto;
+    padding: 30px;
+    border: 10px double #ff0000;
+    background: rgba(255, 255, 255, 0.5);
+    min-height: 300px;
+  }
+  
+  /* The tiny drop zone where we place 1 letter */
+  .drop-zone {
+    position: absolute;
+    top: 90px;
+    left: 15px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255, 0.1);
+    border: 2px solid #000;
+    text-align: center;
+    line-height: 50px;
+    color: #000;
+    z-index: 10;
+  }
+  
+  .zone-label {
+    font-size: 0.7em;
+    pointer-events: none;
+    user-select: none;
+  }
+  
+  /* Buttons - intentionally inconsistent styling */
+  button {
+    cursor: pointer;
+    font-family: "Comic Sans MS", cursive;
+    font-size: 1em;
+    margin: 5px;
+    background: #ffd700;
+    border: 3px groove blue;
+    color: #000;
+    padding: 5px 10px;
+  }
+  
+  /* The display showing the current typed word */
+  .word-display {
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    width: 200px;
+    height: 50px;
+    background: rgba(255,255,255, 0.2);
+    border: 2px dashed green;
+    text-align: center;
+    line-height: 50px;
+    color: #000;
+    font-weight: bold;
+  }
+  
+  /* The letters: absolutely positioned, placed at random by JS */
+  .letter {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: bold;
+    border: 2px solid #000;
+    background: #ff0;
+    cursor: move;
+    z-index: 9999;
+    box-shadow: 5px 5px 0px rgba(0,0,255,0.7);
+    user-select: none; /* so we don’t highlight text accidentally */
+  }
+  
+  /* The search results container */
+  .results-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    width: 90%; /* Set the desired width */
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px dashed red;
+    padding: 10px;
+    font-size: 0.9em;
+    color: #000;
+    text-align: left;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  
+  /* Each search result link */
+  .result-link {
+    display: block;
+    margin: 5px 0;
+    color: blue;
+    text-decoration: underline wavy red;
+  }
+  
+  .result-link:hover {
+    color: red;
+    background: yellow;
+  }
+  
