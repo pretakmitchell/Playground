@@ -37,10 +37,7 @@
         <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button">
           <div class="button-text">Visit My Design Portfolio</div>
         </a>
-
-        <a href="mailto:mp@mitchellpretak.com" class="text-button">
-          - Get in Touch
-        </a>
+        <a href="mailto:mp@mitchellpretak.com" class="text-button">- Get in Touch</a>
       </div>
     </div>
 
@@ -51,7 +48,7 @@
         Projects and concepts explored as part of my computer science class
       </div>
 
-      <!-- assignments-list -->
+      <!-- assignments-list  -->
       <div class="assignments-list" id="projects-container"></div>
     </div>
 
@@ -63,11 +60,9 @@
 
   </div>
 
-  <!-- Debugging fetch call -->
   <script>
-    /**
-     * Creates a single assignment card with the provided data.
-     */
+    console.log('Script loaded!'); // Log to check if the script is running
+
     function createAssignment(assignmentNumber, title, description, link) {
       const cardLink = document.createElement("a");
       cardLink.className = "assignment-card";
@@ -96,21 +91,17 @@
       return cardLink;
     }
 
-    // On page load, fetch assignments.json & populate project cards
     window.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM fully loaded!'); // Log to confirm DOM is ready
       const projectsContainer = document.getElementById("projects-container");
 
-      // Fetch the assignments.json file
-      fetch('./assignments.json')
+      fetch('assignments.json')
         .then(response => {
-          console.log('Response Status:', response.status); // Debugging: Log HTTP status
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json(); // Parse JSON if successful
+          console.log('Fetching assignments.json'); // Log when fetching starts
+          return response.json();
         })
         .then(data => {
-          console.log('Fetched Data:', data); // Debugging: Log fetched data
+          console.log('Assignments data loaded:', data); // Log the fetched data
           data.forEach(item => {
             const cardEl = createAssignment(
               item.number,
@@ -122,9 +113,11 @@
           });
         })
         .catch(err => {
-          console.error('Error fetching assignments.json:', err); // Debugging: Log errors
+          console.error('Error loading assignments.json:', err); // Log errors
         });
     });
   </script>
 </body>
 </html>
+
+/*mitch 1*/
