@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Playground</title>
   <link href="style.css" rel="stylesheet" type="text/css">
@@ -14,8 +14,8 @@
       <div class="subheading">Mitchell Pretak</div>
       <div class="intro-text">
         This site showcases my experimental projects, creative ideas, and coding explorations.
-        From interactive sketches to small web experiments, it's a space where I learn, build,
-        and test new concepts. Check back often for updates and fresh creations!
+        From interactive sketches to small web experiments, it's a space where I learn, build, and test new concepts.
+        Check back often for updates and fresh creations!
       </div>
       <div class="cta-row">
         <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button">
@@ -40,40 +40,6 @@
   <script>
     console.log('Script loaded!');
 
-    // Debugging container presence
-    const projectsContainer = document.getElementById("projects-container");
-    if (!projectsContainer) {
-      console.log("Error: projects-container not found in the DOM!");
-    } else {
-      console.log("projects-container found!");
-
-      // Test if we can manipulate it
-      projectsContainer.innerHTML = "<p>Test content inserted successfully!</p>";
-    }
-
-    // Hardcoded data from assignments.json
-    const data = [
-      {
-        "number": 1,
-        "title": "Assignment One",
-        "description": "This is the first assignment description",
-        "url": "https://example.com/assignment1"
-      },
-      {
-        "number": 2,
-        "title": "Assignment Two",
-        "description": "This is the second assignment description",
-        "url": "https://example.com/assignment2"
-      },
-      {
-        "number": 3,
-        "title": "Assignment Three",
-        "description": "This is the third assignment description",
-        "url": "https://example.com/assignment3"
-      }
-    ];
-
-    // Create a single assignment card
     function createAssignment(assignmentNumber, title, description, link) {
       const cardLink = document.createElement("a");
       cardLink.className = "assignment-card";
@@ -89,32 +55,49 @@
           <div class="assignment-title">${description}</div>
         </div>
         <div class="arrow-box">
-          <img 
-            src="assets/arrow-icon.svg"
-            loading="lazy"
-            width="24"
-            height="22"
-            alt="arrow icon"
-            class="arrow-icon"
-          >
+          <img src="assets/arrow-icon.svg" loading="lazy" width="24" height="22" alt="arrow icon" class="arrow-icon">
         </div>
       `;
       return cardLink;
     }
 
-    // Populate cards
     window.addEventListener('DOMContentLoaded', () => {
-      console.log('Populating assignments...');
-      if (projectsContainer) {
-        data.forEach(item => {
-          const cardEl = createAssignment(item.number, item.title, item.description, item.url);
-          projectsContainer.appendChild(cardEl);
-        });
-        console.log('Assignments populated!');
+      console.log('DOMContentLoaded event fired!');
+      const projectsContainer = document.getElementById("projects-container");
+
+      if (!projectsContainer) {
+        console.error("projects-container not found!");
+        return;
       }
+      console.log("projects-container found!");
+
+      fetch('assignments.json')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("JSON data loaded successfully:", data);
+
+          if (!Array.isArray(data) || data.length === 0) {
+            console.warn("No assignments found in JSON data.");
+            projectsContainer.innerHTML = "<p>No assignments available at this time.</p>";
+            return;
+          }
+
+          projectsContainer.innerHTML = ""; // Clear placeholder content if any
+
+          data.forEach(item => {
+            const cardEl = createAssignment(item.number, item.title, item.description, item.url);
+            projectsContainer.appendChild(cardEl);
+          });
+        })
+        .catch(err => console.error("Error fetching assignments.json:", err));
     });
   </script>
 </body>
 </html>
 
-<!-- Mitch 3
+<!-- Mitch 4 looking better
