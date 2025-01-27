@@ -34,7 +34,6 @@
 
       <!-- CTA Buttons -->
       <div class="cta-row">
-  
         <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button">
           <div class="button-text">Visit My Design Portfolio</div>
         </a>
@@ -52,7 +51,7 @@
         Projects and concepts explored as part of my computer science class
       </div>
 
-      <!-- assignments-list  -->
+      <!-- assignments-list -->
       <div class="assignments-list" id="projects-container"></div>
     </div>
 
@@ -64,7 +63,11 @@
 
   </div>
 
+  <!-- Debugging fetch call -->
   <script>
+    /**
+     * Creates a single assignment card with the provided data.
+     */
     function createAssignment(assignmentNumber, title, description, link) {
       const cardLink = document.createElement("a");
       cardLink.className = "assignment-card";
@@ -76,8 +79,8 @@
           <div class="assignment-number">${assignmentNumber}</div>
         </div>
         <div class="assignment-content">
-          <div class="assignment-title">${title}</div>
-          <div class="assignment-subtitle">${description}</div>
+          <div class="assignment-subtitle">${title}</div>
+          <div class="assignment-title">${description}</div>
         </div>
         <div class="arrow-box">
           <img 
@@ -93,12 +96,21 @@
       return cardLink;
     }
 
+    // On page load, fetch assignments.json & populate project cards
     window.addEventListener('DOMContentLoaded', () => {
       const projectsContainer = document.getElementById("projects-container");
 
-      fetch('assignments.json')
-        .then(response => response.json())
+      // Fetch the assignments.json file
+      fetch('./assignments.json')
+        .then(response => {
+          console.log('Response Status:', response.status); // Debugging: Log HTTP status
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json(); // Parse JSON if successful
+        })
         .then(data => {
+          console.log('Fetched Data:', data); // Debugging: Log fetched data
           data.forEach(item => {
             const cardEl = createAssignment(
               item.number,
@@ -110,7 +122,7 @@
           });
         })
         .catch(err => {
-          console.error("Error loading assignments:", err);
+          console.error('Error fetching assignments.json:', err); // Debugging: Log errors
         });
     });
   </script>
