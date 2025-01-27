@@ -1,31 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Playground</title>
 
   <!-- Link to the CSS -->
   <link href="style.css" rel="stylesheet" type="text/css">
 </head>
-
 <body>
-
   <div class="page-wrapper">
-
     <div class="hero-section">
-
       <!-- logo -->
-      <img 
-        src="assets/logo.svg" 
-        width="90" 
-        height="70" 
-        alt="header logo" 
-        class="header-logo"
-      >
+      <img src="assets/logo.svg" width="90" height="70" alt="header logo" class="header-logo">
       <div class="main-heading">Playground</div>
-
       <div class="subheading">Mitchell Pretak</div>
-
       <div class="intro-text">
         This site showcases my experimental projects, creative ideas, and coding explorations.
         From interactive sketches to small web experiments, it's a space where I learn, build,
@@ -48,7 +37,7 @@
         Projects and concepts explored as part of my computer science class
       </div>
 
-      <!-- assignments-list  -->
+      <!-- assignments-list -->
       <div class="assignments-list" id="projects-container"></div>
     </div>
 
@@ -57,12 +46,19 @@
       <div class="section-heading">Other Experiments</div>
       <div class="section-subheading">Other design explorations outside of class</div>
     </div>
-
   </div>
 
+  <!-- Inline JavaScript to hardcode assignments.json data -->
   <script>
-    console.log('Script loaded!'); // Log to check if the script is running
+    console.log('Script loaded!');
 
+    /**
+     * Creates a single assignment card with the provided data.
+     * @param {number} assignmentNumber - The assignment number (e.g., 1, 2, 3)
+     * @param {string} title - The assignment title
+     * @param {string} description - The assignment description/subtitle
+     * @param {string} link - The relative/absolute URL to that assignment’s page
+     */
     function createAssignment(assignmentNumber, title, description, link) {
       const cardLink = document.createElement("a");
       cardLink.className = "assignment-card";
@@ -91,33 +87,38 @@
       return cardLink;
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      console.log('DOM fully loaded!'); // Log to confirm DOM is ready
-      const projectsContainer = document.getElementById("projects-container");
+    // Hardcoded data from assignments.json
+    const data = [
+      {
+        "number": 1,
+        "title": "Assignment One",
+        "description": "This is the first assignment description",
+        "url": "https://example.com/assignment1"
+      },
+      {
+        "number": 2,
+        "title": "Assignment Two",
+        "description": "This is the second assignment description",
+        "url": "https://example.com/assignment2"
+      },
+      {
+        "number": 3,
+        "title": "Assignment Three",
+        "description": "This is the third assignment description",
+        "url": "https://example.com/assignment3"
+      }
+    ];
 
-      fetch('assignments.json')
-        .then(response => {
-          console.log('Fetching assignments.json'); // Log when fetching starts
-          return response.json();
-        })
-        .then(data => {
-          console.log('Assignments data loaded:', data); // Log the fetched data
-          data.forEach(item => {
-            const cardEl = createAssignment(
-              item.number,
-              item.title,
-              item.description,
-              item.url
-            );
-            projectsContainer.appendChild(cardEl);
-          });
-        })
-        .catch(err => {
-          console.error('Error loading assignments.json:', err); // Log errors
-        });
+    // Populate project cards
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log('Populating assignments...');
+      const projectsContainer = document.getElementById("projects-container");
+      data.forEach(item => {
+        const cardEl = createAssignment(item.number, item.title, item.description, item.url);
+        projectsContainer.appendChild(cardEl);
+      });
+      console.log('Assignments populated!');
     });
   </script>
 </body>
 </html>
-
-<!-- mitch 1 --!>
