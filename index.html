@@ -37,67 +37,78 @@
     </div>
   </div>
 
-  <script>
-    console.log('Script loaded!');
+ <script>
+  console.log('Script loaded!');
 
-    function createAssignment(assignmentNumber, title, description, link) {
-      const cardLink = document.createElement("a");
-      cardLink.className = "assignment-card";
-      cardLink.href = link;
-      cardLink.target = "_blank";
+  // Function to create an assignment card
+  function createAssignment(assignmentNumber, title, description, link) {
+    console.log(`Creating card for: ${title}`); // Debug: Check each card
+    const cardLink = document.createElement('a');
+    cardLink.className = 'assignment-card';
+    cardLink.href = link;
+    cardLink.target = '_blank';
 
-      cardLink.innerHTML = `
-        <div class="assignment-number-box">
-          <div class="assignment-number">${assignmentNumber}</div>
-        </div>
-        <div class="assignment-content">
-          <div class="assignment-subtitle">${title}</div>
-          <div class="assignment-title">${description}</div>
-        </div>
-        <div class="arrow-box">
-          <img src="assets/arrow-icon.svg" loading="lazy" width="24" height="22" alt="arrow icon" class="arrow-icon">
-        </div>
-      `;
-      return cardLink;
+    cardLink.innerHTML = `
+      <div class="assignment-number-box">
+        <div class="assignment-number">${assignmentNumber}</div>
+      </div>
+      <div class="assignment-content">
+        <div class="assignment-title">${title}</div>
+        <div class="assignment-subtitle">${description}</div>
+      </div>
+      <div class="arrow-box">
+        <img 
+          src="assets/arrow-icon.svg"
+          loading="lazy"
+          width="24"
+          height="22"
+          alt="arrow icon"
+          class="arrow-icon"
+        >
+      </div>
+    `;
+    return cardLink;
+  }
+
+  // Load JSON data and populate cards
+  window.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded fired!');
+    const projectsContainer = document.getElementById('projects-container');
+
+    if (!projectsContainer) {
+      console.error('projects-container not found!');
+      return;
+    } else {
+      console.log('projects-container found!');
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      console.log('DOMContentLoaded event fired!');
-      const projectsContainer = document.getElementById("projects-container");
+    fetch('/assignments.json')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('JSON data:', data); // Debug: Log loaded JSON data
+        data.forEach((item) => {
+          const cardEl = createAssignment(
+            item.number,
+            item.title,
+            item.description,
+            item.url
+          );
+          projectsContainer.appendChild(cardEl);
+          console.log(`Card added for: ${item.title}`); // Debug: Confirm append
+        });
+      })
+      .catch((err) => {
+        console.error('Error fetching assignments.json:', err);
+      });
+  });
+</script>
 
-      if (!projectsContainer) {
-        console.error("projects-container not found!");
-        return;
-      }
-      console.log("projects-container found!");
-
-      fetch('assignments.json')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log("JSON data loaded successfully:", data);
-
-          if (!Array.isArray(data) || data.length === 0) {
-            console.warn("No assignments found in JSON data.");
-            projectsContainer.innerHTML = "<p>No assignments available at this time.</p>";
-            return;
-          }
-
-          projectsContainer.innerHTML = ""; // Clear placeholder content if any
-
-          data.forEach(item => {
-            const cardEl = createAssignment(item.number, item.title, item.description, item.url);
-            projectsContainer.appendChild(cardEl);
-          });
-        })
-        .catch(err => console.error("Error fetching assignments.json:", err));
-    });
-  </script>
 </body>
 </html>
 
-<!-- Mitch 4 looking better
+<!-- Mitch 5 looking better
