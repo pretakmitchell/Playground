@@ -1,3 +1,43 @@
+/* Font Integration */
+@font-face {
+    font-family: 'Montserrat';
+    src: url('./fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: url('./fonts/Montserrat-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url('./fonts/RobotoMono-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url('./fonts/RobotoMono-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+
+
+
+
+
+/*test 5 back 2 new*/
+
+
+
+
+
+
+
 html {
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
@@ -450,4 +490,4 @@ button, a, .assignment-card {
       inset 0 0 33.6px rgba(0, 0, 0, 0.25);
   }
 
-/*test 4 back 2 old*/
+/*test 5 back 2 new*/
