@@ -82,7 +82,7 @@
       console.log('projects-container found!');
     }
 
-    fetch('/assignments.json')
+fetch('./assignments.json')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
