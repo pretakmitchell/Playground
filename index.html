@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Playground</title>
+
+  <!-- Link to the CSS -->
+  <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+  <div class="page-wrapper">
+
+    <div class="hero-section">
+
+      <!-- logo -->
+      <img 
+        src="assets/logo.svg" 
+        width="90" 
+        height="70" 
+        alt="header logo" 
+        class="header-logo"
+      >
+      <div class="main-heading">Playground</div>
+
+      <div class="subheading">Mitchell Pretak</div>
+
+      <div class="intro-text">
+        This site showcases my experimental projects, creative ideas, and coding explorations.
+        From interactive sketches to small web experiments, it's a space where I learn, build,
+        and test new concepts. Check back often for updates and fresh creations!
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="cta-row">
+  
+        <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button">
+          <div class="button-text">Visit My Design Portfolio</div>
+        </a>
+
+        <a href="mailto:mp@mitchellpretak.com" class="text-button">
+          - Get in Touch
+        </a>
+      </div>
+    </div>
+
+    <!-- projects-section -->
+    <div class="projects-section">
+      <div class="section-heading">SCTM 2005 - Comsci</div>
+      <div class="section-subheading">
+        Projects and concepts explored as part of my computer science class
+      </div>
+
+      <!-- assignments-list  -->
+      <div class="assignments-list" id="projects-container"></div>
+    </div>
+
+    <!-- other section -->
+    <div class="other-experiments-section">
+      <div class="section-heading">Other Experiments</div>
+      <div class="section-subheading">Other design explorations outside of class</div>
+    </div>
+
+  </div>
+
+  <script>
+    function createAssignment(assignmentNumber, title, description, link) {
+      const cardLink = document.createElement("a");
+      cardLink.className = "assignment-card";
+      cardLink.href = link;
+      cardLink.target = "_blank";
+
+      cardLink.innerHTML = `
+        <div class="assignment-number-box">
+          <div class="assignment-number">${assignmentNumber}</div>
+        </div>
+        <div class="assignment-content">
+          <div class="assignment-title">${title}</div>
+          <div class="assignment-subtitle">${description}</div>
+        </div>
+        <div class="arrow-box">
+          <img 
+            src="assets/arrow-icon.svg"
+            loading="lazy"
+            width="24"
+            height="22"
+            alt="arrow icon"
+            class="arrow-icon"
+          >
+        </div>
+      `;
+      return cardLink;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const projectsContainer = document.getElementById("projects-container");
+
+      fetch('assignments.json')
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(item => {
+            const cardEl = createAssignment(
+              item.number,
+              item.title,
+              item.description,
+              item.url
+            );
+            projectsContainer.appendChild(cardEl);
+          });
+        })
+        .catch(err => {
+          console.error("Error loading assignments:", err);
+        });
+    });
+  </script>
+</body>
+</html>

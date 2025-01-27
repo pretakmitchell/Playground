@@ -1,0 +1,14 @@
+[
+  {
+    "number": 1,
+    "title": "Assignment #1",
+    "description": "P5.js Animation Exploration",
+    "url": "ComSci-Projects/A1- P5.js Animation Exploration/index.html"
+  },
+  {
+    "number": 2,
+    "title": "Assignment #2",
+    "description": "Canvas & DOM Practice",
+    "url": "ComSci-Projects/A2- CanvasPractice/index.html"
+  }
+]
