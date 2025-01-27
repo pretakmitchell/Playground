@@ -4,14 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Playground</title>
-
-  <!-- Link to the CSS -->
   <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <div class="page-wrapper">
     <div class="hero-section">
-      <!-- logo -->
       <img src="assets/logo.svg" width="90" height="70" alt="header logo" class="header-logo">
       <div class="main-heading">Playground</div>
       <div class="subheading">Mitchell Pretak</div>
@@ -20,8 +17,6 @@
         From interactive sketches to small web experiments, it's a space where I learn, build,
         and test new concepts. Check back often for updates and fresh creations!
       </div>
-
-      <!-- CTA Buttons -->
       <div class="cta-row">
         <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button">
           <div class="button-text">Visit My Design Portfolio</div>
@@ -29,36 +24,56 @@
         <a href="mailto:mp@mitchellpretak.com" class="text-button">- Get in Touch</a>
       </div>
     </div>
-
-    <!-- projects-section -->
     <div class="projects-section">
       <div class="section-heading">SCTM 2005 - Comsci</div>
       <div class="section-subheading">
         Projects and concepts explored as part of my computer science class
       </div>
-
-      <!-- assignments-list -->
       <div class="assignments-list" id="projects-container"></div>
     </div>
-
-    <!-- other section -->
     <div class="other-experiments-section">
       <div class="section-heading">Other Experiments</div>
       <div class="section-subheading">Other design explorations outside of class</div>
     </div>
   </div>
 
-  <!-- Inline JavaScript to hardcode assignments.json data -->
   <script>
     console.log('Script loaded!');
 
-    /**
-     * Creates a single assignment card with the provided data.
-     * @param {number} assignmentNumber - The assignment number (e.g., 1, 2, 3)
-     * @param {string} title - The assignment title
-     * @param {string} description - The assignment description/subtitle
-     * @param {string} link - The relative/absolute URL to that assignment’s page
-     */
+    // Debugging container presence
+    const projectsContainer = document.getElementById("projects-container");
+    if (!projectsContainer) {
+      console.log("Error: projects-container not found in the DOM!");
+    } else {
+      console.log("projects-container found!");
+
+      // Test if we can manipulate it
+      projectsContainer.innerHTML = "<p>Test content inserted successfully!</p>";
+    }
+
+    // Hardcoded data from assignments.json
+    const data = [
+      {
+        "number": 1,
+        "title": "Assignment One",
+        "description": "This is the first assignment description",
+        "url": "https://example.com/assignment1"
+      },
+      {
+        "number": 2,
+        "title": "Assignment Two",
+        "description": "This is the second assignment description",
+        "url": "https://example.com/assignment2"
+      },
+      {
+        "number": 3,
+        "title": "Assignment Three",
+        "description": "This is the third assignment description",
+        "url": "https://example.com/assignment3"
+      }
+    ];
+
+    // Create a single assignment card
     function createAssignment(assignmentNumber, title, description, link) {
       const cardLink = document.createElement("a");
       cardLink.className = "assignment-card";
@@ -87,40 +102,19 @@
       return cardLink;
     }
 
-    // Hardcoded data from assignments.json
-    const data = [
-      {
-        "number": 1,
-        "title": "Assignment One",
-        "description": "This is the first assignment description",
-        "url": "https://example.com/assignment1"
-      },
-      {
-        "number": 2,
-        "title": "Assignment Two",
-        "description": "This is the second assignment description",
-        "url": "https://example.com/assignment2"
-      },
-      {
-        "number": 3,
-        "title": "Assignment Three",
-        "description": "This is the third assignment description",
-        "url": "https://example.com/assignment3"
-      }
-    ];
-
-    // Populate project cards
+    // Populate cards
     window.addEventListener('DOMContentLoaded', () => {
       console.log('Populating assignments...');
-      const projectsContainer = document.getElementById("projects-container");
-      data.forEach(item => {
-        const cardEl = createAssignment(item.number, item.title, item.description, item.url);
-        projectsContainer.appendChild(cardEl);
-      });
-      console.log('Assignments populated!');
+      if (projectsContainer) {
+        data.forEach(item => {
+          const cardEl = createAssignment(item.number, item.title, item.description, item.url);
+          projectsContainer.appendChild(cardEl);
+        });
+        console.log('Assignments populated!');
+      }
     });
   </script>
 </body>
 </html>
 
-<!--mitch 2
+<!-- Mitch 3
