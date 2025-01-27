@@ -37,78 +37,64 @@
     </div>
   </div>
 
- <script>
+
+
+
+
+
+  
+<script>
   console.log('Script loaded!');
 
-  // Function to create an assignment card
-  function createAssignment(assignmentNumber, title, description, link) {
-    console.log(`Creating card for: ${title}`); // Debug: Check each card
-    const cardLink = document.createElement('a');
-    cardLink.className = 'assignment-card';
-    cardLink.href = link;
-    cardLink.target = '_blank';
-
-    cardLink.innerHTML = `
-      <div class="assignment-number-box">
-        <div class="assignment-number">${assignmentNumber}</div>
-      </div>
-      <div class="assignment-content">
-        <div class="assignment-title">${title}</div>
-        <div class="assignment-subtitle">${description}</div>
-      </div>
-      <div class="arrow-box">
-        <img 
-          src="assets/arrow-icon.svg"
-          loading="lazy"
-          width="24"
-          height="22"
-          alt="arrow icon"
-          class="arrow-icon"
-        >
-      </div>
-    `;
-    return cardLink;
-  }
-
-  // Load JSON data and populate cards
-  window.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded fired!');
-    const projectsContainer = document.getElementById('projects-container');
-
-    if (!projectsContainer) {
-      console.error('projects-container not found!');
-      return;
-    } else {
-      console.log('projects-container found!');
-    }
-
-fetch('./assignments.json')
-      .then((response) => {
+  const container = document.getElementById('projects-container');
+  if (container) {
+    console.log('projects-container found!');
+    fetch('/assignments.json') // Adjust this path if necessary
+      .then(response => {
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
       })
-      .then((data) => {
-        console.log('JSON data:', data); // Debug: Log loaded JSON data
-        data.forEach((item) => {
-          const cardEl = createAssignment(
-            item.number,
-            item.title,
-            item.description,
-            item.url
-          );
-          projectsContainer.appendChild(cardEl);
-          console.log(`Card added for: ${item.title}`); // Debug: Confirm append
+      .then(data => {
+        console.log('JSON data loaded:', data);
+
+        // Clear the container to ensure no duplicate cards
+        container.innerHTML = '';
+
+        // Dynamically create assignment cards
+        data.forEach(item => {
+          const card = document.createElement('a');
+          card.className = 'assignment-card';
+          card.href = item.url;
+          card.target = '_blank';
+
+          card.innerHTML = `
+            <div class="assignment-number-box">
+              <div class="assignment-number">${item.number}</div>
+            </div>
+            <div class="assignment-content">
+              <div class="assignment-title">${item.title}</div>
+              <div class="assignment-subtitle">${item.description}</div>
+            </div>
+            <div class="arrow-box">
+              <img src="assets/arrow-icon.svg" alt="arrow icon" class="arrow-icon">
+            </div>`;
+          
+          container.appendChild(card);
         });
       })
-      .catch((err) => {
+      .catch(err => {
         console.error('Error fetching assignments.json:', err);
       });
-  });
+  } else {
+    console.error('projects-container not found!');
+  }
 </script>
 
+
+  
 </body>
 </html>
 
-<!-- Mitch 5 looking better
+<!-- Mitch 8 looking better
