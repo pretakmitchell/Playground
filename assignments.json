@@ -1,14 +1,38 @@
 [
   {
     "number": 1,
-    "title": "Assignment #1",
-    "description": "P5.js Animation Exploration",
-    "url": "ComSci-Projects/A1- P5.js Animation Experiment/index.html"
+    "title": "Animation Exploration",
+    "description": "Explore creative animation techniques using P5.js. Practice with loops, shapes, and interactivity.",
+    "url": "ComSci-Projects/A1-P5.js-Animation-Exploration/index.html"
   },
   {
     "number": 2,
     "title": "Assignment #2",
-    "description": "Canvas & DOM Practice",
-    "url": "ComSci-Projects/A2- CanvasPractice/index.html"
+    "description": "Placeholder description for Assignment #2. Replace this with actual content once available.",
+    "url": "#"
+  },
+  {
+    "number": 3,
+    "title": "Assignment #3",
+    "description": "Placeholder description for Assignment #3. Replace this with actual content once available.",
+    "url": "#"
+  },
+  {
+    "number": 4,
+    "title": "Assignment #4",
+    "description": "Placeholder description for Assignment #4. Replace this with actual content once available.",
+    "url": "#"
+  },
+  {
+    "number": 5,
+    "title": "Assignment #5",
+    "description": "Placeholder description for Assignment #5. Replace this with actual content once available.",
+    "url": "#"
+  },
+  {
+    "number": 6,
+    "title": "Assignment Final",
+    "description": "Placeholder description for Assignment #5. Replace this with actual content once available.",
+    "url": "#"
   }
 ]

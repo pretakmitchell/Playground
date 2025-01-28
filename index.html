@@ -1,100 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
   <title>Playground</title>
+
+
+
+
+  <!-- Link to the CSS -->
   <link href="style.css" rel="stylesheet" type="text/css">
 </head>
+
 <body>
   <div class="page-wrapper">
     <div class="hero-section">
-      <img src="assets/logo.svg" width="90" height="70" alt="header logo" class="header-logo">
+
+
+      <!-- logo -->
+      <img 
+        src="assets/logo.svg" 
+        width="90" 
+        height="70" 
+        alt="header logo" 
+        class="header-logo"
+      >
       <div class="main-heading">Playground</div>
+
       <div class="subheading">Mitchell Pretak</div>
+
       <div class="intro-text">
         This site showcases my experimental projects, creative ideas, and coding explorations.
-        From interactive sketches to small web experiments, it's a space where I learn, build, and test new concepts.
-        Check back often for updates and fresh creations!
+        From interactive sketches to small web experiments, it's a space where I learn, build,
+        and test new concepts. Check back often for updates and fresh creations!
       </div>
-      <div class="cta-row">
-        <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button">
-          <div class="button-text">Visit My Design Portfolio</div>
-        </a>
-        <a href="mailto:mp@mitchellpretak.com" class="text-button">- Get in Touch</a>
-      </div>
-    </div>
+
+
+<!-- CTA Buttons -->
+<div class="cta-row">
+
+  <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button" aria-label="Visit Mitchell Pretak's Design Portfolio">
+    <div class="button-text">Visit My Design Portfolio</div>
+  </a>
+
+  <a href="mailto:mp@mitchellpretak.com" class="text-button" aria-label="Get in touch with Mitchell Pretak via email">
+    <div class="text-button">- Get in Touch</div>
+  </a>
+
+</div>
+
+
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+    <!-- Comsci Section Title and desc -->
     <div class="projects-section">
       <div class="section-heading">SCTM 2005 - Comsci</div>
       <div class="section-subheading">
         Projects and concepts explored as part of my computer science class
       </div>
-      <div class="assignments-list" id="projects-container"></div>
+
+
+
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>ComSci Projects</title>
+      </head>
+      <body>
+
+
+
+
+
+      
+        <!-- Assignments Section -->
+        <section id="assignment-cards">
+          <h2 class="subheading">ComSci Assignments</h2>
+          <div class="section-subheading">
+            The 5 Assignments I completed throughout the semester
+          </div>
+      
+          <div class="cards-container assignments-container">
+            <!-- Assignment cards will be appended here -->
+          </div>
+        </section>
+      
+        <script>
+          fetch('assignments.json')
+            .then(response => response.json())
+            .then(assignments => {
+              const container = document.querySelector('.assignments-container');
+              assignments.forEach(assignment => {
+                const card = document.createElement('a'); 
+                card.className = 'assignment-card';
+                card.href = assignment.url;
+                card.target = '_blank'; 
+                card.setAttribute('aria-label', `View ${assignment.title}`); 
+                card.innerHTML = `
+                  <div class="frame-16">
+                    <div class="assignmentCardNumCircle">
+                      <div class="assignmentCardNumber">${assignment.number}</div>
+                    </div>
+                    <div class="assignmentCardTitle">${assignment.title}</div>
+                  </div>
+                  <div class="assignmentCardSubtitle">Assignment #${assignment.number}</div>
+                  <div class="div-block-24">
+                    <div class="text-16">${assignment.description}</div>
+                  </div>`;
+                container.appendChild(card);
+              });
+            })
+            .catch(error => console.error('Error loading assignments:', error));
+        </script>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     <!-- Labs Section -->
+  <section id="lab-cards">
+    <h2 class="subheading">ComSci Labs</h2>
+    <div class="section-subheading">
+      The 5 Labs I completed throughout the semester
     </div>
-    <div class="other-experiments-section">
-      <div class="section-heading">Other Experiments</div>
-      <div class="section-subheading">Other design explorations outside of class</div>
+
+    <div class="cards-container labs-container">
+      <!-- Lab cards will be appended here -->
     </div>
-  </div>
+  </section>
 
-
-
-
-
-
-  
-<script>
-  console.log('Script loaded!');
-
-  const container = document.getElementById('projects-container');
-  if (container) {
-    console.log('projects-container found!');
-    fetch('/assignments.json') // Adjust this path if necessary
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('JSON data loaded:', data);
-
-        // Clear the container to ensure no duplicate cards
-        container.innerHTML = '';
-
-        // Dynamically create assignment cards
-        data.forEach(item => {
+  <script>
+    fetch('labs.json')
+      .then(response => response.json())
+      .then(labs => {
+        const container = document.querySelector('.labs-container');
+        labs.forEach(lab => {
           const card = document.createElement('a');
-          card.className = 'assignment-card';
-          card.href = item.url;
+          card.className = 'lab-card';
+          card.href = lab.url;
           card.target = '_blank';
-
+          card.setAttribute('aria-label', `View ${lab.title}`);
           card.innerHTML = `
-            <div class="assignment-number-box">
-              <div class="assignment-number">${item.number}</div>
+            <div class="lab-number-box">
+              <div class="lab-number">${lab.number}</div>
             </div>
-            <div class="assignment-content">
-              <div class="assignment-title">${item.title}</div>
-              <div class="assignment-subtitle">${item.description}</div>
+            <div class="lab-content">
+              <div class="lab-subtitle">Lab #${lab.number}</div>
+              <div class="lab-title">${lab.title}</div>
             </div>
             <div class="arrow-box">
-              <img src="assets/arrow-icon.svg" alt="arrow icon" class="arrow-icon">
+              <img 
+                src="assets/arrow-icon.svg"
+                loading="lazy"
+                width="24"
+                height="22"
+                alt="arrow icon"
+                class="arrow-icon"
+              >
             </div>`;
-          
           container.appendChild(card);
         });
       })
-      .catch(err => {
-        console.error('Error fetching assignments.json:', err);
-      });
-  } else {
-    console.error('projects-container not found!');
-  }
-</script>
+      .catch(error => console.error('Error loading labs:', error));
+  </script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- other section -->
+  <div class="other-experiments-section">
+    <div class="section-heading">Other Experiments</div>
+    <div class="section-subheading">Other design explorations outside of class</div>
+  </div>
 
   
 </body>
 </html>
-
-<!-- Mitch 9 css updates?
