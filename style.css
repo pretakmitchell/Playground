@@ -1,42 +1,6 @@
-/* Font Integration */
-@font-face {
-    font-family: 'Montserrat';
-    src: url('./fonts/Montserrat-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+:root {
+  --background-color: #f8f8f8; /* Default background color */
 }
-@font-face {
-    font-family: 'Montserrat';
-    src: url('./fonts/Montserrat-Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Roboto Mono';
-    src: url('./fonts/RobotoMono-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Roboto Mono';
-    src: url('./fonts/RobotoMono-Bold.ttf') format('truetype');
-    font-weight: bold;
-    font-style: normal;
-}
-
-
-
-
-
-
-
-/*test 5 back 2 new*/
-
-
-
-
-
-
 
 html {
     -webkit-text-size-adjust: 100%;
@@ -46,7 +10,8 @@ html {
   }
   *, *::before, *::after {
     box-sizing: inherit;
-  }
+  }  
+  
   body {
     margin: 0;
     color: #333;
@@ -76,7 +41,7 @@ html {
   /* Outer container => page-wrapper */
   .page-wrapper {
     grid-row-gap: 150px;
-    background-color: #f8f8f8;
+    background-color: var(--background-color);
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
@@ -86,6 +51,8 @@ html {
     text-decoration: none;
     display: flex;
   }
+
+
   
   /* Top section wrapper => hero-section */
   .hero-section {
@@ -116,7 +83,7 @@ html {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: -20px;
     font-family: Montserrat, sans-serif;
     font-size: 72px;
     font-weight: 800;
@@ -124,13 +91,13 @@ html {
     text-decoration: none;
   }
   
-  /* â€œMitchell Pretakâ€ => subheading */
+  /* “Mitchell Pretak” => subheading */
   .subheading {
     color: #00000059;
     text-align: center;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    margin-top: 0;
+    margin-top:20px;
     margin-bottom: 0;
     font-family: Roboto Mono, sans-serif;
     font-size: 30px;
@@ -138,7 +105,8 @@ html {
     line-height: 100%;
     text-decoration: none;
   }
-  
+
+
   /* Intro paragraph => intro-text */
   .intro-text {
     color: #000c;
@@ -156,7 +124,8 @@ html {
   
   /* Row for CTA button => cta-row */
   .cta-row {
-    grid-column-gap: 39px;
+    grid-column-gap: 25px;
+    margin-top: 10px;
     flex: 0 auto;
     justify-content: flex-start;
     align-items: center;
@@ -207,7 +176,7 @@ html {
   }
   
   
-  /* Mid â€œProjectsâ€ area => projects-section */
+  /* Mid “Projects” area => projects-section */
   .projects-section {
     grid-row-gap: 19px;
     flex-direction: column;
@@ -218,13 +187,16 @@ html {
     display: flex;
   }
   
-  /* The heading â€œSCTM 2005 - Comsciâ€ => section-heading */
+  /* The heading “SCTM 2005 - Comsci” => section-heading */
   .section-heading {
+    position: relative; /* Ensure it stays above the canvas */
+    z-index: 1; /* Higher than the canvas' z-index (-1) */
     color: #000;
     text-align: center;
     letter-spacing: 0.05em;
-    margin-top: 0;
-    margin-bottom: 0;
+    padding-top: 50px; /* Instead of margin-top */
+    padding-bottom: 10px; /* Instead of margin-bottom */
+    margin: 0; /* Reset all margins */
     font-family: Montserrat, sans-serif;
     font-size: 48px;
     font-weight: 800;
@@ -232,13 +204,13 @@ html {
     text-decoration: none;
   }
   
-  /* The subheading â€œProjects and concepts explored...â€ => section-subheading */
+  /* The subheading “Projects and concepts explored...” => section-subheading */
   .section-subheading {
     color: #0009;
     text-align: center;
     letter-spacing: 0.06em;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-top: 100;
+    margin-bottom: 0px;
     font-family: Roboto Mono, sans-serif;
     font-size: 15px;
     font-weight: 400;
@@ -271,13 +243,37 @@ html {
     display: flex;
   }
   
-  /* 
-     --- Dynamic Assignment Card Classes ---
-     assignment-card, assignment-number-box, assignment-number, assignment-content,
-     assignment-title, assignment-subtitle, arrow-box, arrow-icon
-  */
-  
-  /* Outer container for each assignment => assignment-card */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*Dynamic Assignment Card Classes*/
+
   .assignment-card {
     grid-column-gap: 10px;
     background-color: #fff;
@@ -411,20 +407,29 @@ html {
 
 
 
-/***ANIMATIONS***/
 
 
 
 
 
- /* --- General Hover Animation --- */
+
+
+
+
+
+
+
+
+
+
+
+
+/***ANIMATIONS / Interactions***/
+
 button, a, .assignment-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  
-  /* --- Hover Effects --- */
-  
-  /* CTA Button Hover Effect */
+ 
   .cta-button {
     box-shadow: 
       0 14px 7px rgba(0, 0, 0, 0.1),
@@ -448,7 +453,6 @@ button, a, .assignment-card {
       inset 0 1px rgba(255, 255, 255, 0.75);
   }
   
-/* Default text button styling */
 .text-button {
     display: inline-block;
     font-family: 'Roboto Mono', monospace;
@@ -464,15 +468,12 @@ button, a, .assignment-card {
     transition: color 0.2s ease, letter-spacing 0.2s ease, text-decoration 0.2s ease;
   }
   
-  /* Hover effect */
   .text-button:hover {
     color: #8cd4b3; /* Change text color */
     text-decoration: none; /* Remove underline */
     letter-spacing: 0.05em; /* Slightly increase letter spacing */
   }
   
-  
-  /* Assignment Card Hover Effect */
   .assignment-card {
     box-shadow: 
       0 4px 4px rgba(0, 0, 0, 0.25),
@@ -490,4 +491,4 @@ button, a, .assignment-card {
       inset 0 0 33.6px rgba(0, 0, 0, 0.25);
   }
 
-/*test 5 back 2 new*/
+  
