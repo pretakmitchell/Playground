@@ -36,7 +36,7 @@
     <!-- main / visit portfolio tickets -->
   <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button" >
     <div class="button-text">Visit My Design Portfolio</div>
-  </a>a
+  </a>
     <!-- text button / links to buisness email -->
   <a href="mailto:mp@mitchellpretak.com" class="text-button">
     <div class="text-button">- Get in Touch</div>
@@ -72,8 +72,6 @@
                   const card = document.createElement('a'); 
                   card.className = 'assignment-card';
                   card.href = assignment.url;
-                  card.target = '_blank'; 
-                  card.setAttribute('aria-label', `View ${assignment.title}`); 
                   card.innerHTML = `
                     <div class="assignmentCardNumCircle">
                       <div class="assignmentCardNumber">${assignment.number}</div>
@@ -85,7 +83,6 @@
                   container.appendChild(card);
                 });
               })
-              .catch(error => console.error('Error loading assignments:', error));
           </script>
       
 
@@ -112,8 +109,6 @@
                       const card = document.createElement('a');
                       card.className = 'lab-card';
                       card.href = lab.url;
-                      card.target = '_blank';
-                      card.setAttribute('aria-label', `View ${lab.title}`);
                       card.innerHTML = `
                         <div class="lab-number-box">
                           <div class="lab-number">${lab.number}</div>
@@ -123,18 +118,11 @@
                           <div class="lab-title">${lab.title}</div>
                         </div>
                         <div class="arrow-box">
-                          <img src="assets/arrow-icon.svg" class="arrow-icon" >
-                        </div>`;
+                          <img src="assets/arrow-icon.svg" class="arrow-icon" > `;
                       container.appendChild(card);
                     });
                   })
-
               </script>
-
-
-
-
-
 
 
 
@@ -142,10 +130,9 @@
   <!-- other section -->
   <div class="other-experiments-section">
     <div class="section-heading">Other Experiments</div>
-    <div class="section-subheading">Other design explorations outside of class</div>
+    <div class="section-subheading">Other explorations outside of class</div>
   </div>
 
   
   </body>
 </html>
-  <!-- testing revised structure 1 -->
