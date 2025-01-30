@@ -3,27 +3,22 @@
 <head>
   <meta charset="utf-8">
   <title>Playground</title>
-
-
-
-
-  <!-- Link to the CSS -->
   <link href="style.css" rel="stylesheet" type="text/css">
-</head>
 
+
+</head>
 <body>
   <div class="page-wrapper">
     <div class="hero-section">
 
 
       <!-- logo -->
-      <img 
-        src="assets/logo.svg" 
+      <img src="assets/logo.svg",  alt="header logo" 
         width="90" 
         height="70" 
-        alt="header logo" 
-        class="header-logo"
       >
+      
+      
       <div class="main-heading">Playground</div>
 
       <div class="subheading">Mitchell Pretak</div>
@@ -35,117 +30,64 @@
       </div>
 
 
-<!-- CTA Buttons -->
+
+<!-- Buttons / CTA row -->
 <div class="cta-row">
-
-  <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button" aria-label="Visit Mitchell Pretak's Design Portfolio">
+    <!-- main / visit portfolio tickets -->
+  <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button" >
     <div class="button-text">Visit My Design Portfolio</div>
-  </a>
-
-  <a href="mailto:mp@mitchellpretak.com" class="text-button" aria-label="Get in touch with Mitchell Pretak via email">
+  </a>a
+    <!-- text button / links to buisness email -->
+  <a href="mailto:mp@mitchellpretak.com" class="text-button">
     <div class="text-button">- Get in Touch</div>
   </a>
-
 </div>
-
-
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   
     
-    
-    <!-- Comsci Section Title and desc -->
+    <!-- COMSCI - projects section -->
+  
     <div class="projects-section">
       <div class="section-heading">SCTM 2005 - Comsci</div>
       <div class="section-subheading">
         Projects and concepts explored as part of my computer science class
       </div>
-
-
-
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <title>ComSci Projects</title>
-      </head>
-      <body>
-
-
-
-
-
       
-        <!-- Assignments Section -->
-        <section id="assignment-cards">
-          <h2 class="subheading">ComSci Assignments</h2>
-          <div class="section-subheading">
-            The 5 Assignments I completed throughout the semester
-          </div>
-      
-          <div class="cards-container assignments-container">
-            <!-- Assignment cards will be appended here -->
-          </div>
-        </section>
-      
-        <script>
-          fetch('assignments.json')
-            .then(response => response.json())
-            .then(assignments => {
-              const container = document.querySelector('.assignments-container');
-              assignments.forEach(assignment => {
-                const card = document.createElement('a'); 
-                card.className = 'assignment-card';
-                card.href = assignment.url;
-                card.target = '_blank'; 
-                card.setAttribute('aria-label', `View ${assignment.title}`); 
-                card.innerHTML = `
-                  <div class="frame-16">
+    <!-- projects  -->
+    <section id="assignment-cards">
+      <h2 class="subheading">ComSci Assignments</h2>
+      <div class="section-subheading">
+        The 5 Assignments I completed throughout the semester
+      </div>
+      <div class="cards-container assignments-container"> </div>
+    
+    </section>
+          <script>
+            fetch('assignments.json')
+              .then(response => response.json())
+              .then(assignments => {
+                const container = document.querySelector('.assignments-container');
+                assignments.forEach(assignment => {
+                  const card = document.createElement('a'); 
+                  card.className = 'assignment-card';
+                  card.href = assignment.url;
+                  card.target = '_blank'; 
+                  card.setAttribute('aria-label', `View ${assignment.title}`); 
+                  card.innerHTML = `
                     <div class="assignmentCardNumCircle">
                       <div class="assignmentCardNumber">${assignment.number}</div>
                     </div>
-                    <div class="assignmentCardTitle">${assignment.title}</div>
-                  </div>
-                  <div class="assignmentCardSubtitle">Assignment #${assignment.number}</div>
-                  <div class="div-block-24">
-                    <div class="text-16">${assignment.description}</div>
-                  </div>`;
-                container.appendChild(card);
-              });
-            })
-            .catch(error => console.error('Error loading assignments:', error));
-        </script>
+                      <div class="assignmentCardTitle">${assignment.title}</div>
+                    <div class="assignmentCardSubtitle">Assignment #${assignment.number}</div>
+                    <div class="div-block-24">
+                      <div class="text-16">${assignment.description}</div>`;
+                  container.appendChild(card);
+                });
+              })
+              .catch(error => console.error('Error loading assignments:', error));
+          </script>
       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -161,49 +103,33 @@
     </div>
   </section>
 
-  <script>
-    fetch('labs.json')
-      .then(response => response.json())
-      .then(labs => {
-        const container = document.querySelector('.labs-container');
-        labs.forEach(lab => {
-          const card = document.createElement('a');
-          card.className = 'lab-card';
-          card.href = lab.url;
-          card.target = '_blank';
-          card.setAttribute('aria-label', `View ${lab.title}`);
-          card.innerHTML = `
-            <div class="lab-number-box">
-              <div class="lab-number">${lab.number}</div>
-            </div>
-            <div class="lab-content">
-              <div class="lab-subtitle">Lab #${lab.number}</div>
-              <div class="lab-title">${lab.title}</div>
-            </div>
-            <div class="arrow-box">
-              <img 
-                src="assets/arrow-icon.svg"
-                loading="lazy"
-                width="24"
-                height="22"
-                alt="arrow icon"
-                class="arrow-icon"
-              >
-            </div>`;
-          container.appendChild(card);
-        });
-      })
-      .catch(error => console.error('Error loading labs:', error));
-  </script>
+              <script>
+                fetch('labs.json')
+                  .then(response => response.json())
+                  .then(labs => {
+                    const container = document.querySelector('.labs-container');
+                    labs.forEach(lab => {
+                      const card = document.createElement('a');
+                      card.className = 'lab-card';
+                      card.href = lab.url;
+                      card.target = '_blank';
+                      card.setAttribute('aria-label', `View ${lab.title}`);
+                      card.innerHTML = `
+                        <div class="lab-number-box">
+                          <div class="lab-number">${lab.number}</div>
+                        </div>
+                        <div class="lab-content">
+                          <div class="lab-subtitle">Lab #${lab.number}</div>
+                          <div class="lab-title">${lab.title}</div>
+                        </div>
+                        <div class="arrow-box">
+                          <img src="assets/arrow-icon.svg" class="arrow-icon" >
+                        </div>`;
+                      container.appendChild(card);
+                    });
+                  })
 
-
-
-
-
-
-
-
-
+              </script>
 
 
 
@@ -220,5 +146,6 @@
   </div>
 
   
-</body>
+  </body>
 </html>
+  <!-- testing revised structure 1 -->
