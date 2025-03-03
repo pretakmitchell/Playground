@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>p5.js Pattern Example</title>
+    <!-- Include the p5.js library from a CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+  </head>
+  <body>
+    <script>
+      // The setup() function runs once when the program starts
+      function setup() {
+        // Create a canvas that is 400 pixels wide and 400 pixels tall
+        createCanvas(400, 400);
+        // Set a light gray background color
+        background(220);
+      }
+
+      // The draw() function runs in a loop, but we'll use noLoop() so it runs just once
+      function draw() {
+        // Prevent draw() from looping since we want a static pattern
+        noLoop();
+
+        // Use a for loop to create a row of circles across the canvas
+        // We'll move in steps of 40 pixels so the circles are nicely spaced.
+        for (let x = 20; x < width; x += 40) {
+          // Set the fill color to a blue shade (red, green, blue)
+          fill(100, 150, 240);
+          // Draw a circle (ellipse) at position (x, height/2) with a width and height of 30 pixels
+          ellipse(x, height / 2, 30, 30);
+        }
+      }
+    </script>
+  </body>
+</html>

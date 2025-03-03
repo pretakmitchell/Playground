@@ -29,11 +29,13 @@
 }
 
 /* Global Styles */
-html {
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
+html, body {
+  height: viewHeight; /* Ensures full height for layout */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
-  font-family: sans-serif;
 }
 
 *, *::before, *::after {
@@ -41,14 +43,15 @@ html {
 }  
 
 body {
-  margin: 0;
+  flex: 1; /* Allows content to grow and push the footer down */
   color: #333;
   background-color: #fff;
-  min-height: 100%;
-  font-family: Arial, sans-serif;
   font-size: 14px;
   line-height: 20px;
+  font-family: Montserrat, sans-serif;
 }
+
+
 
 img {
   border: 0;
@@ -90,11 +93,13 @@ a:focus {
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding-top: 180px;
-  padding-bottom: 180px;
+  padding: 180px 50px 0 50px;
   background-color: var(--background-color);
   grid-row-gap: 150px;
   text-decoration: none;
+
+
+  
 }
 
 /* Hero Section */
@@ -133,7 +138,6 @@ a:focus {
   line-height: 100%;
   text-decoration: none;
 }
-
 /* Subheading */
 .subheading {
   color: rgba(0, 0, 0, 0.5); /* Equivalent to #00000059 */
@@ -148,7 +152,6 @@ a:focus {
   line-height: 100%;
   text-decoration: none;
 }
-
 /* Intro Text */
 .intro-text {
   color: rgba(0, 0, 0, 0.8); /* Equivalent to #000c */
@@ -201,7 +204,6 @@ a:focus {
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .cta-button:hover {
   transform: translateY(-2px);
   box-shadow: 
@@ -213,7 +215,6 @@ a:focus {
     inset 0 0 rgba(255, 255, 255, 0.25),
     inset 0 1px rgba(255, 255, 255, 0.75);
 }
-
 /* Button Text */
 .button-text {
   color: #e2e1de;
@@ -227,28 +228,118 @@ a:focus {
   line-height: 100%;
   text-decoration: none;
 }
-
-/* Default Text Button Styling */
 .text-button {
-  display: inline-block;
-  font-family: 'Roboto Mono', monospace;
-  font-weight: 500;
-  font-size: 14px;
-  color: #333;
-  text-decoration: underline;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin: 2px 10px 0px 24px;
-  transition: color 0.2s ease, letter-spacing 0.2s ease, text-decoration 0.2s ease;
+  color: #000000; /* Change text color */
+  text-decoration: none; /* Remove underline */
+  letter-spacing: 0.05em; /* Slightly increase letter spacing */
+  font-family: Montserrat;
 }
-
 .text-button:hover {
   color: #8cd4b3; /* Change text color */
   text-decoration: none; /* Remove underline */
   letter-spacing: 0.05em; /* Slightly increase letter spacing */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Base details styling: No background initially */
+details {
+  width: 100%;
+  max-width: 350px; /* Slightly skinnier default */
+  margin: 20px auto;
+  padding: 10px;
+  text-align: center;
+  border-radius: 30;
+  transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease, max-width 0.3s ease;
+}
+
+/* Clickable summary */
+summary {
+  font-family: Montserrat, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+  border-radius: 30px;
+  transition: color 0.3s ease, background 0.3s ease, padding 0.3s ease;
+}
+
+/* Hover effect: Background appears, but padding stays smaller */
+details:hover {
+  background-image: radial-gradient(circle at 100% 0, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1)), linear-gradient(#e2e2e2, #bbb);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px; /* Less padding so it doesn’t grow too much */
+  border-radius: 30px;
+}
+
+/* When fully expanded, increase width and padding */
+details[open] {
+  max-width: 500px; /* Expands to a readable size */
+  background-image: radial-gradient(circle at 100% 0, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1)), linear-gradient(#e2e2e2, #bbb);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.25), 3px 4px 13.9px rgba(0, 0, 0, 0.25), inset 0 0 5px rgba(0, 0, 0, 0.25);
+  padding: 20px; /* Fully expands when clicked */
+  border-radius: 30px;
+}
+
+/* When expanded, turn summary text white */
+details[open] summary {
+  color: white;
+}
+
+/* Make paragraph inside expanded details more readable */
+details[open] p {
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+  line-height: 1.6; /* Increased line height for readability */
+  color: #333;
+  text-align: center;
+  padding: 10px 20px;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Projects Section */
 .projects-section {
@@ -292,14 +383,12 @@ a:focus {
 .section-subheading {
   color: rgba(0, 0, 0, 0.4); /* Equivalent to #0009 */
   text-align: center;
-  letter-spacing: 0.06em;
   margin-top: 5px;
   margin-bottom: 0px;
   font-family: 'Roboto Mono', sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 100%;
-  text-decoration: none;
 }
 
 /* Shared Cards Container */
@@ -311,8 +400,6 @@ a:focus {
   justify-content: center;
   gap: 20px;
 }
-
-
 
 /* Labs Container */
 .labs-container {
@@ -549,4 +636,172 @@ a:focus {
   .main-heading {
     font-size: clamp(24px, 8vw, 48px); /* Shrinks to fit on smaller screens */
   }
+
 }
+
+/* Ensure content-overlay allows inherited text styles */
+.content-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Keep at the top */
+  align-items: center;
+  z-index: 1; /* Ensure content is above the canvas */
+  pointer-events: auto;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Full-width Footer with Card Gradient */
+.site-footer {
+  background-image: radial-gradient(circle at 100% 0, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1)), linear-gradient(#e2e2e2, #bbb);
+  padding: 100px 100px 100px 100px;
+  color: #333;
+  text-align: left;
+  width: 100%;
+  border-radius: 60px 60px 0 0;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.25), 3px 4px 13.9px rgba(0, 0, 0, 0.25), inset 0 0 5px rgba(0, 0, 0, 0.25);
+  margin-top: auto;
+}
+
+/* Footer Container */
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+/* Left-Aligned Logo & Copyright */
+.footer-brand {
+  flex: 1;
+  min-width: 300px; /* Slightly larger */
+}
+
+.footer-logo {
+  width: 120px; /* Increased logo size */
+  filter: brightness(0) invert(1);
+  margin-bottom: 20px;
+}
+
+.footer-bottom {
+  font-size: 14px; /* Slightly larger text */
+  color: #555;
+}
+
+/* Right-Aligned Section (Explore & Social Stacked) */
+.footer-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 60px; /* Brings Explore & Follow Me closer together */
+  flex: 1;
+  min-width: 300px;
+}
+
+/* Footer Links */
+.footer-links {
+  text-align: left;
+}
+
+.footer-links h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin: 5px 0;
+}
+
+.footer-links a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #777;
+}
+
+/* Social Media Icons */
+.footer-social {
+  text-align: left;
+}
+
+.footer-social h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.social-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-icons a {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Adds spacing between text and arrow */
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.social-icons img {
+    width: 16px; /* Adjust arrow size */
+    height: auto;
+    transition: transform 0.3s ease;
+    filter: brightness(0); /* Turns white SVGs black */
+}
+
+.social-icons a:hover img {
+    transform: translateX(5px); /* Moves arrow slightly on hover */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,47 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>P5.js Sketch</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P5.js Animation</title>
 
-  <!-- Link to global CSS -->
-  <link rel="stylesheet" href="../../style.css" />
-  <link rel="stylesheet" href="A1style.css" />
+    <!-- Link to Global CSS (For shared styles like h1 and .cta-button) -->
+    <link rel="stylesheet" href="../../style.css">
 
-  <!-- p5.js Library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
-
-  <!-- Switcher logic (must load AFTER p5, but BEFORE the body ends) -->
-  <script src="switcher.js"></script>
+    <!-- Load P5.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
 </head>
-<body>
 
-  <!-- Animation Wrapper -->
-  <div class="animation-wrapper" id="animation-wrapper"></div>
+<body>
 
   <!-- Content Overlay -->
   <div class="content-overlay" id="content-overlay">
     <h1 class="section-heading">My P5.js Sketch</h1>
     
-    <a href="https://playground.mitchellpretak.com" target="_blank" class="cta-button">
-      <div class="button-text">Return To Homepage</div>
-    </a>
+  <a href="../../index.html" class="cta-button">
+    <div class="button-text">Return To Homepage</div>
+</a>
 
-    <!-- Dynamic heading + description for each loaded sketch -->
-    <div class="subheading" id="current-animation-title">
-      Select an animation to begin
-    </div>
-    <div class="section-subheading" id="current-animation-description">
-      No animation selected yet.
-    </div>
 
-    <!-- Tab buttons -->
-    <div class="tab-container">
-      <button class="tab-button" data-sketch="sketch1.js">Animation 1</button>
-      <button class="tab-button" data-sketch="sketch2.js">Animation 2</button>
-      <button class="tab-button" data-sketch="sketch3.js">Animation 3</button>
-    </div>
-  </div>
+
+    <!-- P5.js Animation -->
+    <script src="sketch.js"></script>
+
+
+    <script src="script.js"></script>
+
 </body>
 </html>

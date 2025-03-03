@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <title>Playground</title>
@@ -7,18 +8,18 @@
 
 
 </head>
+
 <body>
+
+
   <div class="page-wrapper">
     <div class="hero-section">
 
 
       <!-- logo -->
-      <img src="assets/logo.svg",  alt="header logo" 
-        width="90" 
-        height="70" 
-      >
-      
-      
+      <img src="assets/logo.svg" , alt="header logo" width="90" height="70">
+
+
       <div class="main-heading">Playground</div>
 
       <div class="subheading">Mitchell Pretak</div>
@@ -28,111 +29,250 @@
         From interactive sketches to small web experiments, it's a space where I learn, build,
         and test new concepts. Check back often for updates and fresh creations!
       </div>
+      <details>
+        <summary><strong>DISCLAIMER</strong></summary>
+        <p> The HTML structure was created mostly manually, with some assistance from ChatGPT.
+          The CSS & styling for this site was designed using a combination of Figma and Webflow,
+          Then copied here. </p>
+        <p> *Hover interactions were generated entirely by ChatGPT, based off of my webflow designs*</p>
+      </details>
 
-
-
-<!-- Buttons / CTA row -->
-<div class="cta-row">
-    <!-- main / visit portfolio tickets -->
-  <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button" >
-    <div class="button-text">Visit My Design Portfolio</div>
-  </a>
-    <!-- text button / links to buisness email -->
-  <a href="mailto:mp@mitchellpretak.com" class="text-button">
-    <div class="text-button">- Get in Touch</div>
-  </a>
-</div>
-
-
-  
-    
-    <!-- COMSCI - projects section -->
-  
-    <div class="projects-section">
-      <div class="section-heading">SCTM 2005 - Comsci</div>
-      <div class="section-subheading">
-        Projects and concepts explored as part of my computer science class
+      <!-- Buttons / CTA row -->
+      <div class="cta-row">
+        <!-- main / visit portfolio tickets -->
+        <a href="https://www.mitchellpretak.com" target="_blank" class="cta-button">
+          <div class="button-text">Visit My Design Portfolio</div>
+        </a>
+        <!-- text button / links to buisness email -->
+        <a href="mailto:mp@mitchellpretak.com" class="text-button">
+          <div class="text-button">- Get in Touch</div>
+        </a>
       </div>
-      
-    <!-- projects  -->
-    <section id="assignment-cards">
-      <h2 class="subheading">ComSci Assignments</h2>
-      <div class="section-subheading">
-        The 5 Assignments I completed throughout the semester
-      </div>
-      <div class="cards-container assignments-container"> </div>
-    
-    </section>
-          <script>
-            fetch('assignments.json')
-              .then(response => response.json())
-              .then(assignments => {
-                const container = document.querySelector('.assignments-container');
-                assignments.forEach(assignment => {
-                  const card = document.createElement('a'); 
-                  card.className = 'assignment-card';
-                  card.href = assignment.url;
-                  card.innerHTML = `
-                    <div class="assignmentCardNumCircle">
-                      <div class="assignmentCardNumber">${assignment.number}</div>
-                    </div>
-                      <div class="assignmentCardTitle">${assignment.title}</div>
-                    <div class="assignmentCardSubtitle">Assignment #${assignment.number}</div>
-                    <div class="div-block-24">
-                      <div class="text-16">${assignment.description}</div>`;
-                  container.appendChild(card);
-                });
-              })
-          </script>
-      
-
-
-
-     <!-- Labs Section -->
-  <section id="lab-cards">
-    <h2 class="subheading">ComSci Labs</h2>
-    <div class="section-subheading">
-      The 5 Labs I completed throughout the semester
     </div>
 
-    <div class="cards-container labs-container">
-      <!-- Lab cards will be appended here -->
-    </div>
-  </section>
-
-              <script>
-                fetch('labs.json')
-                  .then(response => response.json())
-                  .then(labs => {
-                    const container = document.querySelector('.labs-container');
-                    labs.forEach(lab => {
-                      const card = document.createElement('a');
-                      card.className = 'lab-card';
-                      card.href = lab.url;
-                      card.innerHTML = `
-                        <div class="lab-number-box">
-                          <div class="lab-number">${lab.number}</div>
-                        </div>
-                        <div class="lab-content">
-                          <div class="lab-subtitle">Lab #${lab.number}</div>
-                          <div class="lab-title">${lab.title}</div>
-                        </div>
-                        <div class="arrow-box">
-                          <img src="assets/arrow-icon.svg" class="arrow-icon" > `;
-                      container.appendChild(card);
-                    });
-                  })
-              </script>
 
 
+      <!-- COMSCI - projects section -->
+      <div class="projects-section">
+        <div class="section-heading">SCTM 2005 - Comsci</div>
+        <div class="section-subheading">
+          Projects and concepts explored as part of my computer science class
+        </div>
+
+        <!-- projects  -->
+        <section id="assignment-cards">
+          <h2 class="subheading">ComSci Assignments</h2>
+          <div class="section-subheading">
+            The 6 Assignments I completed throughout the semester
+          </div>
+          <div class="cards-container assignments-container"> </div>
+
+          <div class="cards-container assignments-container">
+
+            <a href="ComSci-Projects/A1-%20P5.js%20Animation%20Experiment/index.html" class="assignment-card">
+              <div class="assignmentCardNumCircle">
+                <div class="assignmentCardNumber">1</div>
+              </div>
+              <div class="assignmentCardTitle">Animation Exploration</div>
+              <div class="assignmentCardSubtitle">Assignment #1</div>
+              <div class="div-block-24">
+                <div class="text-16">Explore creative animation techniques using P5.js.
+                  Practice with loops, shapes, and interactivity.</div>
+              </div>
+            </a>
+
+            <a href="ComSci-Projects/A1-%20P5.js%20Animation%20Experiment/index.html" class="assignment-card">
+              <div class="assignmentCardNumCircle">
+                <div class="assignmentCardNumber">2</div>
+              </div>
+              <div class="assignmentCardTitle">Citing Code</div>
+              <div class="assignmentCardSubtitle">Assignment #2</div>
+              <div class="div-block-24">
+                <div class="text-16">Lorem Ipsum Sit Amet</div>
+              </div>
+            </a>
+
+            <a href="ComSci-Projects/A1-%20P5.js%20Animation%20Experiment/index.html" class="assignment-card">
+              <div class="assignmentCardNumCircle">
+                <div class="assignmentCardNumber">3</div>
+              </div>
+              <div class="assignmentCardTitle">P5 + Arrays</div>
+              <div class="assignmentCardSubtitle">Assignment #3</div>
+              <div class="div-block-24">
+                <div class="text-16">Lorem Ipsum Sit Amet.</div>
+              </div>
+            </a>
+
+            <a href="ComSci-Projects/A1-%20P5.js%20Animation%20Experiment/index.html" class="assignment-card">
+              <div class="assignmentCardNumCircle">
+                <div class="assignmentCardNumber">4</div>
+              </div>
+              <div class="assignmentCardTitle">Coming Soon.</div>
+              <div class="assignmentCardSubtitle">Assignment #4</div>
+              <div class="div-block-24">
+                <div class="text-16">Coming Soon.</div>
+              </div>
+            </a>
+
+            <a href="ComSci-Projects/A1-%20P5.js%20Animation%20Experiment/index.html" class="assignment-card">
+              <div class="assignmentCardNumCircle">
+                <div class="assignmentCardNumber">5</div>
+              </div>
+              <div class="assignmentCardTitle">Final Assignment Preposal</div>
+              <div class="assignmentCardSubtitle">Assignment #5</div>
+              <div class="div-block-24">
+                <div class="text-16">Coming Soon.</div>
+              </div>
+            </a>
+
+            <a href="ComSci-Projects/A1-%20P5.js%20Animation%20Experiment/index.html" class="assignment-card">
+              <div class="assignmentCardNumCircle">
+                <div class="assignmentCardNumber">6</div>
+              </div>
+              <div class="assignmentCardTitle">Final Assignment</div>
+              <div class="assignmentCardSubtitle">Final Assignment</div>
+              <div class="div-block-24">
+                <div class="text-16">Coming Soon.</div>
+              </div>
+            </a>
+
+        </section>
+      </div>
+
+        <!-- Labs Section -->
+        <section id="lab-cards">
+          <h2 class="subheading">ComSci Labs</h2>
+          <div class="section-subheading">
+            The 5 Labs I completed throughout the semester
+          </div>
+          <div class="cards-container labs-container">
+
+            <!-- Lab 1 -->
+            <a href="ComSci-Projects/A1-P5js-Animation-Exploration/index.html" class="lab-card">
+              <div class="lab-number-box">
+                <div class="lab-number">1</div>
+              </div>
+              <div class="lab-content">
+                <div class="lab-subtitle">Lab #1</div>
+                <div class="lab-title">Patterns from Iteration</div>
+              </div>
+              <div class="arrow-box">
+                <img src="assets/arrow-icon.svg" class="arrow-icon"> </div>
+            </a>
+
+            <!-- Lab 2 -->
+            <a href="ComSci-Projects/A1-P5js-Animation-Exploration/index.html" class="lab-card">
+              <div class="lab-number-box">
+                <div class="lab-number">2</div>
+              </div>
+              <div class="lab-content">
+                <div class="lab-subtitle">Lab #2</div>
+                <div class="lab-title">Objects</div>
+              </div>
+              <div class="arrow-box">
+                <img src="assets/arrow-icon.svg" class="arrow-icon"> </div>
+            </a>
+
+            <!-- Lab 3 -->
+            <a href="ComSci-Projects/A1-P5js-Animation-Exploration/index.html" class="lab-card">
+              <div class="lab-number-box">
+                <div class="lab-number">3</div>
+              </div>
+              <div class="lab-content">
+                <div class="lab-subtitle">Lab #3</div>
+                <div class="lab-title">Graphical User Interfaces</div>
+              </div>
+              <div class="arrow-box">
+                <img src="assets/arrow-icon.svg" class="arrow-icon"> </div>
+            </a>
+
+            <!-- Lab 4 -->
+            <a href="ComSci-Projects/A1-P5js-Animation-Exploration/index.html" class="lab-card">
+              <div class="lab-number-box">
+                <div class="lab-number">4</div>
+              </div>
+              <div class="lab-content">
+                <div class="lab-subtitle">Lab #4</div>
+                <div class="lab-title">Multimedia</div>
+              </div>
+              <div class="arrow-box">
+                <img src="assets/arrow-icon.svg" class="arrow-icon"> </div>
+            </a>
+
+            <!-- Lab 5 -->
+            <a href="ComSci-Projects/A1-P5js-Animation-Exploration/index.html" class="lab-card">
+              <div class="lab-number-box">
+                <div class="lab-number">5</div>
+              </div>
+              <div class="lab-content">
+                <div class="lab-subtitle">Lab #5</div>
+                <div class="lab-title">JSON</div>
+              </div>
+              <div class="arrow-box">
+                <img src="assets/arrow-icon.svg" class="arrow-icon"> </div>
+            </a>
+
+          </div>
+        </section>
 
 
-  <!-- other section -->
-  <div class="other-experiments-section">
-    <div class="section-heading">Other Experiments</div>
-    <div class="section-subheading">Other explorations outside of class</div>
-  </div>
 
-  
-  </body>
+
+        <!-- other section -->
+        <div class="other-experiments-section">
+          <div class="section-heading">Other Experiments</div>
+          <div class="section-subheading">Other explorations outside of class</div>
+        </div>
+
+
+
+
+
+
+        <footer class="site-footer">
+          <div class="footer-container">
+
+            <!-- Left Section: Logo & Copyright -->
+            <div class="footer-brand">
+              <img src="assets/logo.svg" alt="Mitchell Pretak Logo" class="footer-logo">
+              <div class="footer-bottom">
+                <p>© 2025 Mitchell Pretak. All rights reserved.</p>
+              </div>
+            </div>
+
+            <!-- Right Section: Navigation & Social (Closer Together) -->
+            <div class="footer-right">
+              <div class="footer-links">
+                <h3>Explore</h3>
+                <ul>
+                  <li><a href="https://www.mitchellpretak.com" target="_blank">Portfolio</a></li>
+                  <li><a href="mailto:mp@mitchellpretak.com">Contact Me</a></li>
+                  <li><a href="#">Experimental Work</a></li> <!-- Replacing Privacy Policy -->
+                </ul>
+              </div>
+
+              <div class="footer-social">
+                <h3>Follow Me</h3>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/mitchell.pretak/" target="_blank">
+                        Instagram <img src="assets/arrow-icon.svg" alt="Instagram">
+                    </a>
+                    <a href="https://www.pinterest.com" target="_blank">
+                        Pinterest <img src="assets/arrow-icon.svg" alt="Pinterest">
+                    </a>
+                    <a href="https://github.com/pretakmitchell" target="_blank">
+                        GitHub <img src="assets/arrow-icon.svg" alt="GitHub">
+                    </a>
+                </div>
+            </div>
+            
+            </div>
+
+          </div>
+        </footer>
+
+
+</body>
+
+
 </html>
