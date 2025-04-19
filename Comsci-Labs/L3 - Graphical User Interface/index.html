@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lab 3 - Digital Etch A Sketch</title>
+
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="lab3style.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Welcome Popup -->
+<div id="welcome-popup">
+    <div class="popup-content">
+      <h2>Welcome!</h2>
+      <p>For the Third Lab; GUIs, I created this Etch-A-Sketch drawing simulator. Please read important information below.</p>
+  
+        <div class="popup-section">
+            <h3>Navigation / Drawing</h3>
+            <div class="popup-line">To move the cursor; <strong>Grab and spin</strong> the dials, <strong>Press on the arrows</strong> within the dials, or <strong>use the ↑ ↓ ← →</strong>  keys.</div>
+            <div class="popup-line"> Press the <strong>S</strong> key to shake (clear) the board </div>
+            <div class="popup-line">Use the the slider to adjust <strong>stroke size</strong></div> 
+        </div>
+  
+        <div class="popup-section">
+            <h3>Warnings / Disclaimers</h3>
+            <div class="popup-line">This simulator is only designed to function at a standard desktop breakpoint size. </div>
+            <div class="popup-line"><strong>The dials are NOT made using p5’s standard GUI elements; they were instead built using DOM elements, event listeners, and CSS transforms. If these are unsatisfactory for the lab, Please let me know.</strong></div>
+        </div>
+  
+      <button onclick="hidePopup()">Lets Draw!</button>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<body>
+  <div class="lab3-frame" id="lab3-frame">
+   
+    <!-- Header Section -->
+    <header class="lab3-header">
+      <h1 class="section-heading">L3 - Digital Etch-A-Sketch</h1>
+      <a href="../../index.html" class="cta-button">
+        <div class="button-text">Return Home</div>
+      </a>
+    </header>
+
+    <!-- canvas / screen -->
+    <div id="canvas-holder" class="lab3-screen"></div>
+
+    <!-- Instructions and slider setcion -->
+    <div class="lab3-info">
+      <p class="info-text">
+        To draw; Drag the knobs, click the arrows, or use the ↑↓←→ keys on your keyboard. Use to slider to change pen size. Press <strong>S</strong> to shake the board clear.
+      </p>
+      <div id="slider-holder"></div>
+    </div>
+
+    <!-- Knobs -->
+    <div id="knob-left"  class="knob">
+      <div class="knob-face">
+        <button class="arrow up"></button>
+        <button class="arrow down"></button>
+      </div>
+    </div>
+
+    <div id="knob-right" class="knob">
+      <div class="knob-face">
+        <button class="arrow left"></button>
+        <button class="arrow right"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="sketch.js"></script>
+</body>
+</html>
