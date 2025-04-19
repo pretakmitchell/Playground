@@ -1,0 +1,79 @@
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #f8f8f8;          /* MP ADD – standard grey used across site */
+}
+
+canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+}
+
+
+
+
+
+/* ---------- Intro Modal Popup ---------- */
+.modal {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  font-family: inherit;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.modal-text {
+  font-size: 1.1rem;
+  margin-bottom: 1.4rem;
+  line-height: 1.6;
+}
+
+#dismiss-btn:hover {
+  background: #333;
+}
+
+
+
+
+/* ---------- Footer Credits (gpt helped implement glassmorphic effect) ---------- */
+.a2-credits {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  color: #333;
+  font-size: 0.9rem;
+  padding: 0.8rem 1.2rem;
+  text-align: center;
+  line-height: 1.5;
+  z-index: 20;
+
+  /* BLURRED BACKGROUND EFFECT */
+  background: linear-gradient(to top, rgba(248, 248, 248, 0.85), rgba(248, 248, 248, 0.2));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.05);
+}
+
+.a2-credits a {
+  color: inherit;
+  text-decoration: underline;
+}
+

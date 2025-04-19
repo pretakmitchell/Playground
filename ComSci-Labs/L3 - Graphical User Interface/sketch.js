@@ -12,7 +12,7 @@
     let sizeSlider, lineWidth = 6;
     const SPEED = 2.2;
     
-    // Dial class 
+    /* -------- Dial class -------- */
     class Dial {
       constructor(el, axis) {
         this.el   = el;                       // rotating ring
@@ -22,12 +22,12 @@
         this.prev  = 0;
         this.updateVisual();
     
-        // drag handlers 
+        /* drag handlers */
         this.move = e => this.drag(e);
         this.up   = () => this.stopDrag();
         el.addEventListener('pointerdown', e => this.startDrag(e));
     
-        // arrow buttons 
+        /* arrow buttons */
         el.querySelectorAll('.arrow').forEach(btn =>{
           btn.addEventListener('mousedown', ev=>{ev.stopPropagation();this.hold(btn);});
           btn.addEventListener('mouseup',   ()=>clearInterval(this.holdInt));
@@ -51,7 +51,7 @@
         d=((d+180)%360)-180;                 // shortest signed delta
         this.prev=a;
     
-        // ignore wild spikes (>45°) to stop jump glitch 
+        /* ignore wild spikes (>45°) to stop jump glitch */
         if(Math.abs(d)>45) return;
     
         this.total+=d;
@@ -87,7 +87,7 @@
     
 
     
-    // p5 setup 
+    /* -------- p5 setup -------- */
     function setup(){
       createResponsiveCanvas();
       penX=width/2; penY=height/2; path.push({x:penX,y:penY});
@@ -103,7 +103,7 @@
     
 
 
-    // responsive canvas
+    /* responsive canvas */
     function windowResized(){ createResponsiveCanvas(true); }
     
     function createResponsiveCanvas(resize=false){
@@ -113,7 +113,7 @@
       else      { createCanvas(r.width,r.height).parent(holder); }
     }
     
-    // drawing
+    /* -------- drawing -------- */
     function draw(){
       background(220);
       if(keyIsDown(LEFT_ARROW))  movePen('x',-SPEED);
@@ -127,7 +127,7 @@
       fill(0); noStroke(); circle(penX,penY,lineWidth+2);
     }
     
-    //  helpers
+    /* -------- helpers -------- */
     function movePen(axis,delta){
       if(!delta) return;
       if(axis==='x') penX=constrain(penX+delta,0,width);
