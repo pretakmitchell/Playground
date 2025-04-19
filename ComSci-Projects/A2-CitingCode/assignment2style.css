@@ -21,7 +21,8 @@ canvas {
   position: fixed;
   z-index: 9999;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(3px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,6 +38,21 @@ canvas {
   font-family: inherit;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
+.modal-content .cta-button {
+  display: inline-flex;
+  max-width: 100px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+.modal-content .cta-button .button-text {
+  width: auto;                 /* allow content to define width */
+  text-align: center;          /* center text inside */
+  margin: 0 auto;              /* center the box itself */
+  display: block;              /* required for text-align to apply */
+}
+
+
 
 .modal-text {
   font-size: 1.1rem;
