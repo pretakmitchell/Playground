@@ -1,0 +1,118 @@
+ <!-- 
+     
+   This Lab was copied and modified from the existing logic created for Asisgnment 3 - Text Adventure. 
+   It exists as decoder for ciphers that are created using assignmetn #4. The UI styling, encrypter, and decrypter logic 
+   remains the same. Gemini 2.5 pro preview was able to generate the main function of this lab simply with 2 prompts and refrences
+   to the A3 files. 
+
+   As far as satisfying lab requirements, its able to access locally saved encrypted messages, and decrypt them.
+   The messages can be saved localy using the s hockey or pressing the button on the text adventure page.
+
+   If you dont want to use local storage, you may use the text area to paste in a cipher, or hit hotkey v to paste automatically.
+
+   PLEASE NOTE THE DECIPHER ONLY WORKS WITH CIPHERS CREATED USING THE ASSIGNMENT 4 ENCRYPTION FUNCTION. IT IS NOT A UNIVERSAL CIPHER.
+   THIS IS BY DESIGN FOR IMPROVED SECURITY.
+    
+
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment 5 - Cipher Decryption</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="lab5style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <script src="decrypt.js"></script>
+    <script src="sketch.js" defer></script>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1 class="site-heading">L5 - Decipher with JSON</h1>
+      <a href="../../index.html" class="home-button">
+        <span class="button-text">Return To Homepage</span>
+      </a>
+    </div>
+
+    <!-- Main Decryption Container -->
+    <div id="main-container">
+        <h1 class="container-heading">CIPHER ENGINE // MODE: DECRYPT</h1>
+        <hr class="header-rule">
+
+        <!-- Side-by-side text areas -->
+        <div id="text-areas-container">
+            <div class="textarea-group" id="input-group">
+                <p class="input-label">CIPHERTEXT INPUT</p>
+                <textarea id="input-cipher" placeholder="Paste encrypted message..."></textarea>
+            </div>
+            <div class="textarea-group" id="output-group">
+                <p class="input-label">PLAINTEXT OUTPUT</p>
+                <textarea id="output-plaintext" placeholder="Decrypted message..." readonly></textarea>
+            </div>
+        </div>
+
+        <!-- Full width Decrypt Button -->
+        <div id="action-group">
+             <button id="decrypt-button">DECRYPT MESSAGE (⌘/Ctrl+↵)</button>
+        </div>
+
+         <!-- Secondary Action Buttons Row -->
+         <div id="secondary-actions">
+             <div id="secondary-actions-left">
+                 <button id="paste-decrypt-button">PASTE & DECRYPT (V)</button>
+                 <button id="copy-output-button">COPY OUTPUT</button>
+             </div>
+             <button id="reset-button">RESET (R)</button>
+        </div>
+
+    </div> <!-- End #main-container -->
+
+    <!-- Separator -->
+    <div class="or-separator">OR</div>
+
+    <!-- Saved Items Section -->
+    <div id="saved-items-section">
+        <h2 class="section-subheading">LOAD FROM LOCAL STORAGE</h2>
+        <div id="saved-items-container">
+            <p id="no-saved-data" style="display: none; color: var(--text-tertiary);">No saved ciphertext found.</p>
+        </div>
+    </div>
+
+    <!-- Modal Popup (Updated Inner Structure) -->
+    <div id="modal-overlay" class="modal-hidden">
+        <div id="modal-content">
+            <button id="modal-close-button">×</button>
+            <h3>Saved Message Details</h3>
+            <!-- NEW Wrapper for side-by-side -->
+            <div id="modal-body">
+                <div class="modal-text-area">
+                    <label class="modal-label">Original Ciphertext:</label>
+                    <pre id="modal-ciphertext"></pre>
+                    <button class="modal-copy-button" id="modal-copy-cipher">Copy Ciphertext</button>
+                </div>
+                <div class="modal-text-area">
+                    <label class="modal-label">Decrypted Plaintext:</label>
+                    <pre id="modal-plaintext"></pre>
+                     <button class="modal-copy-button" id="modal-copy-plain">Copy Plaintext</button>
+                </div>
+            </div> <!-- End #modal-body -->
+        </div>
+    </div>
+
+
+      <!-- Footer credits section -->
+  <footer class="a2-credits">
+    Use the "Load from Local Stroage" function by generating a Cipher in 
+    <a href="../../ComSci-Projects/A3-TextAdventure/index.html" target="_blank">Assignment 3 - Text adventure</a> and selecting the "Save Local" feature.
+  </footer>
+
+</body>
+</html>

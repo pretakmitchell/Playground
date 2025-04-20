@@ -1,0 +1,77 @@
+    <!-- 
+     
+    This assignment was created through many many prompts in ChatGPT o3, 40, and google's gemini 2.5 pro preview. 
+    The Ui was  developed via a combination of figma designs and chatGPT's new image gen model. 
+    
+
+
+
+    TUTORIALS & RESOURCES 
+
+        1. "Writing A Caesar Shift Cipher Function with JavaScript: Part 1" – DEV Community  
+        https://dev.to/cerchie/writing-a-caesar-shift-cipher-function-with-javascript-27eh  
+        (Guided the implementation of Caesar cipher encryption in JavaScript)
+
+        2. "Implementing Caesar Cipher in JavaScript for Secure Communication" – Medium Article  
+        https://medium.com/@stheodorejohn/implementing-caesar-cipher-in-javascript-for-secure-communication-6f82bbe914c2  
+        (Provided insights into encrypting and decrypting messages using Caesar cipher in JavaScript)
+
+        3. "Get the Value of Text Input Field using JavaScript" – GeeksforGeeks  
+        https://www.geeksforgeeks.org/how-to-get-the-value-of-text-input-field-using-javascript/  
+        (Explained methods to retrieve user input from text fields in JavaScript)
+
+        4. "Handling text — strings in JavaScript" – MDN Web Docs  
+        https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/Strings  
+        (Offered comprehensive understanding of string manipulation in JavaScript)
+
+        5. "How to accept JavaScript USER INPUT in 5 minutes" – YouTube Tutorial by Bro Code  
+        https://www.youtube.com/watch?v=JeXqaKeJSRI  
+        (Demonstrated techniques for capturing user input via prompts and form fields in JavaScript)
+
+    -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+   
+  <title>Assignment 3 - Text Adventure</title>
+  
+    <link rel="stylesheet" href="assignment3style.css">
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <script src="encrypt.js"></script>
+    <script src="sketch.js" defer></script>
+
+</head>
+
+
+<body>
+
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1 class="site-heading">Cipher - Text Adventure</h1>
+      <a href="../../index.html" class="home-button">
+        <span class="button-text">Return To Homepage</span>
+      </a>
+    </div>
+    
+
+    <!-- Main Cipher Container -->
+    <div id="main-container">
+        <h1>CIPHER ENGINE // MODE: ENCRYPT</h1>  <!-- H1 within card -->
+        <hr class="header-rule">
+    </div>
+
+
+  <!-- Footer credits section -->
+  <footer class="a2-credits">
+    Save your Cipher locally by hitting S on your keyboard, then decipher it using 
+    <a href="../../ComSci-Labs/L5-Json/index.html" target="_blank">Lab 5's</a> "decipher from local storage" function.
+  </footer>
+
+</body>
+</html>

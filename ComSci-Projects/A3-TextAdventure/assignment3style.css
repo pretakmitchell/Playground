@@ -1,0 +1,401 @@
+/*font loaders (forgot to navigate up to main fonts folder which kept breaking)*/
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../../../fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Montserrat';
+    src: url('../../../fonts/Montserrat-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Montserrat';
+    src: url('../../../fonts/Montserrat-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Montserrat';
+    src: url('../../../fonts/Montserrat-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Roboto Mono';
+    src: url('../../../fonts/RobotoMono-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Reset and Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --dark-bg: #080e1a;      
+    --grid-line-color: rgba(35, 53, 84, 0.35);
+    --glass-bg: rgba(18, 30, 58, 0.6);
+    --glass-highlight: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(0, 191, 255, 0.2); 
+    --inner-shadow: rgba(0, 0, 0, 0.4);
+    --outer-shadow: rgba(0, 0, 0, 0.5);
+    --input-bg: rgba(10, 20, 40, 0.75); 
+    --input-border: rgba(35, 53, 84, 0.9);
+    --text-primary: #e6f1ff;
+    --text-secondary: #b0c4de;
+    --text-tertiary: #88a1c9;
+    --accent-blue: #12b8f9;
+    --accent-glow: rgba(0, 212, 255, 0.6);
+    --hover-blue-bg: rgba(0, 212, 255, 0.15);
+    --hover-blue-shadow: rgba(0, 212, 255, 0.4);
+    --feedback-bg: var(--accent-blue);
+    --feedback-text: var(--dark-bg);
+}
+
+body {
+    background-color: var(--dark-bg);
+    background-image:
+        /* Grid lines */
+        linear-gradient(var(--grid-line-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line-color) 1px, transparent 1px),
+        radial-gradient(circle at center center, rgba(0, 212, 255, 0.1), transparent 60%);
+    
+    background-size:
+        40px 40px, /* Grid size */
+        40px 40px, /* Grid size */
+        100% 100%; /* Glow size */
+    background-position: center center; 
+    color: var(--text-secondary);
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 20px;
+    margin-bottom: 80px;
+}
+
+/* Main Content Container - Enhanced Glassmorphism */
+#main-container {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    padding: 45px;
+    background: linear-gradient(145deg, var(--glass-highlight), transparent 30%), var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow:
+        0 16px 40px var(--outer-shadow),
+        inset 0 1px 1px rgba(255, 255, 255, 0.08),
+        inset 0 -1px 1px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(16px); 
+    -webkit-backdrop-filter: blur(16px);
+}
+
+
+
+
+
+
+
+
+h1 {
+    color: var(--accent-blue);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 15px;
+    letter-spacing: 1.8px;
+    text-shadow: 0 0 12px var(--accent-glow);
+    text-transform: uppercase;
+}
+
+/* Separator */
+hr.header-rule {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+    opacity: 0.4;
+    margin-bottom: 40px;
+}
+
+p.input-label {
+    color: var(--text-secondary);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+textarea {
+    width: 100%;
+    min-height: 150px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 15px;
+    padding: 16px;
+    margin-bottom: 25px;
+    resize: vertical;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 6px var(--inner-shadow);
+}
+
+textarea:focus {
+    outline: none;
+    border-color: rgba(0, 212, 255, 0.6);
+    background-color: rgba(10, 25, 47, 0.85);
+    box-shadow: inset 0 2px 6px var(--inner-shadow), 0 0 10px var(--hover-blue-shadow);
+}
+
+textarea[readonly] {
+    background-color: rgba(5, 12, 25, 0.8);
+}
+
+button {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--accent-blue);
+    background: linear-gradient(rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.1)), var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    padding: 11px 22px;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    margin-top: 5px;
+    margin-right: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+button:hover {
+    border-color: rgba(0, 212, 255, 0.7);
+    color: #fff;
+    background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.15)), var(--hover-blue-bg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4), 0 0 12px var(--hover-blue-shadow), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+button:active {
+    transform: scale(0.97);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+button:disabled {
+    border-color: var(--input-border);
+    color: var(--text-tertiary);
+    background: var(--input-bg);
+    cursor: not-allowed;
+    opacity: 0.5;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+    transform: none;
+}
+
+#encrypt-button {
+    display: block;
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 15px 20px;
+    font-size: 16px;
+    color: var(--text-primary);
+    background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.2)), var(--light-navy);
+    border-color: var(--lightest-navy);
+     border-width: 1px; 
+}
+#encrypt-button:hover {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    background: linear-gradient(rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.25)), var(--hover-blue-bg);
+}
+
+/* Info Text */
+#info-display {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-family: 'Roboto Mono', monospace;
+    margin-top: -18px;
+    margin-bottom: 30px;
+    text-align: left;
+    opacity: 0.8;
+}
+
+/* Feedback Style */
+button.feedback {
+    background: var(--feedback-bg) !important;
+    color: var(--feedback-text) !important;
+    border-color: rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+#output-actions {
+    display: flex;          
+    justify-content: space-between; 
+    align-items: center;    
+    gap: 8px;                
+    margin-top: -15px;        
+    margin-bottom: 5px;
+}
+
+
+#output-actions-left {
+    display: flex;
+    gap: 8px; 
+}
+
+#output-actions button {
+    color: var(--accent-blue);
+    background: linear-gradient(rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.1)), var(--input-bg);
+    border: 1px solid var(--input-border);
+    margin-top: 0; /* Reset margin-top */
+}
+#output-actions button:not(:disabled):hover {
+    border-color: rgba(0, 212, 255, 0.7);
+    color: #fff;
+    background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.15)), var(--hover-blue-bg);
+}
+
+#reset-button {
+    color: var(--reset-button-color);
+    border-color: var(--reset-button-border);
+
+}
+
+#reset-button:not(:disabled):hover {
+    color: #ff9a93; 
+    border-color: var(--reset-button-color);
+    background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.15)), var(--reset-button-hover-bg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4), 0 0 12px rgba(255, 123, 114, 0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+    
+.cta-button {
+display: flex;
+grid-column-gap: 10px;
+justify-content: center;
+align-items: center;
+width: 100%;
+max-width: 250px;
+height: 45px;
+padding: 20px 80px 20px 76px;
+background-image:
+    linear-gradient(#0000001a, #0000001a),
+    linear-gradient(#2f2f2f, #0c0c0c);
+border: 1px solid #000;
+border-radius: 24px;
+box-shadow:
+    0 14px 7px #0000000d,
+    0 10px 6px #0000000d,
+    0 4px 4px #00000014,
+    0 1px 2px #0000001a,
+    0 0 #000000d9,
+    inset 0 0 #ffffff40,
+    inset 0 1px #ffffffbf,
+    0 2px 6px #00000052;
+text-decoration: none;
+transition: transform 0.2s ease, box-shadow 0.2s ease;
+margin-bottom: 25px;
+}
+
+.button-text {
+color: #e2e1de;
+text-align: left;
+white-space: nowrap;
+flex: 1;
+margin: 0;
+font-family: Montserrat, sans-serif;
+font-size: 16px;
+font-weight: 600;
+line-height: 100%;
+text-decoration: none;
+}
+
+
+.header-section { width: 100%; max-width: 900px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; padding-bottom: 30px; padding-top: 20px; margin-bottom: 0; z-index: 5; }
+.site-heading { color: var(--text-primary); letter-spacing: 0.05em; padding-bottom: 10px; margin: 0; font-family: Montserrat, sans-serif; font-size: clamp(32px, 6vw, 48px); font-weight: 800; line-height: 1.1; text-decoration: none; text-transform: none; text-shadow: 0 0 15px rgba(18, 184, 249, 0.3); }
+.home-button { display: inline-block; padding: 10px 25px; color: var(--text-secondary); background-color: transparent; border: 1px solid var(--text-tertiary); border-radius: 8px; text-decoration: none; transition: all 0.2s ease-out; cursor: pointer; font-family: 'Roboto Mono', monospace; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.6px; }
+
+
+
+
+/* ---------- Footer Credits (gpt implement glassmorphic effect) ---------- */
+.a2-credits {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    color: #ffffffa0;
+    font-size: 1 rem;
+    padding: 0.8rem 1.2rem;
+    text-align: center;
+    line-height: 1.5;
+    z-index: 20;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.51), rgba(0, 0, 0, 0.077));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .a2-credits a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
