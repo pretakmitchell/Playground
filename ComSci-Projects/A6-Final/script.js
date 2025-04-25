@@ -10,7 +10,7 @@
    ====================================================================*/
 
 /* ---------------------- 1. CONFIGURABLE CONSTANTS ------------------ */
-const DATA_URL        = 'projects.json';  // <‑‑ identical to original
+const DATA_URL        = 'package.json';  // <‑‑ identical to original
 const PIXELS_PER_DAY  = 4;                // 14 days ≈ 56 px gap
 const START_ON_LEFT   = true;             // first card on left side?
 
