@@ -1,5 +1,5 @@
 // File Location: Playground/ComSci-Projects/A6-Final/script.js
-// Attempt V4: Prioritizing Time-Based Positioning
+// Attempt V5: Reintegrating Connectors, Refining Overlap Check
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
@@ -7,14 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialLoadingMessage = document.querySelector('.loading-message');
 
     // --- Configuration ---
-    const PX_PER_DAY = 1.8; // Pixels/day - Increased slightly, TUNE THIS!
-    const BASE_ITEM_OFFSET = 60; // Top padding inside container
+    const PX_PER_DAY = 1.8; // Pixels/day - TUNE THIS!
+    const BASE_ITEM_OFFSET = 60; // Top padding
     const CARD_HEIGHT_ESTIMATE = 200; // Approx height for initial container estimate
-    const CARD_VERTICAL_GAP = 35; // Min vertical gap after overlap adjustment (Increased)
+    const CARD_VERTICAL_GAP = 35; // Min vertical gap between overlapping cards
 
     // --- State Variables ---
     let progressBarElement, progressBarTextElement, progressBarIndicatorElement, progressBarPercentageElement;
-    let timelineItems = []; // Stores { element: DOMNode, targetTop: number, isLeft: boolean }
+    let timelineItems = []; // Stores { element: DOMNode, targetTop: number, isLeft: boolean, projectData: object }
     let sortedProjects = [];
     let timelineStartDate, timelineEndDate, timelineDurationDays;
     let calculatedTimelineHeight = 0;
@@ -23,53 +23,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Main Function ---
     async function fetchProjects() {
         try {
-            // ... (fetch logic remains the same) ...
             const response = await fetch('/api/a6-timeline-projects');
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             const projects = await response.json();
+
             if (initialLoadingMessage) initialLoadingMessage.remove();
             timelineContainer.innerHTML = '';
-            if (!projects || !Array.isArray(projects) || projects.length === 0) { /* ... error ... */ return; }
+
+            if (!projects || !Array.isArray(projects) || projects.length === 0) {
+                displayErrorMessage('No projects found.'); return;
+            }
 
             processAndSortProjects(projects);
-            if (!timelineStartDate || !timelineEndDate) { /* ... error ... */ return; }
 
-            calculateInitialPositions(); // Calculate all targetTop values first
+            if (!timelineStartDate || !timelineEndDate) {
+                displayErrorMessage('Could not determine timeline range (missing/invalid dates).');
+                return;
+            }
+
+            calculateInitialPositions(); // Calculate targetTop values first
             renderTimelineItems(); // Render items using targetTop
 
-            requestAnimationFrame(() => { // Defer adjustments
-                adjustForOverlaps();
-                updateConnectorLines(); // Connectors use final positions
-                updateContainerHeight(); // Set final height
+            requestAnimationFrame(() => { // Defer adjustments until after render
+                adjustForOverlaps();      // Adjust 'top' style ONLY IF needed
+                updateConnectorLines();   // ** CALL CONNECTOR DRAWING HERE **
+                updateContainerHeight();  // Set final container height AFTER adjustments
                 setupProgressBar();
                 addScrollListener();
-                requestAnimationFrame(updateProgressBarOnScroll);
+                requestAnimationFrame(updateProgressBarOnScroll); // Initial update
             });
 
-        } catch (error) { /* ... error handling ... */ }
+        } catch (error) {
+            console.error('Error fetching or displaying projects:', error);
+            displayErrorMessage(`Error loading projects: ${error.message}.`);
+        }
     }
 
     // --- Helper: Display Error ---
     function displayErrorMessage(message) { /* ... (same) ... */ }
 
     // --- Helper: Process & Sort Data ---
-    function processAndSortProjects(projects) {
-        // ... (same logic: map, validate, filter, sort valid, set bounds) ...
-         const projectsWithDates = projects
-            .map(p => ({ ...p, dateObj: p.date ? new Date(p.date) : null }))
-            .map(p => ({ ...p, isValidDate: p.dateObj && !isNaN(p.dateObj.getTime()) }));
-        const validDateProjects = projectsWithDates.filter(p => p.isValidDate);
-        if (validDateProjects.length === 0) { /* ... handle ... */ return; }
-        validDateProjects.sort((a, b) => a.dateObj.getTime() - b.dateObj.getTime());
-        timelineStartDate = validDateProjects[0].dateObj;
-        timelineEndDate = validDateProjects[validDateProjects.length - 1].dateObj;
-        const durationMs = timelineEndDate.getTime() - timelineStartDate.getTime();
-        timelineDurationDays = Math.max(1, durationMs / MS_PER_DAY);
-        calculatedTimelineHeight = BASE_ITEM_OFFSET + (timelineDurationDays * PX_PER_DAY) + CARD_HEIGHT_ESTIMATE * 1.5;
-        sortedProjects = [...validDateProjects, ...projectsWithDates.filter(p => !p.isValidDate)];
-    }
+    function processAndSortProjects(projects) { /* ... (same) ... */ }
 
-    // --- NEW Helper: Calculate Initial Positions ---
+    // --- Helper: Calculate Initial Positions ---
     function calculateInitialPositions() {
         timelineItems = []; // Reset
         let lastValidTopPosition = BASE_ITEM_OFFSET;
@@ -82,25 +78,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const timeDiffMs = project.dateObj.getTime() - timelineStartDate.getTime();
                 const timeDiffDays = Math.max(0, timeDiffMs / MS_PER_DAY);
                 targetTop = BASE_ITEM_OFFSET + (timeDiffDays * PX_PER_DAY);
-                lastValidTopPosition = targetTop; // Update tracker
+                lastValidTopPosition = targetTop;
             } else {
-                 // Place invalid items based on last valid item's position + minimum gap
-                 // This initial position might still cause overlaps if previous item was tall
-                 targetTop = lastValidTopPosition + MIN_SPACING_PX; // Use MIN_SPACING_PX here
-                 lastValidTopPosition = targetTop; // Update approx floor for next invalid
+                 targetTop = lastValidTopPosition + MIN_SPACING_PX; // Use MIN_SPACING_PX, not CARD_VERTICAL_GAP
+                 lastValidTopPosition = targetTop;
             }
 
-            // Store calculated position along with other info (element created later)
-            timelineItems.push({
-                projectData: project,
-                targetTop: targetTop,
-                isLeft: isLeft,
-                element: null // DOM element added during render
-            });
-             // console.log(`Item ${index}: Date ${project.date}, Target Top: ${targetTop.toFixed(1)}`); // DEBUG
+            timelineItems.push({ projectData: project, targetTop: targetTop, isLeft: isLeft, element: null });
         });
     }
-
 
     // --- Helper: Render Items Using Calculated Positions ---
     function renderTimelineItems() {
@@ -115,21 +101,16 @@ document.addEventListener('DOMContentLoaded', () => {
             timelineItem.classList.add('timeline-item', isLeft ? 'timeline-item-left' : 'timeline-item-right');
             timelineItem.dataset.identifier = project.isValidDate ? project.dateObj.toISOString() : `item-invalid-${index}`;
 
-            // --- Apply Pre-Calculated Position ---
             timelineItem.style.position = 'absolute';
-            timelineItem.style.top = `${itemInfo.targetTop}px`; // Use stored targetTop
+            timelineItem.style.top = `${itemInfo.targetTop}px`; // Apply pre-calculated top
             timelineItem.style.left = isLeft ? '0' : '50%';
             timelineItem.style.width = '50%';
 
-            // Store DOM element back in our array
-            itemInfo.element = timelineItem;
+            itemInfo.element = timelineItem; // Store DOM element
 
-            // --- Format Date, Get Image/Category (same as before) ---
+            // --- Format Date, Get Image/Category/Link (same as before) ---
             let displayDate = 'Date N/A';
-            if (project.isValidDate) {
-                 try { displayDate = project.dateObj.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}).toUpperCase(); }
-                 catch(e) { displayDate = "Invalid Date"; }
-            }
+            if (project.isValidDate) { /* ... format ... */ }
             const firstImage = project.images?.[0] ?? null;
             const imagePath = firstImage ? `assets/${firstImage}` : '';
             const category = project.tags?.[0]?.toUpperCase() ?? '';
@@ -155,63 +136,102 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Helper: Adjust for Overlaps (Checks against current style.top) ---
+    // --- Helper: Adjust for Overlaps (Only checks adjacent, opposite-side items) ---
      function adjustForOverlaps() {
          if (timelineItems.length < 2) return;
 
-         // Iterate multiple times might be needed for complex cascading overlaps
-         // but start with one pass.
          for (let i = 0; i < timelineItems.length - 1; i++) {
-             const item1 = timelineItems[i];
-             const item2 = timelineItems[i + 1];
+             const itemInfo1 = timelineItems[i];
+             const itemInfo2 = timelineItems[i + 1];
 
-             // Skip if items don't have elements rendered or are same side
-             if (!item1.element || !item2.element || item1.isLeft === item2.isLeft) continue;
+             // Check if elements exist and if they are on OPPOSITE sides
+             if (!itemInfo1.element || !itemInfo2.element || itemInfo1.isLeft === itemInfo2.isLeft) {
+                 continue; // Skip if same side or element missing
+             }
 
-             // Use offsetTop/Height AFTER initial render in the previous frame
-             const item1Top = item1.element.offsetTop;
-             const item1Height = item1.element.offsetHeight;
+             // Read current positions/sizes AFTER rendering
+             const item1Top = itemInfo1.element.offsetTop;
+             const item1Height = itemInfo1.element.offsetHeight;
              const item1Bottom = item1Top + item1Height;
-             const item2Top = item2.element.offsetTop; // Current position
+             const item2Top = itemInfo2.element.offsetTop; // Current top of the next item
 
              const minimumItem2Top = item1Bottom + CARD_VERTICAL_GAP;
 
+             // If item 2 is currently higher than it should be to avoid overlap, push it down
              if (item2Top < minimumItem2Top) {
-                 item2.element.style.top = `${minimumItem2Top}px`; // Adjust downward
-                 // Update the stored targetTop as well if needed, though offsetTop read next loop is better
-                 item2.targetTop = minimumItem2Top; // Keep internal state consistent (optional)
+                 itemInfo2.element.style.top = `${minimumItem2Top}px`;
+                 // Update internal state if needed (optional, offsetTop read is usually sufficient)
+                 // itemInfo2.targetTop = minimumItem2Top;
                  // console.log(`Overlap Adjust: Pushed item ${i + 1} down to ${minimumItem2Top.toFixed(0)}px`);
              }
          }
      }
 
+    // --- Helper: Draw Connector Lines (SVG Paths) ---
+    function updateConnectorLines() {
+         // Ensure elements exist before trying to draw
+         if(timelineItems.length === 0 || !timelineItems[0].element) return;
 
-    // --- Helper: Draw Connector Lines ---
-    function updateConnectorLines() { /* ... (Same as previous version, reads final positions) ... */ }
+         const markerSize = 10; // Should match CSS approx
+         timelineItems.forEach(itemInfo => {
+            const item = itemInfo.element; // Get the DOM element
+            if (!item) return; // Skip if element is missing
 
-    // --- Helper: Update Container Height ---
-    function updateContainerHeight() {
-        if (timelineItems.length === 0 || !timelineItems[0].element) { // Check if elements exist
-            timelineContainer.style.height = '100vh'; return;
-        }
-        let maxHeight = 0;
-        timelineItems.forEach(itemInfo => {
-             if (!itemInfo.element) return; // Skip if element somehow not rendered
-            // Use final calculated position (offsetTop) + rendered height
-            const itemBottom = itemInfo.element.offsetTop + itemInfo.element.offsetHeight;
-            if (itemBottom > maxHeight) maxHeight = itemBottom;
+            const svg = item.querySelector('.connector-line');
+            const path = svg?.querySelector('path');
+            const marker = item.querySelector('.timeline-marker');
+            const card = item.querySelector('.timeline-card');
+            if (!path || !marker || !card) return; // Skip if inner elements missing
+
+            const isLeft = itemInfo.isLeft; // Use stored isLeft flag
+
+            // Get positions relative to the item itself for SVG path calculation
+            // These need to be accurate AFTER overlap adjustments
+            const markerOffsetX = marker.offsetLeft + marker.offsetWidth / 2;
+            const markerOffsetY = marker.offsetTop + marker.offsetHeight / 2;
+            const cardOffsetX = card.offsetLeft;
+            const cardOffsetY = card.offsetTop;
+            const cardWidth = card.offsetWidth;
+            const cardHeight = card.offsetHeight;
+
+            // Connect to the middle of the card's inner edge
+            const cardConnectX = isLeft ? cardOffsetX : cardOffsetX + cardWidth;
+            const cardConnectY = cardOffsetY + cardHeight / 2;
+
+            // Calculate SVG positioning and viewBox relative to the item's coordinate space
+            const svgTop = Math.min(markerOffsetY, cardConnectY) - 10;
+            const svgLeft = Math.min(markerOffsetX, cardConnectX) - 10;
+            const svgWidth = Math.abs(cardConnectX - markerOffsetX) + 20;
+            const svgHeight = Math.abs(cardConnectY - markerOffsetY) + 20;
+
+            svg.style.position = 'absolute';
+            svg.style.top = `${svgTop}px`; svg.style.left = `${svgLeft}px`;
+            svg.style.width = `${svgWidth}px`; svg.style.height = `${svgHeight}px`;
+            svg.setAttribute('viewBox', `0 0 ${svgWidth} ${svgHeight}`);
+
+            // Path coordinates relative to SVG's top-left (0,0)
+            const startX = markerOffsetX - svgLeft; const startY = markerOffsetY - svgTop;
+            const endX = cardConnectX - svgLeft; const endY = cardConnectY - svgTop;
+
+            // Simple S-Curve Calculation
+            const midX = (startX + endX) / 2;
+            const cp1OffsetX = (midX - startX) * 0.7; const cp2OffsetX = (endX - midX) * 0.7;
+            const cp1X = startX + cp1OffsetX; const cp1Y = startY;
+            const cp2X = endX - cp2OffsetX; const cp2Y = endY;
+            const pathData = `M ${startX} ${startY} C ${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
+
+            path.setAttribute('d', pathData);
         });
-        const finalHeight = maxHeight + BASE_ITEM_OFFSET * 1.5; // Add bottom padding
-        timelineContainer.style.height = `${finalHeight}px`;
-        calculatedTimelineHeight = finalHeight;
-         // console.log(`Final container height set to: ${finalHeight}px`);
     }
+
+    // --- Helper: Update Container Height After Adjustments ---
+    function updateContainerHeight() { /* ... (Same as before) ... */ }
 
     // --- Helper: Progress Bar Setup ---
     function setupProgressBar() { /* ... (Same as before) ... */ }
 
     // --- Scroll Handler: Update Progress Bar ---
-    function updateProgressBarOnScroll() { /* ... (Same as before - uses calculatedTimelineHeight) ... */ }
+    function updateProgressBarOnScroll() { /* ... (Same as before) ... */ }
 
     // --- Throttled Scroll Listener ---
     let isThrottled = false;
