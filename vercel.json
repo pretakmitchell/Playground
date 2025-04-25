@@ -1,0 +1,14 @@
+
+{
+    "rewrites": [
+      {
+        "source": "/ComSci-Projects/A6-Final/",
+        "destination": "/ComSci-Projects/A6-Final/index.html"
+      },
+      {
+        "source": "/ComSci-Projects/A6-Final/:match*",
+        "destination": "/ComSci-Projects/A6-Final/:match*"
+      }
+     
+    ]
+  }
