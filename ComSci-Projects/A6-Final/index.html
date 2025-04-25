@@ -3,30 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Link to your chosen fonts if using Google Fonts or similar -->
+    <!-- Link to your chosen fonts - These are now handled by @font-face in CSS -->
     <title>Mitchell Pretak - Portfolio Timeline</title>
-    <link rel="stylesheet" href="style.css"> <!-- Ensure this path is correct -->
+    <!-- Make sure the path to your CSS file is correct -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Link to favicon if you have one at the root -->
+    <!-- <link rel="icon" href="../../favicon.ico" sizes="any"> -->
 </head>
 <body>
-    <!-- Add id="main-title" -->
+    <!-- Add id="main-title" as targeted by CSS -->
     <h1 id="main-title">Mitchell Pretak - Portfolio Timeline</h1>
 
     <div id="timeline-container">
         <!-- Project entries will be loaded here by JavaScript -->
+        <!-- Initial loading message -->
         <p>Loading projects...</p>
     </div>
 
-    <!-- Progress Bar HTML is now added by script.js if it doesn't exist -->
-    <!-- Or you can place it here manually: -->
-    <!--
-    <footer id="progress-bar">
-       <div id="progress-bar-text">Scroll Progress</div>
-       <div class="progress-bar-track">
-          <div id="progress-bar-indicator" style="width: 0%;"></div>
-       </div>
-    </footer>
-    -->
+    <!-- The progress bar HTML is now added by the script.js setupProgressBar function -->
+    <!-- You can leave this out of the HTML -->
 
-    <script src="script.js" defer></script> <!-- Ensure this path is correct -->
+
+    <!-- Make sure the path to your JS file is correct -->
+    <script src="script.js" defer></script>
 </body>
 </html>
