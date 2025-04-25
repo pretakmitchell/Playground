@@ -4,36 +4,42 @@
 /* --- Font Loading --- */
 /* CRITICAL: Adjust these paths relative to *this* CSS file's location.
    This assumes 'fonts' folder is at the root of the 'Playground' repo. */
+/* --- Font Loading --- */
+/* CRITICAL: Adjust paths relative to *this* CSS file's location.
+   Using TTF format as specified. */
 @font-face {
     font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-Regular.woff2') format('woff2'), url('../../fonts/Montserrat-Regular.woff') format('woff');
+    src: url('../../fonts/Montserrat-Regular.ttf') format('truetype');
     font-weight: 400; font-style: normal; font-display: swap;
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-Medium.woff2') format('woff2'), url('../../fonts/Montserrat-Medium.woff') format('woff');
+    src: url('../../fonts/Montserrat-Medium.ttf') format('truetype');
     font-weight: 500; font-style: normal; font-display: swap;
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-SemiBold.woff2') format('woff2'), url('../../fonts/Montserrat-SemiBold.woff') format('woff');
+    src: url('../../fonts/Montserrat-SemiBold.ttf') format('truetype');
     font-weight: 600; font-style: normal; font-display: swap;
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-Bold.woff2') format('woff2'), url('../../fonts/Montserrat-Bold.woff') format('woff');
+    src: url('../../fonts/Montserrat-Bold.ttf') format('truetype');
     font-weight: 700; font-style: normal; font-display: swap;
 }
 @font-face {
     font-family: 'Roboto Mono';
-    src: url('../../fonts/RobotoMono-Regular.woff2') format('woff2'), url('../../fonts/RobotoMono-Regular.woff') format('woff');
+    src: url('../../fonts/RobotoMono-Regular.ttf') format('truetype');
     font-weight: 400; font-style: normal; font-display: swap;
 }
 @font-face {
     font-family: 'Roboto Mono';
-    src: url('../../fonts/RobotoMono-Medium.woff2') format('woff2'), url('../../fonts/RobotoMono-Medium.woff') format('woff');
+    src: url('../../fonts/RobotoMono-Medium.ttf') format('truetype');
     font-weight: 500; font-style: normal; font-display: swap;
 }
+
+/* --- REST OF YOUR CSS REMAINS THE SAME AS THE PREVIOUS VERSION --- */
+/* ... (:root variables, base styles, gradients, timeline, card, progress bar, responsive, etc.) ... */
 
 /* --- CSS Variables (Derived from Reference) --- */
 :root {
