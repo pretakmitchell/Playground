@@ -1,135 +1,239 @@
-/* =====================================================================
-   Mitchell Pretak – Portfolio Timeline  (A6‑Final)
-   script.js  ·  v3  (fix: use original data endpoint)
-   ---------------------------------------------------------------------
-   • Tries the SAME endpoint you were using before:  /api/a6-timeline-projects
-   • If that fails, falls back to  package.json  (old class demo)  → and
-     finally to local  projects.json  so dev still works offline.
-   • Nothing else changed – spacing + smooth progress‑bar remain.
-   =====================================================================*/
+// File Location: Playground/ComSci-Projects/A6-Final/script.js
 
-/* ------------------- 1.  DATA ENDPOINTS IN PREFERRED ORDER --------- */
-const DATA_URLS = [
-  '/api/a6-timeline-projects',   // ← your original Vercel / Netlify / GH‑API route
-  'package.json',                // class demo JSON you mentioned
-  'projects.json'                // local dev fallback
-];
+document.addEventListener('DOMContentLoaded', () => {
+    const timelineContainer = document.getElementById('timeline-container');
+    const initialLoadingMessage = document.querySelector('.loading-message');
 
-const PIXELS_PER_DAY = 4;
-const START_ON_LEFT  = true;
+    // --- CONFIGURATION FOR DYNAMIC SPACING ---
+    const MIN_SPACING_PX = 60;
+    const MAX_SPACING_PX = 450;
+    const MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const PX_PER_DAY = 1.5; // Pixels margin per day difference
 
-/* ------------------- 2.  GLOBAL HANDLES ---------------------------- */
-const container = document.getElementById('timeline-container');
-let   projects  = [];
+    // --- Variables for Progress Bar & Timeline Bounds ---
+    let progressBarElement = null;
+    let progressBarTextElement = null;
+    let progressBarIndicatorElement = null;
+    let progressBarPercentageElement = null;
+    let timelineItems = [];
+    let sortedProjects = []; // Keep the original data + date objects
+    let timelineStartDate = null; // Earliest valid date object
+    let timelineEndDate = null;   // Latest valid date object
+    let timelineDurationMs = 0;   // Total time span in milliseconds
 
-init();
-window.addEventListener('scroll', updateProgressBar, { passive:true });
+    async function fetchProjects() {
+        try {
+            const response = await fetch('/api/a6-timeline-projects'); // Verify this API path
 
-async function init(){
-  try {
-    await loadProjects();
-    buildTimeline();
-    buildProgressBar();
-    updateProgressBar();
-  } catch(err){ handleError(err); }
-}
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}. Response: ${errorText}`);
+            }
 
-/* -------------- 3. FETCH JSON FROM FIRST WORKING ENDPOINT --------- */
-async function loadProjects(){
-  let lastErr;
-  for (const url of DATA_URLS){
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(res.statusText);
-      projects = await res.json();
-      // ensure chronological order (oldest → newest)
-      projects.sort((a,b)=> new Date(a.date) - new Date(b.date));
-      console.info('Loaded project data from', url);
-      return; // success ➜ exit
-    } catch(err){ lastErr = err; }
-  }
-  throw new Error('Could not load any project data ('+ lastErr +')');
-}
+            const projects = await response.json();
 
-/* ------------------- 4.  BUILD TIMELINE ---------------------------- */
-function buildTimeline(){
-  const frag = document.createDocumentFragment();
-  container.innerHTML = '';
+            if (initialLoadingMessage) initialLoadingMessage.remove();
+            timelineContainer.innerHTML = '';
 
-  let lastDate = null;
-  projects.forEach((p, idx)=>{
-    const gapPx = lastDate ? Math.round(((new Date(p.date) - lastDate)/8.64e7) * PIXELS_PER_DAY) : 0;
-    lastDate = new Date(p.date);
+            if (!projects || !Array.isArray(projects) || projects.length === 0) {
+                timelineContainer.innerHTML = '<p class="error-message">No projects found or data is invalid.</p>';
+                return;
+            }
 
-    const side = ((idx + (START_ON_LEFT?0:1)) % 2 === 0) ? 'timeline-item-left' : 'timeline-item-right';
-    const item = document.createElement('article');
-    item.className = `timeline-item ${side}`;
-    item.style.marginTop = gapPx+'px';
+            // --- Process, Validate, and Sort Projects ---
+            const projectsWithDates = projects
+                .map(p => ({ ...p, dateObj: p.date ? new Date(p.date) : null }))
+                .map(p => ({ ...p, isValidDate: p.dateObj && !isNaN(p.dateObj.getTime()) }));
 
-    const marker = document.createElement('span');
-    marker.className = 'timeline-marker';
-    item.appendChild(marker);
+            // Separate valid and invalid dates for sorting and bounds calculation
+            const validDateProjects = projectsWithDates.filter(p => p.isValidDate);
+            const invalidDateProjects = projectsWithDates.filter(p => !p.isValidDate);
 
-    item.appendChild(makeCard(p));
-    frag.appendChild(item);
-  });
-  container.appendChild(frag);
-}
+            if (validDateProjects.length === 0) {
+                 timelineContainer.innerHTML = '<p class="error-message">No projects with valid dates found.</p>';
+                 // Optionally render invalid date projects here if desired
+                 return;
+            }
 
-function makeCard(p){
-  const card = document.createElement('div');
-  card.className = 'timeline-card';
+            // Sort only the projects with valid dates
+            validDateProjects.sort((a, b) => a.dateObj.getTime() - b.dateObj.getTime()); // Oldest first
 
-  const wrap = document.createElement('div');
-  wrap.className = 'card-image-container';
-  const img = document.createElement('img');
-  img.loading='lazy';
-  img.alt = p.title;
-  img.src = `assets/images/${(p.images && p.images[0]) || 'placeholder.jpg'}`;
-  wrap.appendChild(img); card.appendChild(wrap);
+            // Determine timeline start/end dates and duration from VALID dates
+            timelineStartDate = validDateProjects[0].dateObj;
+            timelineEndDate = validDateProjects[validDateProjects.length - 1].dateObj;
+            timelineDurationMs = timelineEndDate.getTime() - timelineStartDate.getTime();
 
-  const c = document.createElement('div'); c.className='card-content';
-  const hdr = document.createElement('div'); hdr.className='card-header';
-  hdr.innerHTML = `<span class="card-date">${formatDate(p.date)}</span><span class="card-category">${(p.tags && p.tags[0])||''}</span>`;
-  c.appendChild(hdr);
-  const h3 = document.createElement('h3'); h3.className='card-title'; h3.textContent=p.title; c.appendChild(h3);
-  const d = document.createElement('p'); d.className='card-description'; d.textContent=p.description; c.appendChild(d);
-  if (p.link){ const l=document.createElement('div'); l.className='card-link'; l.innerHTML=`<a href="${p.link}" target="_blank" rel="noreferrer">View Project ↗︎</a>`; c.appendChild(l); }
-  card.appendChild(c);
-  return card;
-}
-function formatDate(s){return new Date(s).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'})}
+            // Combine sorted valid projects with invalid date projects at the end
+            sortedProjects = [...validDateProjects, ...invalidDateProjects];
 
-/* ------------------- 5.  PROGRESS BAR ----------------------------- */
-let progressBar, indicator, percent, label, firstDate, lastDate, totalDays;
+            // --- Render Timeline Items ---
+            timelineItems = [];
+            let previousProjectDate = null; // Track last VALID date for spacing
 
-function buildProgressBar(){
-  firstDate = new Date(projects[0].date);
-  lastDate  = new Date(projects.at(-1).date);
-  totalDays = (lastDate-firstDate)/8.64e7;
+            sortedProjects.forEach((project, index) => {
+                const timelineItem = document.createElement('div');
+                timelineItem.classList.add('timeline-item', index % 2 === 0 ? 'timeline-item-left' : 'timeline-item-right');
+                 // Store ISO date string if valid, otherwise maybe an index or ID
+                 timelineItem.dataset.identifier = project.isValidDate ? project.dateObj.toISOString() : `item-${index}`;
 
-  progressBar = document.createElement('footer'); progressBar.id='progress-bar';
-  label = document.createElement('div'); label.id='progress-bar-text'; progressBar.appendChild(label);
-  const vis = document.createElement('div'); vis.className='progress-bar-visual';
-  const track = document.createElement('div'); track.className='progress-bar-track';
-  indicator = document.createElement('div'); indicator.id='progress-bar-indicator'; track.appendChild(indicator); vis.appendChild(track);
-  percent = document.createElement('span'); percent.id='progress-bar-percentage'; vis.appendChild(percent);
-  progressBar.appendChild(vis);
-  document.body.appendChild(progressBar);
-}
 
-function updateProgressBar(){
-  if(!progressBar) return;
-  const mid = window.scrollY + window.innerHeight*0.5;
-  const rel = Math.min(Math.max((mid - container.offsetTop)/container.scrollHeight,0),1);
-  indicator.style.width = (rel*100).toFixed(2)+'%';
-  percent.textContent   = Math.round(rel*100)+'%';
-  const cur = new Date(firstDate.getTime() + totalDays*rel*8.64e7);
-  label.textContent = cur.toLocaleDateString(undefined,{month:'long',year:'numeric'});
-}
+                // --- Calculate and Apply Dynamic Spacing ---
+                let calculatedMargin = 0;
+                const currentProjectDate = project.dateObj; // Already validated or null
+                const isValidDate = project.isValidDate;
 
-/* ------------------- 6.  ERROR DISPLAY ---------------------------- */
-function handleError(e){
-  console.error(e);
-  container.innerHTML = `<p class="error-message">${e.message}</p>`;
-}
+                if (index > 0) {
+                    if (previousProjectDate && isValidDate) {
+                        const timeDifferenceMs = currentProjectDate.getTime() - previousProjectDate.getTime();
+                        const timeDifferenceDays = Math.max(0, timeDifferenceMs / MS_PER_DAY);
+
+                        calculatedMargin = MIN_SPACING_PX + (timeDifferenceDays * PX_PER_DAY);
+                        calculatedMargin = Math.max(MIN_SPACING_PX, Math.min(MAX_SPACING_PX, calculatedMargin));
+                    } else {
+                        calculatedMargin = MIN_SPACING_PX;
+                    }
+                    timelineItem.style.marginTop = `${calculatedMargin}px`;
+                }
+
+                // Update previous date ONLY if the current date was valid
+                if (isValidDate) {
+                   previousProjectDate = currentProjectDate;
+                }
+                // --- End Spacing Calculation ---
+
+                // --- Format Date for Display ---
+                let displayDate = 'Date N/A';
+                if (isValidDate) {
+                    displayDate = currentProjectDate.toLocaleDateString('en-US', {
+                        month: 'short', day: 'numeric', year: 'numeric'
+                    }).toUpperCase();
+                }
+
+                // --- Get Image and Category ---
+                const firstImage = project.images && project.images.length > 0 ? project.images[0] : null;
+                const imagePath = firstImage ? `assets/${firstImage}` : '';
+                const category = project.tags && project.tags.length > 0 ? project.tags[0].toUpperCase() : '';
+
+                // --- Generate HTML ---
+                 timelineItem.innerHTML = `
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-card">
+                        ${imagePath ? `
+                        <div class="card-image-container">
+                           <img src="${imagePath}" alt="${project.title || 'Project image'}" loading="lazy">
+                        </div>` : '<div class="card-image-container"></div>'}
+                        <div class="card-content">
+                            <div class="card-header">
+                                <span class="card-date">${displayDate}</span>
+                                ${category ? `<span class="separator">-</span><span class="card-category">${category}</span>` : ''}
+                            </div>
+                            <h3 class="card-title">${project.title || 'Untitled Project'}</h3>
+                            <p class="card-description">${project.description || 'No description available.'}</p>
+                            ${project.link ? `<p class="card-link"><a href="${project.link}" target="_blank" rel="noopener noreferrer">View Project</a></p>` : ''}
+                        </div>
+                    </div>
+                `;
+                timelineContainer.appendChild(timelineItem);
+                timelineItems.push(timelineItem);
+            });
+            // --- END Rendering ---
+
+            setupProgressBar();
+            addScrollListener();
+            requestAnimationFrame(updateProgressBarOnScroll); // Initial update
+
+        } catch (error) {
+            console.error('Error fetching or displaying projects:', error);
+            if (initialLoadingMessage) initialLoadingMessage.remove();
+            timelineContainer.innerHTML = `<p class="error-message">Error loading projects: ${error.message}. Please check the console.</p>`;
+        }
+    }
+
+    // --- Progress Bar Setup ---
+    function setupProgressBar() {
+        progressBarElement = document.getElementById('progress-bar');
+        if (!progressBarElement) {
+           progressBarElement = document.createElement('footer');
+           progressBarElement.id = 'progress-bar';
+           progressBarElement.innerHTML = `
+              <span id="progress-bar-text">Loading Date...</span>
+              <div class="progress-bar-visual">
+                 <div class="progress-bar-track">
+                    <div id="progress-bar-indicator"></div>
+                 </div>
+                 <span id="progress-bar-percentage">0%</span>
+                 <span id="progress-bar-icon"></span>
+              </div>
+           `;
+           document.body.appendChild(progressBarElement);
+        }
+        progressBarTextElement = document.getElementById('progress-bar-text');
+        progressBarIndicatorElement = document.getElementById('progress-bar-indicator');
+        progressBarPercentageElement = document.getElementById('progress-bar-percentage');
+    }
+
+    // --- Scroll Handler ---
+    function updateProgressBarOnScroll() {
+        // Ensure elements and required date info exist
+        if (!progressBarIndicatorElement || !progressBarTextElement || !progressBarPercentageElement || !timelineStartDate || !timelineEndDate) {
+            // console.log("Progress bar elements or timeline date range not ready.");
+            if(progressBarTextElement) progressBarTextElement.textContent = "Timeline"; // Default text if no date range
+            return;
+        }
+
+        // --- Calculate Scroll Percentage (same as before) ---
+        const timelineTop = timelineContainer.offsetTop;
+        const timelineHeight = timelineContainer.offsetHeight;
+        const viewportHeight = window.innerHeight;
+        const scrollY = window.scrollY;
+        const scrollStartOffset = timelineTop;
+        const totalScrollableDistance = Math.max(1, timelineHeight - viewportHeight); // Avoid division by zero
+        let currentScrollPositionInTimeline = Math.max(0, scrollY - scrollStartOffset);
+        currentScrollPositionInTimeline = Math.min(currentScrollPositionInTimeline, totalScrollableDistance);
+        let scrollPercentage = (currentScrollPositionInTimeline / totalScrollableDistance) * 100;
+        scrollPercentage = Math.max(0, Math.min(100, scrollPercentage));
+
+        // Update Percentage Indicator
+        progressBarIndicatorElement.style.width = `${scrollPercentage}%`;
+        progressBarPercentageElement.textContent = `${Math.round(scrollPercentage)}%`;
+
+        // --- Calculate and Update Interpolated Date Text ---
+        let estimatedDate = timelineStartDate; // Default to start date
+
+        if (timelineDurationMs > 0) { // Avoid calculation if duration is zero
+            const timeOffset = timelineDurationMs * (scrollPercentage / 100);
+            const estimatedTimeMs = timelineStartDate.getTime() + timeOffset;
+            estimatedDate = new Date(estimatedTimeMs);
+        }
+
+        // Format the estimated date
+        if (!isNaN(estimatedDate.getTime())) {
+            const monthYear = estimatedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            progressBarTextElement.textContent = monthYear;
+        } else {
+            // Fallback if date calculation fails for some reason
+            progressBarTextElement.textContent = "Timeline Date";
+        }
+    }
+
+    // --- Throttled Scroll Listener (same as before) ---
+    let isThrottled = false;
+    function throttledScrollHandler() {
+        if (!isThrottled) {
+            isThrottled = true;
+            requestAnimationFrame(() => {
+                updateProgressBarOnScroll();
+                isThrottled = false;
+            });
+        }
+    }
+    function addScrollListener() {
+       window.removeEventListener('scroll', throttledScrollHandler);
+       window.removeEventListener('resize', throttledScrollHandler);
+       window.addEventListener('scroll', throttledScrollHandler);
+       window.addEventListener('resize', throttledScrollHandler);
+    }
+
+    // --- Initial Load ---
+    fetchProjects();
+});
