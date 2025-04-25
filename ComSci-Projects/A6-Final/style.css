@@ -1,294 +1,184 @@
-/* File Location: Playground/ComSci-Projects/A6-Final/style.css */
+/* ====================================================================
+   Mitchell Pretak – Portfolio Timeline  (A6‑Final)
+   NEW GLOBAL THEME  ▸  “Soft‑Glass Gradient”
+   --------------------------------------------------------------------
+   Key Goals
+   • Soft, frosted‑glass look with gentle grey gradients
+   • Clear separation between axis / marker / card
+   • Re‑usable variables + mobile‑first
+   ====================================================================*/
 
-/* --- Font Loading --- */
-/* Ensure these paths are correct relative to this CSS file */
+/* ---------------------------- 1. FONT LOADING ---------------------- */
 @font-face {
-    font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-Regular.woff2') format('woff2'), url('../../fonts/Montserrat-Regular.woff') format('woff');
-    font-weight: 400; font-style: normal; font-display: swap;
+  font-family: 'Montserrat';
+  src: url('../../fonts/Montserrat-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 @font-face {
-    font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-Medium.woff2') format('woff2'), url('../../fonts/Montserrat-Medium.woff') format('woff');
-    font-weight: 500; font-style: normal; font-display: swap;
+  font-family: 'Montserrat';
+  src: url('../../fonts/Montserrat-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 @font-face {
-    font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-SemiBold.woff2') format('woff2'), url('../../fonts/Montserrat-SemiBold.woff') format('woff');
-    font-weight: 600; font-style: normal; font-display: swap;
-}
-@font-face {
-    font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-Bold.woff2') format('woff2'), url('../../fonts/Montserrat-Bold.woff') format('woff');
-    font-weight: 700; font-style: normal; font-display: swap;
-}
-@font-face {
-    font-family: 'Roboto Mono';
-    src: url('../../fonts/RobotoMono-Regular.woff2') format('woff2'), url('../../fonts/RobotoMono-Regular.woff') format('woff');
-    font-weight: 400; font-style: normal; font-display: swap;
-}
-@font-face {
-    font-family: 'Roboto Mono';
-    src: url('../../fonts/RobotoMono-Medium.woff2') format('woff2'), url('../../fonts/RobotoMono-Medium.woff') format('woff');
-    font-weight: 500; font-style: normal; font-display: swap;
+  font-family: 'Roboto Mono';
+  src: url('../../fonts/RobotoMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* --- CSS Variables --- */
+/* --------------------------- 2. CSS VARIABLES ---------------------- */
 :root {
-    --font-heading: 'Montserrat', sans-serif;
-    --font-body: 'Montserrat', sans-serif;
-    --font-mono: 'Roboto Mono', monospace;
+  /* typefaces */
+  --font-sans: 'Montserrat', sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
 
-    --color-text-dark: #343a40; /* Darker grey */
-    --color-text-medium: #495057;
-    --color-text-light: #6c757d;
-    --color-bg: #f7f9fc; /* Lighter, slightly cool background */
-    --color-card-bg: #ffffff;
-    --color-timeline-axis: #ced4da; /* Light grey axis */
-    --color-marker: #495057;
-    --color-marker-border: var(--color-bg); /* Match background */
-    --color-horizontal-line: var(--color-timeline-axis);
-    --color-accent-blue: #007bff;
-    --color-shadow: rgba(108, 117, 125, 0.12); /* Lighter shadow */
+  /* greyscale palette */
+  --grey‑900: #272727;
+  --grey‑700: #444;      /* headings / titles */
+  --grey‑500: #666;      /* body text */
+  --grey‑300: #a0a0a0;   /* subtle lines */
+  --grey‑100: #e7e7e7;   /* card top gradient */
+  --grey‑050: #f5f6f8;   /* page background */
 
-    --gradient-top-start: rgba(220, 230, 255, 0.4);
-    --gradient-bottom-start: rgba(200, 220, 255, 0.4);
+  /* accent */
+  --accent: #4d96ff;     /* blue tint for links / hover */
 
-    --timeline-width: 2px;
-    --marker-size: 12px;
-    --card-padding: 20px;
-    --card-radius: 16px;
-    --card-gap: 60px; /* Increased gap for horizontal line */
-    --horizontal-line-length: calc(var(--card-gap) - var(--marker-size) / 2 - var(--timeline-width) / 2 - 1px); /* Adjust as needed */
+  /* sizes */
+  --axis‑w: 2px;
+  --marker‑size: 12px;
+  --card‑rad: 18px;
+  --card‑pad: 24px;
+  --gap: 72px;           /* horizontal gap card ↔ axis */
 }
 
-/* --- Base Styles --- */
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; } /* Optional smooth scroll */
-body {
-    font-family: var(--font-body);
-    color: var(--color-text-dark);
-    background-color: var(--color-bg);
-    margin: 0;
-    padding-top: 120px; /* More space */
-    padding-bottom: 180px; /* More space */
-    position: relative;
-    overflow-x: hidden;
-    line-height: 1.6;
+/* --------------------------- 3. RESET ------------------------------ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--grey‑050);font-family:var(--font-sans);color:var(--grey‑500);line-height:1.55;overflow-x:hidden;padding:120px 0 180px}
+
+/* --------------------------- 4. HEADER ----------------------------- */
+h1#main-title{
+  font-family:var(--font-sans);
+  font-weight:700;
+  font-size:clamp(2rem,5vw,3.2rem);
+  letter-spacing:1px;
+  color:var(--grey‑700);
+  text-align:center;
+  margin:0 0 96px;
+  position:relative;
 }
 
-/* --- Top/Bottom Gradients & Blur --- */
-body::before, body::after {
-    content: '';
-    position: fixed; left: 0; right: 0;
-    height: 250px; /* Increased height */
-    z-index: 5;
-    pointer-events: none;
-    backdrop-filter: blur(10px); /* Increased blur */
-    -webkit-backdrop-filter: blur(10px);
+/* soft top / bottom fade */
+body::before,body::after{
+  content:"";position:fixed;left:0;right:0;height:260px;pointer-events:none;z-index:10;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
 }
-body::before {
-    top: 0;
-    background: linear-gradient(to bottom, var(--gradient-top-start), transparent 85%);
+body::before{top:0;background:linear-gradient(to bottom,rgba(255,255,255,.7),transparent 80%)}
+body::after{bottom:0;background:linear-gradient(to top,rgba(255,255,255,.7),transparent 80%)}
+
+/* ---------------------- 5. TIMELINE WRAPPER & AXIS ----------------- */
+#timeline-container{
+  position:relative;max-width:1100px;margin:0 auto;padding:0 28px;min-height:100vh;
 }
-body::after {
-    bottom: 0;
-    background: linear-gradient(to top, var(--gradient-bottom-start), transparent 85%);
+#timeline-container::before{
+  content:"";position:absolute;left:50%;top:-400vh;bottom:-400vh;
+  width:var(--axis‑w);background:var(--grey‑300);transform:translateX(-50%);
 }
 
-/* --- Typography --- */
-h1#main-title {
-    text-align: center; font-family: var(--font-heading);
-    font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 80px; font-weight: 700;
-    color: var(--color-text-dark); position: relative; z-index: 6;
+/* ----------------------- 6. TIMELINE ITEMS ------------------------- */
+.timeline-item{
+  position:relative;padding-bottom:40px;display:flex;width:calc(50% - var(--gap)/2);
 }
-.loading-message, .error-message {
-    text-align: center; font-size: 1.1rem; color: var(--color-text-light);
-    padding: 60px 20px; font-weight: 500;
-}
-.error-message { color: #e74c3c; } /* Error red */
+.timeline-item-left{left:0;justify-content:flex-end}
+.timeline-item-right{left:calc(50% + var(--gap)/2)}
 
+/* marker (dot) */
+.timeline-marker{
+  position:absolute;top:45px;width:var(--marker‑size);height:var(--marker‑size);
+  background:var(--grey‑700);border-radius:50%;z-index:2;
+  box-shadow:0 0 0 4px var(--grey‑050);
+}
+/* connector line */
+.timeline-marker::before{
+  content:"";position:absolute;top:50%;transform:translateY(-50%);
+  height:var(--axis‑w);width:calc(var(--gap) - var(--marker‑size)/2 - var(--axis‑w)/2 - 2px);
+  background:var(--grey‑300);
+}
+.timeline-item-left .timeline-marker{right:calc(-1*var(--gap) + var(--marker‑size)/2 + var(--axis‑w)/2)}
+.timeline-item-left .timeline-marker::before{right:100%}
+.timeline-item-right .timeline-marker{left:calc(-1*var(--gap) + var(--marker‑size)/2 + var(--axis‑w)/2)}
+.timeline-item-right .timeline-marker::before{left:100%}
 
-/* --- Timeline Container & Axis --- */
-#timeline-container {
-    position: relative; max-width: 1050px; margin: 0 auto;
-    padding: 0 25px; z-index: 6; min-height: 100vh;
+/* ----------------------- 7. CARD STYLING --------------------------- */
+.timeline-card{
+  display:flex;gap:22px;align-items:flex-start;width:100%;padding:var(--card‑pad);
+  background:radial-gradient(ellipse at top left,rgba(255,255,255,.95) 0%,rgba(230,230,230,.9) 70%,rgba(220,220,220,.9) 100%);
+  border-radius:var(--card‑rad);
+  box-shadow:
+    inset 0 0 4px 0 rgba(255,255,255,.8),          /* soft inner highlight */
+    inset 0 -3px 6px rgba(0,0,0,.05),              /* subtle lower dip */
+    0 14px 34px rgba(0,0,0,.18);                  /* outer drop */
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
 }
-#timeline-container::before { /* The central vertical axis */
-    content: ''; position: absolute; top: -500px; bottom: -500px;
-    left: 50%; transform: translateX(-50%); width: var(--timeline-width);
-    background-color: var(--color-timeline-axis); z-index: 0;
-}
+.timeline-item-right .timeline-card{flex-direction:row-reverse}
 
-/* --- Timeline Item --- */
-.timeline-item {
-    position: relative; width: calc(50% - var(--card-gap) / 2); display: flex;
-    margin-top: 0; /* Set by JS */
-    padding-bottom: 1px; /* Prevent margin collapse */
+/* thumbnail */
+.card-image-container{
+  flex-shrink:0;width:150px;height:110px;border-radius:10px;overflow:hidden;background:#d2d2d2;
+  box-shadow:0 2px 6px rgba(0,0,0,.12);
 }
-.timeline-item-left {
-    left: 0; justify-content: flex-end;
-}
-.timeline-item-right {
-    left: calc(50% + var(--card-gap) / 2);
-}
+.card-image-container img{width:100%;height:100%;object-fit:cover;display:block}
 
-/* --- Timeline Marker (Dot) & Horizontal Line --- */
-.timeline-marker {
-    position: absolute; top: 35px; /* Align roughly with card vertical center */
-    width: var(--marker-size); height: var(--marker-size);
-    background-color: var(--color-marker); border: 0; /* Remove border */
-    border-radius: 50%; z-index: 7;
-    box-shadow: 0 0 0 4px var(--color-bg); /* Use background color for cutout */
+/* content */
+.card-content{flex:1;display:flex;flex-direction:column;min-width:0}
+.card-title{
+  font-family:var(--font-sans);font-weight:700;font-size:1.25rem;margin:0 0 6px;color:var(--grey‑700);
 }
-/* Horizontal connecting line */
-.timeline-marker::before {
-    content: ''; position: absolute; top: 50%;
-    transform: translateY(-50%); height: var(--timeline-width);
-    width: var(--horizontal-line-length); background-color: var(--color-horizontal-line);
-    z-index: -1; /* Behind marker dot */
+.card-header{
+  font-family:var(--font-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.7px;
+  color:var(--grey‑300);display:flex;gap:6px;margin-bottom:10px;
 }
-.timeline-item-left .timeline-marker {
-    right: calc(-1 * var(--card-gap) + var(--horizontal-line-length) + var(--marker-size)/2 + var(--timeline-width)/2);
+.card-description{
+  font-size:.9rem;line-height:1.6;color:var(--grey‑500);margin:0;
 }
-.timeline-item-left .timeline-marker::before {
-    right: 100%; /* Line extends left from marker */
-}
-.timeline-item-right .timeline-marker {
-    left: calc(-1 * var(--card-gap) + var(--horizontal-line-length) + var(--marker-size)/2 + var(--timeline-width)/2);
-}
-.timeline-item-right .timeline-marker::before {
-    left: 100%; /* Line extends right from marker */
-}
+.card-link{margin-top:10px;font-size:.8rem}
+.card-link a{color:var(--accent);text-decoration:none;font-weight:600}
+.card-link a:hover{text-decoration:underline}
 
-/* --- Timeline Card Styling (Matches Reference) --- */
-.timeline-card {
-    background: #f0f3f7; /* Light greyish-blue background */
-    border-radius: var(--card-radius);
-    /* Inner shadow + subtle outer shadow */
-    box-shadow: inset 0 0 1px rgba(255, 255, 255, 0.5),
-                inset 0 -2px 5px rgba(0, 0, 0, 0.03),
-                0 10px 30px var(--color-shadow);
-    padding: var(--card-padding); width: 100%; display: flex;
-    gap: 20px; overflow: hidden; border: none; /* No border */
-    position: relative; /* Needed for positioning relative to timeline item */
+/* ----------------------- 8. PROGRESS BAR --------------------------- */
+#progress-bar{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:20;
+  display:flex;align-items:center;gap:14px;min-width:300px;padding:8px 20px 8px 22px;
+  background:rgba(255,255,255,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-radius:50px;border:1px solid rgba(0,0,0,.05);
+  box-shadow:0 6px 18px rgba(0,0,0,.15),inset 0 1px 2px rgba(255,255,255,.6);
 }
-.timeline-item-right .timeline-card { flex-direction: row-reverse; }
+#progress-bar-text{font-family:var(--font-mono);font-size:.75rem;color:var(--grey‑500)}
+.progress-bar-track{flex:1;height:4px;background:rgba(0,0,0,.12);border-radius:2px;overflow:hidden}
+#progress-bar-indicator{height:100%;width:0;background:linear-gradient(90deg,#6c757d,#adb5bd);transition:width .1s linear}
+#progress-bar-percentage{font-family:var(--font-mono);font-size:.8rem;color:var(--grey‑500);min-width:3em;text-align:right}
 
-/* --- Card Image --- */
-.card-image-container {
-    flex-shrink: 0; width: 140px; height: 90px; /* Adjusted size */
-    border-radius: 8px; overflow: hidden; background-color: #e0e0e0;
-    border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle border */
+/* ----------------------- 9. RESPONSIVE ----------------------------- */
+@media(max-width:820px){
+  #timeline-container::before{left:24px;transform:none}
+  .timeline-item{width:100%;left:0!important;padding-left:calc(24px+var(--gap)/2)}
+  .timeline-marker{left:calc(24px - var(--marker‑size)/2 - var(--axis‑w)/2)!important;top:20px}
+  .timeline-card{flex-direction:column}
+  .timeline-item-right .timeline-card{flex-direction:column}
 }
-.card-image-container img { display: block; width: 100%; height: 100%; object-fit: cover; }
-
-/* --- Card Content --- */
-.card-content { flex-grow: 1; display: flex; flex-direction: column; }
-.card-header {
-    display: flex; align-items: center; flex-wrap: wrap; /* Allow wrapping */
-    margin-bottom: 6px; font-size: 0.7rem; color: var(--color-text-light);
-    font-family: var(--font-mono); text-transform: uppercase;
-    letter-spacing: 0.6px; font-weight: 500; line-height: 1.3;
-}
-.card-header .card-date { font-weight: 500; margin-right: 8px; }
-.card-header .card-category { margin-left: 8px; /* Create space after '-' */ }
-.card-header::after { /* Add the '-' separator */
-    content: '-';
-    margin: 0 0 0 8px; /* Space before category */
-    display: inline-block;
-}
-.card-title {
-    font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; /* Bold */
-    margin: 0 0 10px 0; color: var(--color-text-dark); line-height: 1.3;
-}
-.card-description {
-    font-size: 0.88rem; line-height: 1.6; margin: 0;
-    color: var(--color-text-medium); /* Darker grey for description */
-}
-.card-link { margin-top: 12px; font-size: 0.8rem; }
-.card-link a { color: var(--color-accent-blue); text-decoration: none; font-weight: 600; }
-.card-link a:hover { text-decoration: underline; }
-
-
-/* --- Progress Bar (Matches Reference) --- */
-#progress-bar {
-    position: fixed; bottom: 25px; left: 50%;
-    transform: translateX(-50%);
-    min-width: 280px; /* Ensure minimum width */
-    background-color: rgba(225, 230, 240, 0.85); /* Light grey-blue background */
-    border-radius: 50px; /* Pill shape */
-    padding: 6px 15px 6px 20px; /* Adjust padding */
-    box-shadow: 0 5px 15px rgba(100, 110, 130, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3); /* More defined shadow */
-    display: flex; align-items: center; gap: 15px;
-    z-index: 10;
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-}
-#progress-bar-text {
-    font-size: 0.75rem; font-family: var(--font-mono);
-    color: var(--color-text-medium); white-space: nowrap; font-weight: 500;
-    margin-right: 5px; /* Space before percentage circle */
-}
-/* Contains track/indicator + percentage text */
-.progress-bar-visual {
-    flex-grow: 1; /* Take remaining space */
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.progress-bar-track {
-    flex-grow: 1; height: 4px; /* Thinner track */
-    background-color: rgba(0, 0, 0, 0.1); /* Darker track */
-    border-radius: 2px; overflow: hidden;
-}
-#progress-bar-indicator {
-    height: 100%; width: 0%;
-    background: linear-gradient(90deg, #6c757d, #adb5bd); /* Grey gradient */
-    border-radius: 2px;
-    transition: width 0.1s linear; /* Faster, linear update */
-}
-#progress-bar-percentage { /* Style the percentage text */
-    font-size: 0.8rem;
-    font-family: var(--font-mono);
-    font-weight: 500;
-    color: var(--color-text-medium);
-    min-width: 3em; /* Reserve space */
-    text-align: right;
-}
-/* Optional: Add the circle outline icon */
-#progress-bar-icon {
-    width: 14px; height: 14px;
-    border: 1.5px solid var(--color-text-light);
-    border-radius: 50%;
-    display: inline-block;
-    flex-shrink: 0;
-}
-
-/* --- Responsive Adjustments --- */
-@media (max-width: 800px) {
-    #timeline-container { padding: 0 15px; }
-    #timeline-container::before { left: 15px; transform: translateX(0); }
-    .timeline-item { width: 100%; padding-left: calc(15px + var(--card-gap) / 1.5); padding-right: 0; left: 0 !important; }
-    .timeline-item-right, .timeline-item-left { left: 0; padding-left: calc(15px + var(--card-gap) / 1.5); }
-    .timeline-marker { left: calc(15px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important; top: 15px; }
-    .timeline-card { flex-direction: column; gap: 15px; }
-    .timeline-item-right .timeline-card { flex-direction: column; }
-    .card-image-container { width: 100%; height: 180px; }
-}
-@media (max-width: 480px) {
-    body { padding-top: 60px; padding-bottom: 100px; }
-    h1#main-title { margin-bottom: 30px; font-size: clamp(1.5rem, 6vw, 2rem); }
-    #timeline-container { padding: 0 10px; }
-    #timeline-container::before { left: 10px; }
-    .timeline-item-right, .timeline-item-left { padding-left: calc(10px + var(--card-gap) / 2); }
-    .timeline-marker { left: calc(10px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important; }
-    .timeline-card { padding: 15px; }
-    .card-image-container { height: 150px; } /* Smaller image height on mobile */
-    .card-title { font-size: 1rem; margin-bottom: 5px; }
-    .card-description { font-size: 0.85rem; }
-    .card-header { margin-bottom: 5px; font-size: 0.7rem; }
-    #progress-bar { width: calc(100% - 20px); bottom: 10px; padding: 6px 12px; gap: 10px; }
-    #progress-bar-text { font-size: 0.75rem; }
-    .progress-bar-track { height: 5px; }
+@media(max-width:480px){
+  body{padding:80px 0 120px}
+  h1#main-title{margin-bottom:48px;font-size:clamp(1.6rem,7vw,2.2rem)}
+  #timeline-container{padding:0 14px}
+  #timeline-container::before{left:14px}
+  .timeline-item{padding-left:calc(14px+var(--gap)/2)}
+  .card-image-container{width:100%;height:180px}
+  .timeline-card{padding:18px}
+  #progress-bar{width:calc(100% - 28px);bottom:14px;padding:8px 14px}
 }
