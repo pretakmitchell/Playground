@@ -1,706 +1,291 @@
-/* File Location: ComSci-Projects/A6-Final/style.css */
+/* File Location: Playground/ComSci-Projects/A6-Final/style.css */
 
-:root {
-    --timeline-color: #ccc;
-    --timeline-width: 3px;
-    --marker-size: 16px;
-    --marker-color: #333;
-    --card-bg: #ffffff;
-    --card-padding: 20px;
-    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    --card-radius: 12px;
-    --card-gap: 40px; /* Gap between card and timeline axis */
-    --text-color: #333;
-    --text-light: #666;
-    --accent-color: #4a90e2; /* Example accent color */
-    --header-font: 'Arial', sans-serif; /* Replace with your actual font */
-    --body-font: 'Arial', sans-serif;   /* Replace with your actual font */
-    --gradient-top: rgba(135, 206, 250, 0.3); /* Light Sky Blue gradient */
-    --gradient-bottom: rgba(70, 130, 180, 0.3); /* Steel Blue gradient */
+/* --- Font Loading --- */
+/* CRITICAL: Adjust these paths relative to *this* CSS file's location.
+   This assumes 'fonts' folder is at the root of the 'Playground' repo. */
+   @font-face {
+    font-family: 'Montserrat';
+    src: url('../../fonts/Montserrat-Regular.woff2') format('woff2'),
+         url('../../fonts/Montserrat-Regular.woff') format('woff');
+    font-weight: 400; font-style: normal; font-display: swap;
 }
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../../fonts/Montserrat-Medium.woff2') format('woff2'),
+         url('../../fonts/Montserrat-Medium.woff') format('woff');
+    font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../../fonts/Montserrat-SemiBold.woff2') format('woff2'),
+         url('../../fonts/Montserrat-SemiBold.woff') format('woff');
+    font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../../fonts/Montserrat-Bold.woff2') format('woff2'),
+         url('../../fonts/Montserrat-Bold.woff') format('woff');
+    font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url('../../fonts/RobotoMono-Regular.woff2') format('woff2'),
+         url('../../fonts/RobotoMono-Regular.woff') format('woff');
+    font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url('../../fonts/RobotoMono-Medium.woff2') format('woff2'),
+         url('../../fonts/RobotoMono-Medium.woff') format('woff');
+    font-weight: 500; font-style: normal; font-display: swap;
+}
+
+/* --- CSS Variables --- */
+:root {
+    /* Fonts */
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Montserrat', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+
+    /* Colors */
+    --color-text-dark: #212529;
+    --color-text-medium: #495057;
+    --color-text-light: #6c757d;
+    --color-bg: #f8f9fc;
+    --color-card-bg: #ffffff;
+    --color-timeline-axis: #dee2e6;
+    --color-marker: #495057;
+    --color-marker-border: var(--color-card-bg);
+    --color-accent-blue: #0d6efd;
+    --color-shadow: rgba(108, 117, 125, 0.1); /* Softer shadow */
+
+    /* Gradients */
+    --gradient-top-start: rgba(220, 230, 255, 0.45);
+    --gradient-bottom-start: rgba(200, 220, 255, 0.45);
+
+    /* Layout */
+    --timeline-width: 2px;
+    --marker-size: 14px;
+    --card-padding: 24px;
+    --card-radius: 12px;
+    --card-gap: 50px;
+}
+
+/* --- Base Styles --- */
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
-    font-family: var(--body-font);
-    color: var(--text-color);
-    background-color: #f8f9fa; /* Light background */
+    font-family: var(--font-body);
+    color: var(--color-text-dark);
+    background-color: var(--color-bg);
     margin: 0;
-    padding-top: 80px; /* Space for header and top gradient */
-    padding-bottom: 120px; /* Space for progress bar and bottom gradient */
-    position: relative; /* Needed for pseudo-element gradients */
-    overflow-x: hidden; /* Prevent horizontal scroll */
+    padding-top: 100px;
+    padding-bottom: 150px;
+    position: relative;
+    overflow-x: hidden;
+    line-height: 1.6;
 }
 
-/* Top and Bottom Gradients */
-body::before,
-body::after {
+/* --- Top/Bottom Gradients & Blur --- */
+body::before, body::after {
     content: '';
-    position: fixed; /* Fixed position to stay during scroll */
-    left: 0;
-    right: 0;
-    height: 150px; /* Adjust height of gradient */
-    z-index: 1; /* Behind content, above background */
-    pointer-events: none; /* Allow clicks through */
+    position: fixed;
+    left: 0; right: 0;
+    height: 200px;
+    z-index: 5;
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
-
 body::before {
     top: 0;
-    background: linear-gradient(to bottom, var(--gradient-top), transparent);
+    background: linear-gradient(to bottom, var(--gradient-top-start), transparent 90%);
 }
-
 body::after {
     bottom: 0;
-    background: linear-gradient(to top, var(--gradient-bottom), transparent);
+    background: linear-gradient(to top, var(--gradient-bottom-start), transparent 90%);
 }
 
-
-/* Main Title */
-h1#main-title { /* Add id="main-title" to your H1 in index.html */
+/* --- Typography --- */
+h1#main-title {
     text-align: center;
-    font-family: var(--header-font);
-    font-size: 2.5rem;
-    margin-bottom: 50px;
-    font-weight: bold;
-    color: var(--text-color);
-    position: relative; /* Ensure title is above gradients */
-    z-index: 2;
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    margin-bottom: 70px;
+    font-weight: 700;
+    color: var(--color-text-dark);
+    position: relative;
+    z-index: 6;
 }
+.loading-message, .error-message {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--color-text-light);
+    padding: 50px 20px;
+}
+.error-message { color: #dc3545; }
 
-/* Timeline Container & Axis */
+
+/* --- Timeline Container & Axis --- */
 #timeline-container {
     position: relative;
-    max-width: 1000px; /* Adjust max-width as needed */
+    max-width: 1000px;
     margin: 0 auto;
     padding: 0 20px;
-    z-index: 2; /* Position timeline above gradients */
+    z-index: 6;
+    min-height: calc(100vh - 250px);
 }
-
-/* The actual timeline line */
 #timeline-container::before {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: -500px; bottom: -500px; /* Extend line visually */
     left: 50%;
     transform: translateX(-50%);
     width: var(--timeline-width);
-    background-color: var(--timeline-color);
-    z-index: -1; /* Behind timeline items */
+    background-color: var(--color-timeline-axis);
+    z-index: 0;
 }
 
-/* Individual Timeline Item */
+/* --- Timeline Item --- */
 .timeline-item {
     position: relative;
-    margin-bottom: 60px; /* Space between items */
-    width: calc(50% - var(--card-gap)); /* Half width minus gap */
-    display: flex; /* Use flex for easier alignment if needed */
+    /* margin-top applied by JS */
+    width: calc(50% - var(--card-gap) / 2);
+    display: flex;
+    margin-top: 0; /* Default for first item */
 }
-
 .timeline-item-left {
     left: 0;
-    padding-right: var(--card-gap); /* Push card away from center line */
-    justify-content: flex-end; /* Align card content to the right (near center) */
+    padding-right: var(--card-gap);
+    justify-content: flex-end;
 }
-
 .timeline-item-right {
-    left: calc(50% + var(--card-gap)); /* Position to the right of the center line */
-    padding-left: var(--card-gap); /* Push card away from center line */
+    left: calc(50% + var(--card-gap) / 2);
+    padding-left: var(--card-gap);
 }
 
-/* Timeline Marker (Dot) */
+/* --- Timeline Marker (Dot) --- */
 .timeline-marker {
     position: absolute;
-    top: 20px; /* Adjust vertical alignment of dot */
+    top: 25px;
     width: var(--marker-size);
     height: var(--marker-size);
-    background-color: var(--marker-color);
-    border: 2px solid var(--card-bg); /* Match background for "cutout" effect */
+    background-color: var(--color-marker);
+    border: 3px solid var(--color-marker-border);
     border-radius: 50%;
-    z-index: 3; /* Above timeline line */
+    z-index: 7;
+    box-shadow: 0 0 0 3px var(--color-timeline-axis);
 }
+.timeline-item-left .timeline-marker { right: calc(-1 * (var(--marker-size) / 2 + var(--timeline-width) / 2)); }
+.timeline-item-right .timeline-marker { left: calc(-1 * (var(--marker-size) / 2 + var(--timeline-width) / 2)); }
 
-.timeline-item-left .timeline-marker {
-    right: calc(-1 * (var(--marker-size) / 2 + var(--timeline-width) / 2)); /* Position dot on the center line */
-}
-
-.timeline-item-right .timeline-marker {
-    left: calc(-1 * (var(--marker-size) / 2 + var(--timeline-width) / 2)); /* Position dot on the center line */
-}
-
-/* Timeline Card Styling */
+/* --- Timeline Card --- */
 .timeline-card {
-    background: var(--card-bg);
+    background: var(--color-card-bg);
     border-radius: var(--card-radius);
-    box-shadow: var(--card-shadow);
+    box-shadow: 0 6px 18px var(--color-shadow); /* Refined shadow */
     padding: var(--card-padding);
-    width: 100%; /* Take full width of the timeline-item half */
-    display: flex;
-    gap: 15px; /* Space between image and text content */
-    overflow: hidden; /* Ensure content respects border-radius */
-}
-
-.timeline-item-left .timeline-card {
-   /* Styles specific to left cards if needed */
-}
-
-.timeline-item-right .timeline-card {
-    flex-direction: row-reverse; /* Put image on the right */
-}
-
-/* Card Image */
-.card-image-container {
-    flex-shrink: 0; /* Prevent image container from shrinking */
-    width: 120px; /* Adjust image width */
-    height: auto; /* Maintain aspect ratio */
-    /* height: 100px; */ /* Or fixed height */
-    /* object-fit: cover; */ /* Crop image nicely */
-    border-radius: calc(var(--card-radius) / 2); /* Slightly rounded corners for image */
-    overflow: hidden;
-}
-
-.card-image-container img {
-    display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover; /* Scale image nicely */
-}
-
-/* Card Content */
-.card-content {
-    flex-grow: 1; /* Allow text content to take remaining space */
     display: flex;
-    flex-direction: column;
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 0.8rem;
-    color: var(--text-light);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.card-date {
-    font-weight: 600;
-}
-
-.card-category {
-    /* Styling for category if needed */
-}
-
-.card-title {
-    font-family: var(--header-font);
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin: 0 0 8px 0;
-    color: var(--text-color);
-}
-
-.card-description {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin: 0;
-    color: var(--text-light);
-}
-
-
-/* Progress Bar */
-#progress-bar {
-    position: fixed;
-    bottom: 20px; /* Position from bottom */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 300px; /* Adjust width */
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
-    border-radius: 20px;
-    padding: 8px 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 10; /* Ensure it's above other content */
-    backdrop-filter: blur(5px); /* Frosted glass effect */
-}
-
-#progress-bar-text {
-    font-size: 0.8rem;
-    color: var(--text-light);
-    white-space: nowrap;
-}
-
-.progress-bar-track {
-    flex-grow: 1;
-    height: 6px;
-    background-color: #e0e0e0;
-    border-radius: 3px;
+    gap: 20px;
     overflow: hidden;
+    border: 1px solid #e9ecef;
+}
+.timeline-item-right .timeline-card { flex-direction: row-reverse; }
+
+/* --- Card Image --- */
+.card-image-container {
+    flex-shrink: 0;
+    width: 150px; height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f0f0f0;
+}
+.card-image-container img {
+    display: block; width: 100%; height: 100%; object-fit: cover;
 }
 
+/* --- Card Content --- */
+.card-content { flex-grow: 1; display: flex; flex-direction: column; }
+.card-header {
+    display: flex; align-items: center;
+    margin-bottom: 8px; font-size: 0.75rem;
+    color: var(--color-text-light); font-family: var(--font-mono);
+    text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500;
+}
+.card-header .card-date { font-weight: 600; margin-right: 10px; }
+.card-title {
+    font-family: var(--font-heading); font-size: 1.15rem; font-weight: 600; /* Semibold */
+    margin: 0 0 8px 0; color: var(--color-text-medium); line-height: 1.4;
+}
+.card-description {
+    font-size: 0.9rem; line-height: 1.6; margin: 0; color: var(--color-text-light);
+    /* Allow descriptions to grow if needed */
+    /* flex-grow: 1; */
+}
+.card-link { /* Styling for optional link */
+    margin-top: 10px;
+    font-size: 0.85rem;
+}
+.card-link a {
+    color: var(--color-accent-blue);
+    text-decoration: none;
+    font-weight: 500;
+}
+.card-link a:hover { text-decoration: underline; }
+
+
+/* --- Progress Bar --- */
+#progress-bar {
+    position: fixed; bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    width: clamp(250px, 80vw, 350px);
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 25px; padding: 10px 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    display: flex; align-items: center; gap: 15px;
+    z-index: 10;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(200, 200, 200, 0.5);
+}
+#progress-bar-text {
+    font-size: 0.8rem; font-family: var(--font-mono);
+    color: var(--color-text-light); white-space: nowrap; font-weight: 500;
+}
+.progress-bar-track {
+    flex-grow: 1; height: 6px;
+    background-color: #e9ecef; border-radius: 3px; overflow: hidden;
+}
 #progress-bar-indicator {
-    height: 100%;
-    width: 0%; /* Initially 0, updated by JS */
-    background-color: var(--accent-color);
-    border-radius: 3px;
-    transition: width 0.3s ease; /* Smooth transition for width changes */
+    height: 100%; width: 0%;
+    background-color: var(--color-accent-blue); border-radius: 3px;
+    transition: width 0.3s ease;
 }
 
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    /* Stack timeline items vertically on smaller screens */
-    #timeline-container::before {
-        left: var(--marker-size); /* Move line to the left */
-        transform: translateX(0);
-    }
-
-    .timeline-item {
-        width: 100%;
-        padding-left: calc(var(--marker-size) + var(--card-gap)); /* Space items away from the left line */
-        padding-right: 0;
-        left: 0 !important; /* Override left positioning */
-        margin-bottom: 30px;
-    }
-
-     .timeline-item-right,
-     .timeline-item-left {
-        left: 0; /* Reset positioning */
-        padding-left: calc(var(--marker-size) + var(--card-gap) / 2);
-     }
-
-    .timeline-marker {
-        left: calc(var(--marker-size) / 2 + var(--timeline-width) / 2) !important; /* Position marker on the left line */
-        top: 0; /* Align marker with top of card for vertical layout */
-    }
-
-    .timeline-card {
-       flex-direction: column; /* Stack image and text vertically */
-    }
-     .timeline-item-right .timeline-card {
-        flex-direction: column; /* Ensure right items also stack */
-    }
-
-    .card-image-container {
-       width: 100%; /* Full width image */
-       height: 150px; /* Fixed height for stacked image */
-       margin-bottom: 15px;
-    }
-
-    #progress-bar {
-        width: 90%;
-        max-width: 300px;/* File Location: ComSci-Projects/A6-Final/style.css */
-
-        /* --- Font Loading --- */
-        /* Assume 'fonts' folder is located at the root of your repo,
-           two directories up from the location of this CSS file. */
-        @font-face {
-            font-family: 'Montserrat';
-            src: url('../../fonts/Montserrat-Regular.woff2') format('woff2'),
-                 url('../../fonts/Montserrat-Regular.woff') format('woff');
-            font-weight: 400;
-            font-style: normal;
-            font-display: swap; /* Improve perceived performance */
-        }
-        
-        @font-face {
-            font-family: 'Montserrat';
-            src: url('../../fonts/Montserrat-Medium.woff2') format('woff2'),
-                 url('../../fonts/Montserrat-Medium.woff') format('woff');
-            font-weight: 500;
-            font-style: normal;
-            font-display: swap;
-        }
-        
-        @font-face {
-            font-family: 'Montserrat';
-            src: url('../../fonts/Montserrat-SemiBold.woff2') format('woff2'),
-                 url('../../fonts/Montserrat-SemiBold.woff') format('woff');
-            font-weight: 600;
-            font-style: normal;
-            font-display: swap;
-        }
-        
-        @font-face {
-            font-family: 'Montserrat';
-            src: url('../../fonts/Montserrat-Bold.woff2') format('woff2'),
-                 url('../../fonts/Montserrat-Bold.woff') format('woff');
-            font-weight: 700;
-            font-style: normal;
-            font-display: swap;
-        }
-        
-        
-        @font-face {
-            font-family: 'Roboto Mono';
-            src: url('../../fonts/RobotoMono-Regular.woff2') format('woff2'),
-                 url('../../fonts/RobotoMono-Regular.woff') format('woff');
-            font-weight: 400;
-            font-style: normal;
-            font-display: swap;
-        }
-        
-        @font-face {
-            font-family: 'Roboto Mono';
-            src: url('../../fonts/RobotoMono-Medium.woff2') format('woff2'),
-                 url('../../fonts/RobotoMono-Medium.woff') format('woff');
-            font-weight: 500;
-            font-style: normal;
-            font-display: swap;
-        }
-        
-        
-        /* --- CSS Variables --- */
-        :root {
-            /* Fonts */
-            --font-heading: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            --font-body: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            --font-mono: 'Roboto Mono', Menlo, Monaco, Consolas, "Courier New", monospace;
-        
-            /* Colors */
-            --color-text-dark: #212529; /* Darkest text */
-            --color-text-medium: #495057; /* For descriptions, titles */
-            --color-text-light: #6c757d; /* For dates, categories */
-            --color-bg: #f8f9fc; /* Slightly bluish off-white background */
-            --color-card-bg: #ffffff;
-            --color-timeline-axis: #dee2e6; /* Light grey axis */
-            --color-marker: #495057; /* Match medium text */
-            --color-marker-border: var(--color-card-bg); /* White border */
-            --color-accent-blue: #0d6efd; /* A standard blue */
-            --color-shadow: rgba(108, 117, 125, 0.15); /* Grey shadow */
-        
-            /* Gradients (adjust alpha for intensity) */
-            --gradient-top-start: rgba(220, 230, 255, 0.5); /* Soft blue */
-            --gradient-bottom-start: rgba(200, 220, 255, 0.5); /* Slightly different soft blue */
-        
-            /* Layout */
-            --timeline-width: 2px; /* Thinner line */
-            --marker-size: 14px;
-            --card-padding: 24px;
-            --card-radius: 12px; /* Match reference image */
-            --card-gap: 50px; /* Space between card and center line */
-        
-            /* Spacing (Defaults - JS will override margin-top) */
-            /* --base-item-spacing will be handled by JS calculation */
-        }
-        
-        /* --- Base Styles --- */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: var(--font-body);
-            color: var(--color-text-dark);
-            background-color: var(--color-bg);
-            margin: 0;
-            padding-top: 100px; /* Space for header/gradient */
-            padding-bottom: 150px; /* Space for progress/gradient */
-            position: relative; /* Needed for pseudo-element gradients */
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-        
-        /* --- Top/Bottom Gradients & Blur --- */
-        body::before,
-        body::after {
-            content: '';
-            position: fixed;
-            left: 0;
-            right: 0;
-            height: 200px; /* Gradient height */
-            z-index: 5; /* Position above content but below fixed progress bar */
-            pointer-events: none; /* Allow clicks through */
-            backdrop-filter: blur(8px); /* Progressive blur effect */
-            -webkit-backdrop-filter: blur(8px); /* Safari compatibility */
-        }
-        
-        body::before {
-            top: 0;
-            background: linear-gradient(to bottom, var(--gradient-top-start), transparent);
-        }
-        
-        body::after {
-            bottom: 0;
-            background: linear-gradient(to top, var(--gradient-bottom-start), transparent);
-        }
-        
-        
-        /* --- Typography --- */
-        h1#main-title { /* Add id="main-title" to your H1 in index.html */
-            text-align: center;
-            font-family: var(--font-heading);
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            margin-bottom: 70px;
-            font-weight: 700;
-            color: var(--color-text-dark);
-            position: relative;
-            z-index: 6; /* Above gradients */
-        }
-        
-        /* --- Timeline Container & Axis --- */
-        #timeline-container {
-            position: relative;
-            max-width: 1000px; /* Adjust max-width */
-            margin: 0 auto;
-            padding: 0 20px; /* Add horizontal padding */
-            z-index: 6; /* Position timeline above gradients */
-            /* Minimum height to ensure line is visible even with few items */
-            min-height: calc(100vh - 250px); /* Screen height minus header/footer space */
-        }
-        
-        /* The actual timeline line */
-        #timeline-container::before {
-            content: '';
-            position: absolute;
-            /* Extend significantly beyond initial view to create 'infinite' feel */
-            top: -500px; /* Start line well above */
-            bottom: -500px; /* End line well below */
-            left: 50%;
-            transform: translateX(-50%);
-            width: var(--timeline-width);
-            background-color: var(--color-timeline-axis);
-            z-index: 0; /* Behind timeline items */
-        }
-        
-        /* --- Individual Timeline Item --- */
-        .timeline-item {
-            position: relative;
-            /* margin-top handled by JS for spacing */
-            width: calc(50% - var(--card-gap) / 2); /* Half width minus half gap on each side */
-            display: flex;
-            /* Default top margin for the very first item, JS handles subsequent */
-            margin-top: 0;
-        }
-        /* JS will add margin-top to subsequent items based on date difference */
-        
-        
-        .timeline-item-left {
-            left: 0;
-            padding-right: var(--card-gap); /* Space to the left of center line */
-            justify-content: flex-end; /* Align card content to the right (near center) */
-        }
-        
-        .timeline-item-right {
-            left: calc(50% + var(--card-gap) / 2); /* Start card to the right of center line */
-            padding-left: var(--card-gap); /* Space to the right of center line */
-        }
-        
-        /* --- Timeline Marker (Dot) --- */
-        .timeline-marker {
-            position: absolute;
-            top: 25px; /* Adjust vertical alignment of dot */
-            width: var(--marker-size);
-            height: var(--marker-size);
-            background-color: var(--color-marker);
-            border: 3px solid var(--color-marker-border); /* White border */
-            border-radius: 50%;
-            z-index: 7; /* Above timeline line and gradients */
-            box-shadow: 0 0 0 3px var(--color-timeline-axis); /* Outer ring effect */
-        }
-        
-        .timeline-item-left .timeline-marker {
-            /* Position dot exactly on the center line */
-            right: calc(-1 * (var(--marker-size) / 2 + var(--timeline-width) / 2));
-        }
-        
-        .timeline-item-right .timeline-marker {
-            /* Position dot exactly on the center line */
-            left: calc(-1 * (var(--marker-size) / 2 + var(--timeline-width) / 2));
-        }
-        
-        /* --- Timeline Card Styling --- */
-        .timeline-card {
-            background: var(--color-card-bg);
-            border-radius: var(--card-radius);
-            box-shadow: 0 8px 20px var(--color-shadow); /* Softer shadow */
-            padding: var(--card-padding);
-            width: 100%; /* Take full width of the timeline-item half */
-            display: flex;
-            gap: 20px; /* Space between image and text content */
-            overflow: hidden; /* Ensure content respects border-radius */
-            border: 1px solid #e9ecef; /* Subtle border */
-            /* Add a subtle transition on hover if interactive */
-            /* transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; */
-        }
-        
-        /* .timeline-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-        } */
-        
-        
-        .timeline-item-right .timeline-card {
-            flex-direction: row-reverse; /* Put image on the right */
-        }
-        
-        /* --- Card Image --- */
-        .card-image-container {
-            flex-shrink: 0; /* Prevent image container from shrinking */
-            width: 150px; /* Fixed width */
-            height: 100px; /* Fixed height */
-            border-radius: 8px; /* Rounded corners */
-            overflow: hidden;
-            background-color: #f0f0f0; /* Placeholder background if image fails */
-        }
-        
-        .card-image-container img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Scale image nicely */
-        }
-        
-        /* --- Card Content --- */
-        .card-content {
-            flex-grow: 1; /* Allow text content to take remaining space */
-            display: flex;
-            flex-direction: column;
-            /* justify-content: center; */ /* Vertically center content if card height is fixed */
-        }
-        
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-            font-size: 0.75rem; /* Smaller font */
-            color: var(--color-text-light);
-            font-family: var(--font-mono); /* Use mono font for dates/tags */
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500; /* Medium weight for mono */
-        }
-        .card-header .card-date {
-            font-weight: 600; /* Semi-bold for date */
-            margin-right: 10px; /* Space between date and category */
-        }
-        
-        .card-title {
-            font-family: var(--font-heading);
-            font-size: 1.15rem; /* Slightly smaller title */
-            font-weight: 700; /* Bold */
-            margin: 0 0 8px 0;
-            color: var(--color-text-medium); /* Medium grey title */
-            line-height: 1.4;
-        }
-        
-        .card-description {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            margin: 0;
-            color: var(--color-text-light); /* Light grey description */
-        }
-        
-        
-        /* --- Progress Bar --- */
-        #progress-bar {
-            position: fixed;
-            bottom: 20px; /* Position from bottom */
-            left: 50%;
-            transform: translateX(-50%);
-            width: clamp(250px, 80vw, 350px); /* Responsive width */
-            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
-            border-radius: 25px;
-            padding: 10px 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 10; /* Ensure it's above other content */
-            backdrop-filter: blur(8px); /* Frosted glass effect */
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(200, 200, 200, 0.5); /* Subtle border */
-        }
-        
-        #progress-bar-text {
-            font-size: 0.8rem;
-            font-family: var(--font-mono);
-            color: var(--color-text-light);
-            white-space: nowrap;
-            font-weight: 500; /* Medium weight */
-        }
-        
-        .progress-bar-track {
-            flex-grow: 1;
-            height: 6px; /* Adjust thickness */
-            background-color: #e9ecef; /* Light grey track */
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        
-        #progress-bar-indicator {
-            height: 100%;
-            width: 0%; /* Initially 0, updated by JS */
-            background-color: var(--color-accent-blue); /* Blue fill */
-            border-radius: 3px;
-            transition: width 0.3s ease; /* Smooth transition for width changes */
-        }
-        
-        
-        /* --- Responsive Adjustments --- */
-        @media (max-width: 800px) { /* Adjust breakpoint */
-            #timeline-container { padding: 0 15px; }
-            #timeline-container::before {
-                left: 15px; /* Move line to the left edge */
-                transform: translateX(0);
-            }
-        
-            .timeline-item {
-                width: 100%; /* Full width */
-                /* Adjust padding to make space for the line and gap */
-                padding-left: calc(15px + var(--card-gap) / 1.5);
-                padding-right: 0;
-                left: 0 !important; /* Override left positioning */
-            }
-        
-             .timeline-item-right,
-             .timeline-item-left {
-                left: 0; /* Reset positioning */
-                padding-left: calc(15px + var(--card-gap) / 1.5);
-             }
-        
-            .timeline-marker {
-                /* Position marker on the left line */
-                left: calc(15px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important;
-                top: 15px; /* Adjust vertical alignment */
-            }
-        
-            .timeline-card {
-               flex-direction: column; /* Stack image and text vertically */
-               gap: 15px;
-            }
-             .timeline-item-right .timeline-card {
-                flex-direction: column; /* Ensure right items also stack */
-            }
-        
-            .card-image-container {
-               width: 100%; /* Full width image container */
-               height: 150px; /* Fixed height for stacked image */
-            }
-        }
-        
-        @media (max-width: 480px) {
-            body {
-                padding-top: 60px;
-                padding-bottom: 100px;
-            }
-             h1#main-title {
-                margin-bottom: 30px;
-                font-size: clamp(1.5rem, 6vw, 2rem);
-             }
-            #timeline-container { padding: 0 10px; }
-            #timeline-container::before { left: 10px; }
-            .timeline-item-right, .timeline-item-left { padding-left: calc(10px + var(--card-gap) / 2); }
-            .timeline-marker { left: calc(10px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important; }
-            .timeline-card { padding: 15px; }
-            .card-image-container { height: 120px; }
-            .card-title { font-size: 1rem; margin-bottom: 5px; }
-            .card-description { font-size: 0.85rem; }
-            .card-header { margin-bottom: 5px; font-size: 0.7rem; }
-            #progress-bar { width: calc(100% - 20px); bottom: 10px; padding: 6px 12px; gap: 10px; }
-            #progress-bar-text { font-size: 0.75rem; }
-            .progress-bar-track { height: 5px; }
-        }
-        bottom: 10px;
-    }
+/* --- Responsive Adjustments --- */
+@media (max-width: 800px) {
+    #timeline-container { padding: 0 15px; }
+    #timeline-container::before { left: 15px; transform: translateX(0); }
+    .timeline-item { width: 100%; padding-left: calc(15px + var(--card-gap) / 1.5); padding-right: 0; left: 0 !important; }
+    .timeline-item-right, .timeline-item-left { left: 0; padding-left: calc(15px + var(--card-gap) / 1.5); }
+    .timeline-marker { left: calc(15px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important; top: 15px; }
+    .timeline-card { flex-direction: column; gap: 15px; }
+    .timeline-item-right .timeline-card { flex-direction: column; }
+    .card-image-container { width: 100%; height: 180px; }
+}
+@media (max-width: 480px) {
+    body { padding-top: 60px; padding-bottom: 100px; }
+    h1#main-title { margin-bottom: 30px; font-size: clamp(1.5rem, 6vw, 2rem); }
+    #timeline-container { padding: 0 10px; }
+    #timeline-container::before { left: 10px; }
+    .timeline-item-right, .timeline-item-left { padding-left: calc(10px + var(--card-gap) / 2); }
+    .timeline-marker { left: calc(10px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important; }
+    .timeline-card { padding: 15px; }
+    .card-image-container { height: 150px; } /* Smaller image height on mobile */
+    .card-title { font-size: 1rem; margin-bottom: 5px; }
+    .card-description { font-size: 0.85rem; }
+    .card-header { margin-bottom: 5px; font-size: 0.7rem; }
+    #progress-bar { width: calc(100% - 20px); bottom: 10px; padding: 6px 12px; gap: 10px; }
+    #progress-bar-text { font-size: 0.75rem; }
+    .progress-bar-track { height: 5px; }
 }

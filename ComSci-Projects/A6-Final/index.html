@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Link to your chosen fonts - These are now handled by @font-face in CSS -->
+    <!-- Ensure the path to your fonts is correct if preloading, otherwise rely on @font-face -->
+    <!-- <link rel="preload" href="../../fonts/Montserrat-Regular.woff2" as="font" type="font/woff2" crossorigin> -->
+    <!-- <link rel="preload" href="../../fonts/RobotoMono-Regular.woff2" as="font" type="font/woff2" crossorigin> -->
     <title>Mitchell Pretak - Portfolio Timeline</title>
-    <!-- Make sure the path to your CSS file is correct -->
+    <!-- Ensure the path to your CSS file is correct -->
     <link rel="stylesheet" href="style.css">
     <!-- Link to favicon if you have one at the root -->
     <!-- <link rel="icon" href="../../favicon.ico" sizes="any"> -->
@@ -14,17 +16,24 @@
     <!-- Add id="main-title" as targeted by CSS -->
     <h1 id="main-title">Mitchell Pretak - Portfolio Timeline</h1>
 
-    <div id="timeline-container">
+    <main id="timeline-container">
         <!-- Project entries will be loaded here by JavaScript -->
-        <!-- Initial loading message -->
-        <p>Loading projects...</p>
-    </div>
+        <!-- Initial loading message (will be replaced by JS) -->
+        <p class="loading-message">Loading projects...</p>
+    </main>
 
-    <!-- The progress bar HTML is now added by the script.js setupProgressBar function -->
-    <!-- You can leave this out of the HTML -->
+    <!-- The progress bar HTML is added by script.js -->
+    <!-- You can leave this footer structure out of the HTML -->
+    <!--
+    <footer id="progress-bar">
+       <div id="progress-bar-text">Scroll Progress</div>
+       <div class="progress-bar-track">
+          <div id="progress-bar-indicator" style="width: 0%;"></div>
+       </div>
+    </footer>
+    -->
 
-
-    <!-- Make sure the path to your JS file is correct -->
+    <!-- Ensure the path to your JS file is correct -->
     <script src="script.js" defer></script>
 </body>
 </html>
