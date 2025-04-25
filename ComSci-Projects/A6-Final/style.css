@@ -1,112 +1,280 @@
-/* =====================================================================
-   Mitchell Pretak · Portfolio Timeline  (A6-Final)
-   STYLE SHEET · v5  —  Match Reference Precisely
-   =====================================================================
-   Key visual corrections requested:
-   1. Progressive gradient-blur frame (top & bottom) must mask ONLY the
-      timeline axis + cards (not title / HUD).
-   2. Progress HUD switches to a **circular conic-gradient chart**
-      instead of a horizontal bar.
-   3. Cards use opaque soft-grey gradients (no glassmorphism / blur).
-   ---------------------------------------------------------------------
-   NOTE: requires matching JS v4 (provided in chat) that now writes a
-   <div class="progress-circle" style="--p: 48"> element whose CSS
-   variable --p (0-100) drives the conic-gradient fill.
-   =====================================================================*/
+/* File Location: Playground/ComSci-Projects/A6-Final/style.css */
+/* CSS ONLY UPDATE - Aiming for precise visual match to reference */
 
-/*************************
- 0 · RESET & FONT FACES
-*************************/
-@font-face{font-family:'Montserrat';src:url('../../fonts/Montserrat-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Montserrat';src:url('../../fonts/Montserrat-Bold.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
-@font-face{font-family:'Roboto Mono';src:url('../../fonts/RobotoMono-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-img{display:block;max-width:100%}
-a{text-decoration:none;color:inherit}
-
-/*************************
- 1 · DESIGN TOKENS
-*************************/
-:root{
-  --font-sans:'Montserrat',sans-serif;
-  --font-mono:'Roboto Mono',monospace;
-
-  --grey-900:#222;
-  --grey-700:#3d3d3d;
-  --grey-600:#646464;
-  --grey-400:#9b9b9b;
-  --grey-300:#c6c6c6;
-  --grey-200:#e2e2e2;
-  --grey-050:#f6f7f9;
-
-  --accent:#4d96ff;
-
-  --axis-w:2px;
-  --marker:14px;
-  --gap:90px;
-  --card-pad:36px;
-  --card-rad:28px;
-  --card-max:660px;
-  --fade-h:260px;
+/* --- Font Loading --- */
+/* CRITICAL: Adjust these paths relative to *this* CSS file's location.
+   This assumes 'fonts' folder is at the root of the 'Playground' repo. */
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../../fonts/Montserrat-Regular.woff2') format('woff2'), url('../../fonts/Montserrat-Regular.woff') format('woff');
+    font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../../fonts/Montserrat-Medium.woff2') format('woff2'), url('../../fonts/Montserrat-Medium.woff') format('woff');
+    font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../../fonts/Montserrat-SemiBold.woff2') format('woff2'), url('../../fonts/Montserrat-SemiBold.woff') format('woff');
+    font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../../fonts/Montserrat-Bold.woff2') format('woff2'), url('../../fonts/Montserrat-Bold.woff') format('woff');
+    font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url('../../fonts/RobotoMono-Regular.woff2') format('woff2'), url('../../fonts/RobotoMono-Regular.woff') format('woff');
+    font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url('../../fonts/RobotoMono-Medium.woff2') format('woff2'), url('../../fonts/RobotoMono-Medium.woff') format('woff');
+    font-weight: 500; font-style: normal; font-display: swap;
 }
 
-/*************************
- 2 · BASE LAYOUT
-*************************/
-body{font-family:var(--font-sans);background:var(--grey-050);color:var(--grey-600);line-height:1.7;overflow-x:hidden;padding:160px 0 220px}
-h1#main-title{font-size:clamp(2.5rem,6vw,3.8rem);font-weight:700;color:var(--grey-700);text-align:center;margin-bottom:140px;position:relative;z-index:80}
+/* --- CSS Variables (Derived from Reference) --- */
+:root {
+    /* Fonts */
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Montserrat', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
 
-#timeline-container{position:relative;max-width:1340px;margin:auto;padding-inline:48px}
-#timeline-container::before{content:"";position:absolute;top:-400vh;bottom:-400vh;left:50%;transform:translateX(-50%);width:var(--axis-w);background:var(--grey-300);z-index:0}
-/* blur fades (two extra elements) */
-#fade-top,#fade-bottom{content:"";position:absolute;left:0;right:0;height:var(--fade-h);pointer-events:none;z-index:60;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
-#fade-top{top:0;background:linear-gradient(to bottom,rgba(255,255,255,.9) 0%,transparent)}
-#fade-bottom{bottom:0;background:linear-gradient(to top,rgba(255,255,255,.9) 0%,transparent)}
+    /* Colors */
+    --color-text-dark: #383838; /* Dark text for titles */
+    --color-text-medium: #555555; /* Slightly lighter for descriptions */
+    --color-text-light: #999999; /* Light grey for dates/cats */
+    --color-bg: #f5f6f8; /* Very light grey background */
+    --color-card-bg: #eaeef2; /* Card background greyish-blue */
+    --color-timeline-axis: #d1d5db; /* Axis and horizontal line color */
+    --color-marker: #50555c; /* Dark grey marker */
+    --color-marker-border: var(--color-bg); /* Match background for cutout */
+    --color-shadow: rgba(100, 110, 130, 0.15); /* Diffused shadow */
+    --color-progress-bg: rgba(222, 226, 232, 0.88); /* Progress bar background */
+    --color-progress-track: rgba(0, 0, 0, 0.1);
+    --color-progress-indicator: #6c757d; /* Grey indicator */
+    --color-progress-border: rgba(0, 0, 0, 0.07);
+    --color-progress-icon-border: #b0b5bb;
 
-/*************************
- 3 · TIMELINE ITEMS & AXIS
-*************************/
-.timeline-item{position:relative;display:flex;width:calc(50% - var(--gap)/2);padding-bottom:72px}
-.timeline-item-left{left:0;justify-content:flex-end}
-.timeline-item-right{left:calc(50% + var(--gap)/2)}
-.timeline-marker{position:absolute;top:70px;width:var(--marker);height:var(--marker);background:var(--grey-700);border-radius:50%;z-index:5;box-shadow:0 0 0 5px var(--grey-050)}
-.timeline-marker::before{content:"";position:absolute;top:50%;transform:translateY(-50%);height:var(--axis-w);width:calc(var(--gap) - var(--marker)/2 - var(--axis-w)/2 - 2px);background:var(--grey-300)}
-.timeline-item-left  .timeline-marker{right:calc(-1*var(--gap) + var(--marker)/2 + var(--axis-w)/2)}
-.timeline-item-left  .timeline-marker::before{right:100%}
-.timeline-item-right .timeline-marker{left:calc(-1*var(--gap) + var(--marker)/2 + var(--axis-w)/2)}
-.timeline-item-right .timeline-marker::before{left:100%}
+    /* Gradients (Subtle) */
+    --gradient-top-start: rgba(230, 235, 245, 0.4);
+    --gradient-bottom-start: rgba(215, 225, 240, 0.4);
 
-/*************************
- 4 · CARD (opaque gradient)
-*************************/
-.timeline-card{display:flex;gap:32px;align-items:flex-start;width:100%;max-width:var(--card-max);padding:var(--card-pad);border-radius:var(--card-rad);background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.98) 0%,rgba(240,240,240,.96) 60%,rgba(228,228,228,.94) 100%);box-shadow:0 18px 45px rgba(0,0,0,.16);}
-.timeline-item-right .timeline-card{flex-direction:row-reverse}
+    /* Layout */
+    --timeline-width: 2px;
+    --marker-size: 10px; /* Smaller marker dot */
+    --card-padding-y: 20px;
+    --card-padding-x: 24px;
+    --card-radius: 18px; /* More rounded */
+    --card-gap: 55px; /* Horizontal space from center */
+    --card-fixed-height: 140px; /* ** NEW: Fixed height for card content area ** */
+    --horizontal-line-length: calc(var(--card-gap) - var(--marker-size) / 2 - var(--timeline-width) / 2 - 1px);
+}
 
-.card-image-container{flex-shrink:0;width:210px;height:150px;border-radius:16px;overflow:hidden;background:#cfcfcf;box-shadow:0 6px 16px rgba(0,0,0,.14)}
-.card-image-container img{width:100%;height:100%;object-fit:cover}
+/* --- Base Styles --- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: var(--font-body); font-weight: 400;
+    color: var(--color-text-medium); background-color: var(--color-bg);
+    margin: 0; padding-top: 110px; padding-bottom: 160px;
+    position: relative; overflow-x: hidden; line-height: 1.55;
+}
 
-.card-content{flex:1;display:flex;flex-direction:column}
-.card-title{font-size:1.55rem;font-weight:700;color:var(--grey-700);margin-bottom:14px}
-.card-header{font-family:var(--font-mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.8px;color:var(--grey-400);display:flex;gap:10px;margin-bottom:18px}
-.card-description{font-size:1rem;color:var(--grey-600)}
-.card-link{margin-top:18px;font-size:.87rem}
-.card-link a{color:var(--accent);font-weight:600}
-.card-link a:hover{text-decoration:underline}
+/* --- Top/Bottom Gradients & Blur --- */
+body::before, body::after {
+    content: ''; position: fixed; left: 0; right: 0; height: 220px;
+    z-index: 5; pointer-events: none;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+body::before { top: 0; background: linear-gradient(to bottom, var(--gradient-top-start) 10%, transparent 90%); }
+body::after { bottom: 0; background: linear-gradient(to top, var(--gradient-bottom-start) 10%, transparent 90%); }
 
-/*************************
- 5 · HUD – CIRCULAR CHART
-*************************/
-#progress-bar{position:fixed;bottom:34px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:18px;padding:12px 26px;background:rgba(255,255,255,.97);border:1px solid rgba(0,0,0,.04);border-radius:60px;box-shadow:0 8px 24px rgba(0,0,0,.18);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);z-index:100}
-#progress-bar-text{font-family:var(--font-mono);font-size:.83rem;color:var(--grey-600)}
+/* --- Typography --- */
+h1#main-title {
+    text-align: center; font-family: var(--font-heading);
+    font-size: clamp(1.9rem, 4.5vw, 2.7rem); margin-bottom: 75px; font-weight: 700;
+    color: var(--color-text-dark); position: relative; z-index: 6;
+}
+.loading-message, .error-message {
+    text-align: center; font-size: 1rem; color: var(--color-text-light);
+    padding: 50px 20px; font-weight: 500;
+}
+.error-message { color: #d9534f; } /* Softer error red */
 
-/* circular progress */
-.progress-circle{--size:48px;--stroke:6px;width:var(--size);height:var(--size);border-radius:50%;position:relative;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--grey-200)0)}
-.progress-circle::before{content:"";position:absolute;inset:calc(var(--stroke));border-radius:50%;background:#fff}
-.progress-circle span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:.8rem;color:var(--grey-600)}
 
-/*************************
- 6 · MEDIA QUERIES
-*************************/
-@media(max-width:920px){#timeline-container{padding-inline:32px}#timeline-container::before{left:32px;transform:none}.timeline-item{width:100%;left:0!important;padding-left:calc(32px + var(--gap)/2)}.timeline-marker{left:calc(32px - var(--marker)/2 - var(--axis-w)/2)!important;top:56px}.timeline-card{flex-direction:column;padding:32px}.timeline-item-right .timeline-card{flex-direction:column}.card-image-container{width:100%;height:260px}}
-@media(max-width:540px){body{padding:110px 0 160px}h1#main-title{margin-bottom:90px;font-size:clamp(1.9rem,8vw,2.35rem)}#timeline-container{padding-inline:18px}#timeline-container::before{left:18px}.timeline-item{padding-left:calc(18px + var(--gap)/2)}.timeline-marker{left:calc(18px - var(--marker)/2 - var(--axis-w)/2)!important}.timeline-card{padding:26px}.card-image-container{height:210px}}
+/* --- Timeline Container & Axis --- */
+#timeline-container {
+    position: relative; max-width: 1000px; margin: 0 auto;
+    padding: 0 20px; z-index: 6; min-height: 110vh; /* Ensure line visibility */
+}
+#timeline-container::before { /* Vertical axis */
+    content: ''; position: absolute; top: -300px; bottom: -300px; /* Extend */
+    left: 50%; transform: translateX(-50%); width: var(--timeline-width);
+    background-color: var(--color-timeline-axis); z-index: 0;
+}
+
+/* --- Timeline Item (Relative Positioning) --- */
+.timeline-item {
+    position: relative; /* Position relative to flow */
+    width: calc(50% - var(--card-gap) / 2); display: flex;
+    margin-top: 0; /* JS applies spacing via margin-top */
+    padding-bottom: 1px; /* Prevent margin collapse */
+}
+.timeline-item-left { left: 0; justify-content: flex-end; }
+.timeline-item-right { left: calc(50% + var(--card-gap) / 2); }
+
+/* --- Timeline Marker (Dot) & Horizontal Line --- */
+.timeline-marker {
+    position: absolute; top: calc(var(--card-fixed-height) / 2 + var(--card-padding-y)); /* Center vertically relative to card content height */
+    transform: translateY(-50%); /* Precise vertical centering */
+    width: var(--marker-size); height: var(--marker-size);
+    background-color: var(--color-marker); border-radius: 50%; z-index: 7;
+    box-shadow: 0 0 0 4px var(--color-marker-border); /* Cutout effect */
+}
+.timeline-marker::before { /* Horizontal line */
+    content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+    height: var(--timeline-width); width: var(--horizontal-line-length);
+    background-color: var(--color-horizontal-line); z-index: -1;
+}
+.timeline-item-left .timeline-marker { right: calc(-1 * var(--card-gap) + var(--horizontal-line-length) + var(--marker-size)/2 + var(--timeline-width)/2); }
+.timeline-item-left .timeline-marker::before { right: calc(100% + 2px); } /* Extend left */
+.timeline-item-right .timeline-marker { left: calc(-1 * var(--card-gap) + var(--horizontal-line-length) + var(--marker-size)/2 + var(--timeline-width)/2); }
+.timeline-item-right .timeline-marker::before { left: calc(100% + 2px); } /* Extend right */
+
+/* --- Timeline Card Styling (Matches Reference) --- */
+.timeline-card {
+    background: var(--color-card-bg); border-radius: var(--card-radius);
+    box-shadow: 0 12px 28px var(--color-shadow); /* Refined shadow */
+    padding: var(--card-padding-y) var(--card-padding-x);
+    width: 100%; max-width: 420px; /* Control max width */
+    display: flex; gap: 18px; overflow: hidden; border: none;
+    position: relative; /* Context for marker alignment */
+    height: calc(var(--card-fixed-height) + 2 * var(--card-padding-y)); /* Total fixed height including padding */
+}
+.timeline-item-left .timeline-card { margin-left: auto; } /* Align card */
+.timeline-item-right .timeline-card { margin-right: auto; flex-direction: row-reverse; }
+
+/* --- Card Image --- */
+.card-image-container {
+    flex-shrink: 0; width: 120px; /* Slightly smaller */
+    height: var(--card-fixed-height); /* Match content height */
+    border-radius: 10px; /* More rounding */
+    overflow: hidden; background-color: #e9ecef;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+.card-image-container img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* --- Card Content (Fixed Height & Truncation) --- */
+.card-content {
+    flex-grow: 1; display: flex; flex-direction: column;
+    height: var(--card-fixed-height); /* Enforce fixed height */
+    overflow: hidden; /* Hide content that overflows */
+}
+.card-header {
+    display: flex; align-items: center; flex-wrap: wrap;
+    margin-bottom: 6px; font-size: 0.7rem; color: var(--color-text-light);
+    font-family: var(--font-mono); text-transform: uppercase;
+    letter-spacing: 0.7px; font-weight: 500; line-height: 1.2;
+}
+.card-header .card-date { margin-right: 8px; }
+.card-header .separator { margin: 0 8px; } /* Styling for separator */
+.card-title {
+    font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; /* Bold */
+    margin: 0 0 8px 0; color: var(--color-text-dark); line-height: 1.3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; /* Truncate title if too long */
+}
+.card-description {
+    font-size: 0.85rem; line-height: 1.5; margin: 0;
+    color: var(--color-text-medium);
+    flex-grow: 1; /* Allow description to take space */
+    /* ** Multi-line truncation ** */
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Adjust number of lines to show */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card-link { display: none; } /* Hide link if truncation is active */
+
+
+/* --- Progress Bar (Matches Reference) --- */
+#progress-bar {
+    position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+    min-width: 280px; background-color: var(--color-progress-bg);
+    border-radius: 50px; padding: 6px 15px 6px 20px;
+    box-shadow: 0 6px 18px rgba(100, 110, 130, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    display: flex; align-items: center; gap: 15px; z-index: 10;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-progress-border);
+}
+#progress-bar-text {
+    font-size: 0.75rem; font-family: var(--font-mono);
+    color: var(--color-text-medium); white-space: nowrap; font-weight: 500;
+    margin-right: 5px;
+}
+.progress-bar-visual { flex-grow: 1; display: flex; align-items: center; gap: 10px; }
+.progress-bar-track {
+    flex-grow: 1; height: 4px; background-color: var(--color-progress-track);
+    border-radius: 2px; overflow: hidden;
+}
+#progress-bar-indicator {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--color-text-light), var(--color-text-medium)); /* Grey gradient */
+    border-radius: 2px; transition: width 0.1s linear;
+}
+#progress-bar-percentage {
+    font-size: 0.75rem; font-family: var(--font-mono); font-weight: 500;
+    color: var(--color-text-medium); min-width: 2.8em; text-align: right;
+}
+#progress-bar-icon {
+    width: 12px; height: 12px; border: 1.5px solid var(--color-progress-icon-border);
+    border-radius: 50%; display: inline-block; flex-shrink: 0;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 800px) {
+    :root { --card-fixed-height: 150px; /* Adjust fixed height for mobile if needed */ }
+    #timeline-container { padding: 0 15px; }
+    #timeline-container::before { left: 15px; transform: translateX(0); }
+    .timeline-item {
+        position: relative !important; /* Back to relative flow */
+        top: auto !important; left: 0 !important; width: 100%;
+        padding-left: calc(15px + var(--card-gap) / 2); padding-right: 0;
+        margin-top: 0 !important; /* Reset */
+        margin-bottom: var(--min-spacing-mobile, 40px); /* Add margin back */
+    }
+     .timeline-item:first-child { margin-top: 0; } /* No margin on first */
+    .timeline-item-right, .timeline-item-left { left: 0; padding-left: calc(15px + var(--card-gap) / 2); }
+    .timeline-marker {
+        left: calc(15px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important;
+        top: 20px; /* Adjust Y */
+    }
+    .timeline-marker::before { display: none; } /* Hide horizontal line */
+    .timeline-card {
+        flex-direction: column; gap: 15px; max-width: none;
+        height: auto; /* Allow height to be determined by content */
+    }
+    .timeline-item-right .timeline-card { flex-direction: column; }
+    .card-image-container { width: 100%; height: 160px; }
+    .card-content { height: auto; } /* Allow content height */
+    .card-description { -webkit-line-clamp: 4; /* Allow more lines */ }
+}
+@media (max-width: 480px) {
+    body { padding-top: 70px; padding-bottom: 120px; }
+    h1#main-title { margin-bottom: 40px; font-size: clamp(1.6rem, 6vw, 2.1rem); }
+    #timeline-container { padding: 0 10px; }
+    #timeline-container::before { left: 10px; }
+    .timeline-item-right, .timeline-item-left { padding-left: calc(10px + var(--card-gap) / 2.5); }
+    .timeline-marker { left: calc(10px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important; }
+    .timeline-card { padding: 15px; }
+    .card-image-container { height: 130px; }
+    .card-title { font-size: 1rem; }
+    .card-description { font-size: 0.8rem; -webkit-line-clamp: 3; }
+    #progress-bar { width: calc(100% - 20px); bottom: 15px; padding: 6px 12px; gap: 10px; }
+    #progress-bar-text { font-size: 0.7rem; }
+    #progress-bar-percentage { font-size: 0.7rem; }
+    #progress-bar-icon { width: 10px; height: 10px; }
+}
