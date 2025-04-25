@@ -1,0 +1,17 @@
+{
+  "id": "project-04",
+  "title": "Project Title 4",
+  "date": "2019-08-12",
+  "description": "Description for project 4 showcasing design, interactivity, or coding.",
+  "images": [
+    "project-04a.jpg",
+    "project-04b.jpg"
+  ],
+  "details": "Full details about project 4, including process, tools used, and results.",
+  "tags": [
+    "animation",
+    "p5js",
+    "creative-coding"
+  ],
+  "link": "https://www.mitchellpretak.com/works/project-04"
+}

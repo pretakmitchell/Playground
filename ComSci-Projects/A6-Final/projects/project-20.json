@@ -1,0 +1,17 @@
+{
+  "id": "project-20",
+  "title": "Project Title 20",
+  "date": "2021-05-13",
+  "description": "Description for project 20 showcasing design, interactivity, or coding.",
+  "images": [
+    "project-20a.jpg",
+    "project-20b.jpg"
+  ],
+  "details": "Full details about project 20, including process, tools used, and results.",
+  "tags": [
+    "interaction",
+    "arduino",
+    "sound"
+  ],
+  "link": "https://www.mitchellpretak.com/works/project-20"
+}

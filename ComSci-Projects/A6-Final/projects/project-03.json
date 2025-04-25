@@ -1,0 +1,17 @@
+{
+  "id": "project-03",
+  "title": "Project Title 3",
+  "date": "2019-12-24",
+  "description": "Description for project 3 showcasing design, interactivity, or coding.",
+  "images": [
+    "project-03a.jpg",
+    "project-03b.jpg"
+  ],
+  "details": "Full details about project 3, including process, tools used, and results.",
+  "tags": [
+    "web-app",
+    "ui-ux",
+    "javascript"
+  ],
+  "link": "https://www.mitchellpretak.com/works/project-03"
+}

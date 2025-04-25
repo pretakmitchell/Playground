@@ -1,0 +1,17 @@
+{
+  "id": "project-08",
+  "title": "Project Title 8",
+  "date": "2021-08-07",
+  "description": "Description for project 8 showcasing design, interactivity, or coding.",
+  "images": [
+    "project-08a.jpg",
+    "project-08b.jpg"
+  ],
+  "details": "Full details about project 8, including process, tools used, and results.",
+  "tags": [
+    "animation",
+    "p5js",
+    "creative-coding"
+  ],
+  "link": "https://www.mitchellpretak.com/works/project-08"
+}

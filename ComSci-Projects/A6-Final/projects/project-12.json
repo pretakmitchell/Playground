@@ -1,0 +1,17 @@
+{
+  "id": "project-12",
+  "title": "Project Title 12",
+  "date": "2019-09-07",
+  "description": "Description for project 12 showcasing design, interactivity, or coding.",
+  "images": [
+    "project-12a.jpg",
+    "project-12b.jpg"
+  ],
+  "details": "Full details about project 12, including process, tools used, and results.",
+  "tags": [
+    "graphic-design",
+    "branding",
+    "packaging"
+  ],
+  "link": "https://www.mitchellpretak.com/works/project-12"
+}

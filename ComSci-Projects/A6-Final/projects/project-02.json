@@ -1,0 +1,17 @@
+{
+  "id": "project-02",
+  "title": "Project Title 2",
+  "date": "2022-09-06",
+  "description": "Description for project 2 showcasing design, interactivity, or coding.",
+  "images": [
+    "project-02a.jpg",
+    "project-02b.jpg"
+  ],
+  "details": "Full details about project 2, including process, tools used, and results.",
+  "tags": [
+    "illustration",
+    "poster",
+    "typography"
+  ],
+  "link": "https://www.mitchellpretak.com/works/project-02"
+}

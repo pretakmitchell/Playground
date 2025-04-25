@@ -1,0 +1,17 @@
+{
+  "id": "project-07",
+  "title": "Project Title 7",
+  "date": "2022-09-29",
+  "description": "Description for project 7 showcasing design, interactivity, or coding.",
+  "images": [
+    "project-07a.jpg",
+    "project-07b.jpg"
+  ],
+  "details": "Full details about project 7, including process, tools used, and results.",
+  "tags": [
+    "accessibility",
+    "healthcare",
+    "research"
+  ],
+  "link": "https://www.mitchellpretak.com/works/project-07"
+}

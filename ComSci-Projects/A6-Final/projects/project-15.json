@@ -1,0 +1,17 @@
+{
+  "id": "project-15",
+  "title": "Project Title 15",
+  "date": "2021-12-07",
+  "description": "Description for project 15 showcasing design, interactivity, or coding.",
+  "images": [
+    "project-15a.jpg",
+    "project-15b.jpg"
+  ],
+  "details": "Full details about project 15, including process, tools used, and results.",
+  "tags": [
+    "animation",
+    "p5js",
+    "creative-coding"
+  ],
+  "link": "https://www.mitchellpretak.com/works/project-15"
+}

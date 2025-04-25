@@ -1,0 +1,17 @@
+{
+  "id": "project-09",
+  "title": "Project Title 9",
+  "date": "2019-03-20",
+  "description": "Description for project 9 showcasing design, interactivity, or coding.",
+  "images": [
+    "project-09a.jpg",
+    "project-09b.jpg"
+  ],
+  "details": "Full details about project 9, including process, tools used, and results.",
+  "tags": [
+    "illustration",
+    "poster",
+    "typography"
+  ],
+  "link": "https://www.mitchellpretak.com/works/project-09"
+}

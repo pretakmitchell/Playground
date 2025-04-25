@@ -1,0 +1,17 @@
+{
+  "id": "project-01",
+  "title": "Project Title 1",
+  "date": "2020-02-07",
+  "description": "Description for project 1 showcasing design, interactivity, or coding.",
+  "images": [
+    "project-01a.jpg",
+    "project-01b.jpg"
+  ],
+  "details": "Full details about project 1, including process, tools used, and results.",
+  "tags": [
+    "3d-modeling",
+    "cad",
+    "fabrication"
+  ],
+  "link": "https://www.mitchellpretak.com/works/project-01"
+}

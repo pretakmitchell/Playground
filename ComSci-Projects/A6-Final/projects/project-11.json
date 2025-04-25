@@ -1,0 +1,17 @@
+{
+  "id": "project-11",
+  "title": "Project Title 11",
+  "date": "2023-08-21",
+  "description": "Description for project 11 showcasing design, interactivity, or coding.",
+  "images": [
+    "project-11a.jpg",
+    "project-11b.jpg"
+  ],
+  "details": "Full details about project 11, including process, tools used, and results.",
+  "tags": [
+    "web-app",
+    "ui-ux",
+    "javascript"
+  ],
+  "link": "https://www.mitchellpretak.com/works/project-11"
+}
