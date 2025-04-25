@@ -1,8 +1,8 @@
 /* File Location: Playground/ComSci-Projects/A6-Final/style.css */
-/* COMPLETE Combined CSS: Detailed Styling + Progressive Blur */
+/* COMPLETE Combined CSS - V3 */
 
 /* --- Font Loading --- */
-/* CRITICAL: Ensure these paths are correct relative to this CSS file */
+/* CRITICAL: Verify these paths relative to this CSS file */
 @font-face {
     font-family: 'Montserrat';
     src: url('../../fonts/Montserrat-Regular.ttf') format('truetype');
@@ -34,157 +34,103 @@
     font-weight: 500; font-style: normal; font-display: swap;
 }
 
-/* --- CSS Variables (Comprehensive) --- */
+/* --- CSS Variables --- */
 :root {
-    /* Fonts */
-    --font-heading: 'Montserrat', sans-serif;
-    --font-body: 'Montserrat', sans-serif;
-    --font-mono: 'Roboto Mono', monospace;
-
-    /* Colors */
-    --color-text-dark: #383838;
-    --color-text-medium: #555555;
-    --color-text-light: #999999;
-    --color-bg: #f5f6f8;
-    --color-card-bg: #eaeef2;
-    --color-timeline-axis: #d1d5db;
-    --color-marker: #50555c;
-    --color-marker-border: var(--color-bg);
-    --color-horizontal-line: var(--color-timeline-axis);
-    --color-accent-blue: #007bff;
-    --color-shadow: rgba(100, 110, 130, 0.12); /* Adjusted shadow */
-    --color-progress-bg: rgba(222, 226, 232, 0.88);
-    --color-progress-track: rgba(0, 0, 0, 0.1);
-    --color-progress-indicator: #6c757d;
-    --color-progress-border: rgba(0, 0, 0, 0.07);
-    --color-progress-icon-border: #b0b5bb;
-
-    /* Gradients (Subtle Color Only) */
-    --gradient-top-start: rgba(230, 235, 245, 0.4);
-    --gradient-bottom-start: rgba(215, 225, 240, 0.4);
-
-    /* Blur Effect */
-    --blur-height: 180px;
-    --blur-intensity: 10px; /* Slightly less intense blur */
-    --blur-fade-distance: 75%;
-
-    /* Layout */
-    --timeline-width: 2px;
-    --marker-size: 10px;
-    --card-padding-y: 20px;
-    --card-padding-x: 24px;
-    --card-radius: 18px;
-    --card-gap: 55px;
-    --card-fixed-height: 140px;
-    --horizontal-line-length: calc(var(--card-gap) - var(--marker-size) / 2 - var(--timeline-width) / 2 - 3px); /* Adjusted line length */
+    --font-heading: 'Montserrat', sans-serif; --font-body: 'Montserrat', sans-serif; --font-mono: 'Roboto Mono', monospace;
+    --color-text-dark: #383838; --color-text-medium: #555555; --color-text-light: #999999;
+    --color-bg: #f5f6f8; --color-card-bg: #eaeef2; --color-timeline-axis: #d1d5db;
+    --color-marker: #50555c; --color-marker-border: var(--color-bg); --color-horizontal-line: var(--color-timeline-axis);
+    --color-accent-blue: #007bff; --color-shadow: rgba(100, 110, 130, 0.12);
+    --color-progress-bg: rgba(222, 226, 232, 0.92); --color-progress-track: rgba(0, 0, 0, 0.1);
+    --color-progress-indicator: #6c757d; --color-progress-border: rgba(0, 0, 0, 0.07);
+    --color-progress-icon-border: #b0b5bb; --gradient-top-start: rgba(230, 235, 245, 0.45);
+    --gradient-bottom-start: rgba(215, 225, 240, 0.45); --blur-height: 180px;
+    --blur-intensity: 10px; --blur-fade-distance: 75%; --timeline-width: 2px;
+    --marker-size: 10px; --card-padding-y: 20px; --card-padding-x: 24px;
+    --card-radius: 18px; --card-gap: 55px; --card-fixed-height: 140px; /* Fixed card content height */
+    --horizontal-line-length: calc(var(--card-gap) - var(--marker-size) / 2 - var(--timeline-width) / 2 - 3px);
 }
 
 /* --- Base Styles --- */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-    font-family: var(--font-body); font-weight: 400;
-    color: var(--color-text-medium); background-color: var(--color-bg);
-    margin: 0; padding-top: 110px; padding-bottom: 160px;
+    font-family: var(--font-body); font-weight: 400; color: var(--color-text-medium);
+    background-color: var(--color-bg); margin: 0; padding-top: 110px; padding-bottom: 160px;
     position: relative; overflow-x: hidden; line-height: 1.55;
 }
 
-/* --- Color Gradients ONLY (Behind Blur) --- */
+/* --- Color Gradients (Behind Blur) --- */
 body::before, body::after {
-    content: ''; position: fixed; left: 0; right: 0;
-    height: calc(var(--blur-height) * 1.25); /* Extend gradient slightly beyond blur area */
-    z-index: 2; /* Below blur, title, progress */
-    pointer-events: none;
+    content: ''; position: fixed; left: 0; right: 0; height: calc(var(--blur-height) * 1.25);
+    z-index: 2; pointer-events: none;
 }
 body::before { top: 0; background: linear-gradient(to bottom, var(--gradient-top-start), transparent 90%); }
 body::after { bottom: 0; background: linear-gradient(to top, var(--gradient-bottom-start), transparent 90%); }
 
-/* --- Blur Overlays (Above Gradients/Timeline) --- */
+/* --- Blur Overlays --- */
 .blur-overlay {
-    position: fixed; left: 0; right: 0; height: var(--blur-height);
-    z-index: 3; pointer-events: none;
-    backdrop-filter: blur(var(--blur-intensity));
-    -webkit-backdrop-filter: blur(var(--blur-intensity));
+    position: fixed; left: 0; right: 0; height: var(--blur-height); z-index: 3; pointer-events: none;
+    backdrop-filter: blur(var(--blur-intensity)); -webkit-backdrop-filter: blur(var(--blur-intensity));
     -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
 }
 .blur-overlay.top {
-    top: 0;
-    -webkit-mask-image: linear-gradient(to bottom, black 0%, black var(--blur-fade-distance), transparent 100%);
-            mask-image: linear-gradient(to bottom, black 0%, black var(--blur-fade-distance), transparent 100%);
+    top: 0; -webkit-mask-image: linear-gradient(to bottom, black 0%, black var(--blur-fade-distance), transparent 100%); mask-image: linear-gradient(to bottom, black 0%, black var(--blur-fade-distance), transparent 100%);
 }
 .blur-overlay.bottom {
-    bottom: 0;
-    -webkit-mask-image: linear-gradient(to top, black 0%, black var(--blur-fade-distance), transparent 100%);
-            mask-image: linear-gradient(to top, black 0%, black var(--blur-fade-distance), transparent 100%);
+    bottom: 0; -webkit-mask-image: linear-gradient(to top, black 0%, black var(--blur-fade-distance), transparent 100%); mask-image: linear-gradient(to top, black 0%, black var(--blur-fade-distance), transparent 100%);
 }
 
 /* --- Typography --- */
 h1#main-title {
-    text-align: center; font-family: var(--font-heading);
-    font-size: clamp(1.9rem, 4.5vw, 2.7rem); margin-bottom: 75px; font-weight: 700;
-    color: var(--color-text-dark); position: relative; z-index: 4; /* Above top blur */
+    text-align: center; font-family: var(--font-heading); font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+    margin-bottom: 75px; font-weight: 700; color: var(--color-text-dark); position: relative; z-index: 4;
 }
 .loading-message, .error-message {
-    text-align: center; font-size: 1rem; color: var(--color-text-light);
-    padding: 50px 20px; font-weight: 500; position: relative; z-index: 1;
+    text-align: center; font-size: 1rem; color: var(--color-text-light); padding: 50px 20px;
+    font-weight: 500; position: relative; z-index: 1;
 }
 .error-message { color: #d9534f; }
 
 /* --- Timeline Container & Axis --- */
 #timeline-container {
-    position: relative; max-width: 1000px; margin: 0 auto;
-    padding: 0 20px; z-index: 1; /* Base layer for scrolling content */
-    min-height: 110vh; /* Ensure space */
-    /* Height is set by JS */
+    position: relative; max-width: 1000px; margin: 0 auto; padding: 0 20px;
+    z-index: 1; min-height: 110vh; /* Height set by JS */
 }
 #timeline-container::before { /* Vertical axis */
-    content: ''; position: absolute; top: -300px; bottom: -300px;
+    content: ''; position: absolute; top: 0; bottom: 0; /* Span calculated height */
     left: 50%; transform: translateX(-50%); width: var(--timeline-width);
-    background-color: var(--color-timeline-axis); z-index: 0; /* Behind everything */
+    background-color: var(--color-timeline-axis); z-index: 0;
 }
 
-/* --- Timeline Item (Positioned by JS) --- */
+/* --- Timeline Item (Absolute Positioning on Desktop) --- */
 .timeline-item {
-    position: absolute; /* JS sets top */
-    width: 50%; display: flex;
-    margin-top: 0 !important; /* Reset margin */
-    padding-bottom: 1px; z-index: 1; /* Above axis */
+    position: absolute; /* JS sets top */ width: 50%; display: flex;
+    padding: 0; margin: 0 !important; z-index: 1;
 }
-.timeline-item-left {
-    left: 0; justify-content: flex-end;
-    padding-right: calc(var(--card-gap) / 2); /* Space before center */
-}
-.timeline-item-right {
-    left: 50%; justify-content: flex-start;
-    padding-left: calc(var(--card-gap) / 2); /* Space after center */
-}
+.timeline-item-left { left: 0; justify-content: flex-end; padding-right: calc(var(--card-gap) / 2); }
+.timeline-item-right { left: 50%; justify-content: flex-start; padding-left: calc(var(--card-gap) / 2); }
 
 /* --- Timeline Marker & Connector Line --- */
 .timeline-marker {
     position: absolute; top: calc(var(--card-fixed-height) / 2 + var(--card-padding-y));
     transform: translateY(-50%); width: var(--marker-size); height: var(--marker-size);
-    background-color: var(--color-marker); border-radius: 50%; z-index: 3; /* Above connector line */
+    background-color: var(--color-marker); border-radius: 50%; z-index: 3;
     box-shadow: 0 0 0 4px var(--color-marker-border);
 }
-.connector-line {
-    position: absolute; overflow: visible; z-index: 2; pointer-events: none;
-    /* Top, Left, Width, Height set by JS */
-}
-.connector-line path {
-    stroke: var(--color-horizontal-line); stroke-width: var(--timeline-width); fill: none;
-}
+.connector-line { position: absolute; overflow: visible; z-index: 2; pointer-events: none; }
+.connector-line path { stroke: var(--color-horizontal-line); stroke-width: var(--timeline-width); fill: none; }
 /* Position marker relative to item edge */
 .timeline-item-left .timeline-marker { right: calc(var(--card-gap) / 2 - var(--marker-size) / 2 - var(--timeline-width) / 2); }
 .timeline-item-right .timeline-marker { left: calc(var(--card-gap) / 2 - var(--marker-size) / 2 - var(--timeline-width) / 2); }
 
-
-/* --- Timeline Card Styling (Matches Reference) --- */
+/* --- Timeline Card --- */
 .timeline-card {
     background: var(--color-card-bg); border-radius: var(--card-radius);
-    box-shadow: 0 10px 25px var(--color-shadow); /* Refined shadow */
+    box-shadow: 0 10px 25px var(--color-shadow);
     padding: var(--card-padding-y) var(--card-padding-x);
     width: 100%; max-width: 420px; display: flex; gap: 18px;
-    overflow: hidden; border: none; position: relative; z-index: 2; /* Above connector */
+    overflow: hidden; border: none; position: relative; z-index: 2;
     height: calc(var(--card-fixed-height) + 2 * var(--card-padding-y));
 }
 .timeline-item-left .timeline-card { margin-left: auto; }
@@ -198,7 +144,7 @@ h1#main-title {
 }
 .card-image-container img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-/* --- Card Content (Fixed Height & Truncation) --- */
+/* --- Card Content --- */
 .card-content {
     flex-grow: 1; display: flex; flex-direction: column;
     height: var(--card-fixed-height); overflow: hidden;
@@ -221,8 +167,7 @@ h1#main-title {
     display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
     overflow: hidden; text-overflow: ellipsis;
 }
-.card-link { display: none; } /* Hide link due to truncation */
-
+.card-link { display: none; }
 
 /* --- Progress Bar --- */
 #progress-bar {
@@ -230,7 +175,7 @@ h1#main-title {
     min-width: 280px; background-color: var(--color-progress-bg);
     border-radius: 50px; padding: 6px 15px 6px 20px;
     box-shadow: 0 6px 18px rgba(100, 110, 130, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-    display: flex; align-items: center; gap: 15px; z-index: 10; /* Highest */
+    display: flex; align-items: center; gap: 15px; z-index: 10;
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--color-progress-border);
 }
@@ -245,7 +190,7 @@ h1#main-title {
 }
 #progress-bar-indicator {
     height: 100%; width: 0%;
-    background: linear-gradient(90deg, #88909a, #6c757d); /* Updated gradient */
+    background: linear-gradient(90deg, #88909a, #6c757d);
     border-radius: 2px; transition: width 0.1s linear;
 }
 #progress-bar-percentage {
@@ -259,37 +204,35 @@ h1#main-title {
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 800px) {
-    :root { --card-fixed-height: auto; /* Revert to auto height */ }
+    :root { --card-fixed-height: auto; }
     body { padding-top: 80px; padding-bottom: 120px; }
-    #timeline-container { padding: 0 15px; min-height: auto; height: auto !important; /* Let content dictate height */ }
-    #timeline-container::before { left: 15px; transform: translateX(0); top: 0; bottom: 0; /* Span actual content */ }
+    #timeline-container { height: auto !important; min-height: auto; padding: 0 15px; }
+    #timeline-container::before { left: 15px; transform: translateX(0); top: 0; bottom: 0; }
     .timeline-item {
         position: relative !important; top: auto !important; left: 0 !important;
         width: 100%; padding-left: calc(15px + var(--card-gap) / 2); padding-right: 0;
-        margin-top: var(--min-spacing-mobile, 40px) !important; /* Apply standard margin */
+        margin-top: 40px !important; /* Standard mobile margin */
+        margin-bottom: 0 !important;
     }
     .timeline-item:first-child { margin-top: 0 !important; }
     .timeline-item-right, .timeline-item-left { left: 0; padding-left: calc(15px + var(--card-gap) / 2); }
     .timeline-marker {
         left: calc(15px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important;
-        top: 20px; transform: translateY(0); /* No vertical centering needed */
+        top: 20px; transform: translateY(0);
     }
-    .connector-line { display: none; } /* Hide SVG connectors */
+    .connector-line { display: none; }
     .timeline-card {
-        flex-direction: column; gap: 15px; max-width: none;
-        height: auto; /* Auto height */
-        padding: 18px;
+        flex-direction: column; gap: 15px; max-width: none; height: auto; padding: 18px;
     }
     .timeline-item-right .timeline-card { flex-direction: column; }
     .card-image-container { width: 100%; height: 160px; }
     .card-content { height: auto; }
     .card-description { -webkit-line-clamp: 4; }
-    .blur-overlay { height: 120px; --blur-intensity: 6px; } /* Reduce blur effect */
+    .blur-overlay { height: 120px; --blur-intensity: 6px; }
 }
 @media (max-width: 480px) {
-    /* ... (Keep previous 480px adjustments or refine further) ... */
-    h1#main-title { margin-bottom: 40px; }
-    .timeline-item { margin-bottom: 30px; }
-     #progress-bar { width: calc(100% - 20px); bottom: 15px; padding: 6px 12px; gap: 8px; }
-     #progress-bar-text, #progress-bar-percentage { font-size: 0.7rem; }
+    h1#main-title { margin-bottom: 40px; font-size: clamp(1.6rem, 6vw, 2.1rem); }
+    .timeline-item { margin-top: 30px !important; }
+    #progress-bar { width: calc(100% - 20px); bottom: 15px; padding: 6px 12px; gap: 8px; }
+    #progress-bar-text, #progress-bar-percentage { font-size: 0.7rem; }
 }
