@@ -4,30 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mitchell Pretak - Portfolio Timeline</title>
+    <!-- Ensure path to CSS is correct -->
     <link rel="stylesheet" href="style.css">
-    <!-- Optional: Favicon Link -->
+    <!-- Optional: Favicon -->
     <!-- <link rel="icon" href="../../favicon.ico" sizes="any"> -->
 </head>
 <body>
-    <!-- Blur Overlay for Top -->
+    <!-- Blur Overlays for visual effect -->
     <div class="blur-overlay top"></div>
-
-    <h1 id="main-title">Mitchell Pretak - Portfolio Timeline</h1>
-
-    <main id="timeline-container">
-        <!-- Initial loading message -->
-        <p class="loading-message">Loading projects...</p>
-        <!-- Timeline items are injected here -->
-    </main>
-
-    <!-- Blur Overlay for Bottom -->
     <div class="blur-overlay bottom"></div>
 
-    <!-- Progress Bar HTML (added by script.js) -->
-    <!-- Structure example:
-    <footer id="progress-bar"> ... </footer>
-    -->
+    <!-- Main Title -->
+    <h1 id="main-title">Mitchell Pretak - Portfolio Timeline</h1>
 
+    <!-- Container where JS injects timeline items -->
+    <main id="timeline-container">
+        <p class="loading-message">Loading projects...</p>
+    </main>
+
+    <!-- Progress Bar HTML Structure (JS will create this if not present) -->
+    <!-- You can include it here or let JS create it -->
+    <!--
+    <footer id="progress-bar">
+       <span id="progress-bar-text">Loading Date...</span>
+       <div class="progress-bar-visual">
+          <div class="progress-bar-track">
+             <div id="progress-bar-indicator"></div>
+          </div>
+          <span id="progress-bar-percentage">0%</span>
+          <span id="progress-bar-icon"></span>
+       </div>
+    </footer>
+     -->
+
+    <!-- Ensure path to JS is correct -->
     <script src="script.js" defer></script>
 </body>
 </html>
