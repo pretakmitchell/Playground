@@ -1,5 +1,20 @@
 // File Location: Playground/ComSci-Projects/A6-Final/script.js
 
+
+// --- Configuration ---
+const PX_PER_DAY = 1.5;
+const BASE_ITEM_OFFSET = 50;
+const CARD_HEIGHT_ESTIMATE = 180;
+const MIN_SPACING_PX = 60;
+const MAX_SPACING_PX = 450;
+// ***** ADD THIS LINE BACK: *****
+const CARD_VERTICAL_GAP = 25; // Min vertical pixels between overlapping cards after adjustment
+// ********************************
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elements ---
     const timelineContainer = document.getElementById('timeline-container');
