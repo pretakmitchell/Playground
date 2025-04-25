@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch project data from our API endpoint
     async function fetchProjects() {
         try {
-            const response = await fetch('/api/projects'); // Call our serverless function
+            const response = await fetch('/api/a6-timeline-projects'); // Call our serverless function
 
             if (!response.ok) {
                 // Throw an error if the response status is not 2xx
