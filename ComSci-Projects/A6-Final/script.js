@@ -1,239 +1,125 @@
-// File Location: Playground/ComSci-Projects/A6-Final/script.js
+/* File Location: Playground/ComSci-Projects/A6-Final/style.css */
 
-document.addEventListener('DOMContentLoaded', () => {
-    const timelineContainer = document.getElementById('timeline-container');
-    const initialLoadingMessage = document.querySelector('.loading-message');
+/* ... (Keep all previous @font-face and :root variables) ... */
 
-    // --- CONFIGURATION FOR DYNAMIC SPACING ---
-    const MIN_SPACING_PX = 60;
-    const MAX_SPACING_PX = 450;
-    const MS_PER_DAY = 1000 * 60 * 60 * 24;
-    const PX_PER_DAY = 1.5; // Pixels margin per day difference
+/* --- Base Styles --- */
+/* ... (Keep body styles etc.) ... */
 
-    // --- Variables for Progress Bar & Timeline Bounds ---
-    let progressBarElement = null;
-    let progressBarTextElement = null;
-    let progressBarIndicatorElement = null;
-    let progressBarPercentageElement = null;
-    let timelineItems = [];
-    let sortedProjects = []; // Keep the original data + date objects
-    let timelineStartDate = null; // Earliest valid date object
-    let timelineEndDate = null;   // Latest valid date object
-    let timelineDurationMs = 0;   // Total time span in milliseconds
-
-    async function fetchProjects() {
-        try {
-            const response = await fetch('/api/a6-timeline-projects'); // Verify this API path
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}. Response: ${errorText}`);
-            }
-
-            const projects = await response.json();
-
-            if (initialLoadingMessage) initialLoadingMessage.remove();
-            timelineContainer.innerHTML = '';
-
-            if (!projects || !Array.isArray(projects) || projects.length === 0) {
-                timelineContainer.innerHTML = '<p class="error-message">No projects found or data is invalid.</p>';
-                return;
-            }
-
-            // --- Process, Validate, and Sort Projects ---
-            const projectsWithDates = projects
-                .map(p => ({ ...p, dateObj: p.date ? new Date(p.date) : null }))
-                .map(p => ({ ...p, isValidDate: p.dateObj && !isNaN(p.dateObj.getTime()) }));
-
-            // Separate valid and invalid dates for sorting and bounds calculation
-            const validDateProjects = projectsWithDates.filter(p => p.isValidDate);
-            const invalidDateProjects = projectsWithDates.filter(p => !p.isValidDate);
-
-            if (validDateProjects.length === 0) {
-                 timelineContainer.innerHTML = '<p class="error-message">No projects with valid dates found.</p>';
-                 // Optionally render invalid date projects here if desired
-                 return;
-            }
-
-            // Sort only the projects with valid dates
-            validDateProjects.sort((a, b) => a.dateObj.getTime() - b.dateObj.getTime()); // Oldest first
-
-            // Determine timeline start/end dates and duration from VALID dates
-            timelineStartDate = validDateProjects[0].dateObj;
-            timelineEndDate = validDateProjects[validDateProjects.length - 1].dateObj;
-            timelineDurationMs = timelineEndDate.getTime() - timelineStartDate.getTime();
-
-            // Combine sorted valid projects with invalid date projects at the end
-            sortedProjects = [...validDateProjects, ...invalidDateProjects];
-
-            // --- Render Timeline Items ---
-            timelineItems = [];
-            let previousProjectDate = null; // Track last VALID date for spacing
-
-            sortedProjects.forEach((project, index) => {
-                const timelineItem = document.createElement('div');
-                timelineItem.classList.add('timeline-item', index % 2 === 0 ? 'timeline-item-left' : 'timeline-item-right');
-                 // Store ISO date string if valid, otherwise maybe an index or ID
-                 timelineItem.dataset.identifier = project.isValidDate ? project.dateObj.toISOString() : `item-${index}`;
+/* --- Typography --- */
+/* ... (Keep h1#main-title styles etc.) ... */
 
 
-                // --- Calculate and Apply Dynamic Spacing ---
-                let calculatedMargin = 0;
-                const currentProjectDate = project.dateObj; // Already validated or null
-                const isValidDate = project.isValidDate;
+/* --- Timeline Container & Axis --- */
+#timeline-container {
+    position: relative; /* Crucial for absolutely positioned children */
+    max-width: 1050px; margin: 0 auto;
+    padding: 0 25px; z-index: 6;
+    min-height: 150vh; /* Give it some initial height, JS will effectively determine actual needed height */
+    /* Remove height calculation from here if JS sets it */
+}
+#timeline-container::before { /* The central vertical axis */
+    content: ''; position: absolute; top: 0; bottom: 0; /* Let it span the container height */
+    left: 50%; transform: translateX(-50%); width: var(--timeline-width);
+    background-color: var(--color-timeline-axis); z-index: 0;
+}
 
-                if (index > 0) {
-                    if (previousProjectDate && isValidDate) {
-                        const timeDifferenceMs = currentProjectDate.getTime() - previousProjectDate.getTime();
-                        const timeDifferenceDays = Math.max(0, timeDifferenceMs / MS_PER_DAY);
+/* --- Timeline Item (Absolute Positioning) --- */
+.timeline-item {
+    position: absolute; /* Position based on JS 'top' calculation */
+    /* Top is set by JS */
+    width: calc(50% - var(--card-gap) / 2);
+    display: flex;
+    /* Reset margin-top, position is controlled by 'top' */
+    margin-top: 0 !important;
+    padding-bottom: 1px;
+}
+.timeline-item-left {
+    left: 0;
+    padding-right: var(--card-gap); /* Adjust padding to clear axis */
+    justify-content: flex-end;
+}
+.timeline-item-right {
+    left: calc(50% + var(--card-gap) / 2);
+    padding-left: var(--card-gap); /* Adjust padding to clear axis */
+     /* Override left position for right items */
+     left: 50%;
+     padding-left: calc(var(--card-gap) / 2); /* Start card after the gap */
+     width: calc(50% + var(--card-gap) / 2); /* Ensure width is correct */
+}
+/* Adjust positioning if using absolute positioning */
+ .timeline-item-left {
+     left: 0;
+     width: calc(50% + var(--card-gap) / 2); /* Take up space to the center line */
+     padding-right: var(--card-gap); /* Create space */
+     justify-content: flex-end;
+ }
+ .timeline-item-right {
+     left: 50%; /* Start at the center line */
+     width: calc(50% + var(--card-gap) / 2); /* Take up space from the center line */
+     padding-left: var(--card-gap); /* Create space */
+ }
 
-                        calculatedMargin = MIN_SPACING_PX + (timeDifferenceDays * PX_PER_DAY);
-                        calculatedMargin = Math.max(MIN_SPACING_PX, Math.min(MAX_SPACING_PX, calculatedMargin));
-                    } else {
-                        calculatedMargin = MIN_SPACING_PX;
-                    }
-                    timelineItem.style.marginTop = `${calculatedMargin}px`;
-                }
 
-                // Update previous date ONLY if the current date was valid
-                if (isValidDate) {
-                   previousProjectDate = currentProjectDate;
-                }
-                // --- End Spacing Calculation ---
+/* --- Timeline Marker (Dot) & Horizontal Line --- */
+/* ... (Keep marker styles and ::before for horizontal line) ... */
+/* Adjust marker top alignment if needed */
+.timeline-marker { top: 15px; } /* May need fine-tuning */
+/* Adjust horizontal line length if needed */
+.timeline-marker::before { width: calc(var(--card-gap) - var(--marker-size)/2 - var(--timeline-width)/2 - 5px); /* Fine tune this */}
+/* Marker absolute positioning might need slight tweaks relative to the card/item */
+.timeline-item-left .timeline-marker { right: calc(var(--card-gap) - var(--horizontal-line-length) - var(--marker-size)/2 - var(--timeline-width)/2); }
+.timeline-item-right .timeline-marker { left: calc(var(--card-gap) - var(--horizontal-line-length) - var(--marker-size)/2 - var(--timeline-width)/2); }
 
-                // --- Format Date for Display ---
-                let displayDate = 'Date N/A';
-                if (isValidDate) {
-                    displayDate = currentProjectDate.toLocaleDateString('en-US', {
-                        month: 'short', day: 'numeric', year: 'numeric'
-                    }).toUpperCase();
-                }
 
-                // --- Get Image and Category ---
-                const firstImage = project.images && project.images.length > 0 ? project.images[0] : null;
-                const imagePath = firstImage ? `assets/${firstImage}` : '';
-                const category = project.tags && project.tags.length > 0 ? project.tags[0].toUpperCase() : '';
 
-                // --- Generate HTML ---
-                 timelineItem.innerHTML = `
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-card">
-                        ${imagePath ? `
-                        <div class="card-image-container">
-                           <img src="${imagePath}" alt="${project.title || 'Project image'}" loading="lazy">
-                        </div>` : '<div class="card-image-container"></div>'}
-                        <div class="card-content">
-                            <div class="card-header">
-                                <span class="card-date">${displayDate}</span>
-                                ${category ? `<span class="separator">-</span><span class="card-category">${category}</span>` : ''}
-                            </div>
-                            <h3 class="card-title">${project.title || 'Untitled Project'}</h3>
-                            <p class="card-description">${project.description || 'No description available.'}</p>
-                            ${project.link ? `<p class="card-link"><a href="${project.link}" target="_blank" rel="noopener noreferrer">View Project</a></p>` : ''}
-                        </div>
-                    </div>
-                `;
-                timelineContainer.appendChild(timelineItem);
-                timelineItems.push(timelineItem);
-            });
-            // --- END Rendering ---
+/* --- Timeline Card Styling --- */
+/* ... (Keep card styles) ... */
+.timeline-card {
+    /* Position relative to allow absolute positioning inside if needed */
+    position: relative;
+    /* Ensure cards don't overlap marker/line due to absolute positioning */
+    margin-left: auto; /* For left items */
+    margin-right: auto; /* For right items */
+    max-width: 450px; /* Control max card width */
+}
+.timeline-item-left .timeline-card { margin-left: 0; margin-right: auto;}
+.timeline-item-right .timeline-card { margin-left: auto; margin-right: 0;}
 
-            setupProgressBar();
-            addScrollListener();
-            requestAnimationFrame(updateProgressBarOnScroll); // Initial update
 
-        } catch (error) {
-            console.error('Error fetching or displaying projects:', error);
-            if (initialLoadingMessage) initialLoadingMessage.remove();
-            timelineContainer.innerHTML = `<p class="error-message">Error loading projects: ${error.message}. Please check the console.</p>`;
-        }
+/* --- Card Image --- */
+/* ... (Keep image styles) ... */
+
+/* --- Card Content --- */
+/* ... (Keep content styles) ... */
+
+/* --- Progress Bar --- */
+/* ... (Keep progress bar styles) ... */
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 800px) {
+    #timeline-container::before { left: 20px; transform: translateX(0); } /* Adjust axis position */
+    .timeline-item {
+        position: relative !important; /* Override absolute for stacking */
+        top: auto !important; left: 0 !important; /* Reset positioning */
+        width: 100%;
+        padding-left: calc(20px + var(--card-gap) / 1.5); /* Space from left axis */
+        padding-right: 0;
+        margin-top: 0 !important; /* Reset margin */
+        margin-bottom: var(--min-spacing-mobile, 40px); /* Use standard margin */
     }
-
-    // --- Progress Bar Setup ---
-    function setupProgressBar() {
-        progressBarElement = document.getElementById('progress-bar');
-        if (!progressBarElement) {
-           progressBarElement = document.createElement('footer');
-           progressBarElement.id = 'progress-bar';
-           progressBarElement.innerHTML = `
-              <span id="progress-bar-text">Loading Date...</span>
-              <div class="progress-bar-visual">
-                 <div class="progress-bar-track">
-                    <div id="progress-bar-indicator"></div>
-                 </div>
-                 <span id="progress-bar-percentage">0%</span>
-                 <span id="progress-bar-icon"></span>
-              </div>
-           `;
-           document.body.appendChild(progressBarElement);
-        }
-        progressBarTextElement = document.getElementById('progress-bar-text');
-        progressBarIndicatorElement = document.getElementById('progress-bar-indicator');
-        progressBarPercentageElement = document.getElementById('progress-bar-percentage');
+     .timeline-item:first-child { margin-top: 0; } /* Still no margin on first */
+    .timeline-item-right, .timeline-item-left {
+        left: 0; padding-left: calc(20px + var(--card-gap) / 1.5); /* Adjust padding */
     }
-
-    // --- Scroll Handler ---
-    function updateProgressBarOnScroll() {
-        // Ensure elements and required date info exist
-        if (!progressBarIndicatorElement || !progressBarTextElement || !progressBarPercentageElement || !timelineStartDate || !timelineEndDate) {
-            // console.log("Progress bar elements or timeline date range not ready.");
-            if(progressBarTextElement) progressBarTextElement.textContent = "Timeline"; // Default text if no date range
-            return;
-        }
-
-        // --- Calculate Scroll Percentage (same as before) ---
-        const timelineTop = timelineContainer.offsetTop;
-        const timelineHeight = timelineContainer.offsetHeight;
-        const viewportHeight = window.innerHeight;
-        const scrollY = window.scrollY;
-        const scrollStartOffset = timelineTop;
-        const totalScrollableDistance = Math.max(1, timelineHeight - viewportHeight); // Avoid division by zero
-        let currentScrollPositionInTimeline = Math.max(0, scrollY - scrollStartOffset);
-        currentScrollPositionInTimeline = Math.min(currentScrollPositionInTimeline, totalScrollableDistance);
-        let scrollPercentage = (currentScrollPositionInTimeline / totalScrollableDistance) * 100;
-        scrollPercentage = Math.max(0, Math.min(100, scrollPercentage));
-
-        // Update Percentage Indicator
-        progressBarIndicatorElement.style.width = `${scrollPercentage}%`;
-        progressBarPercentageElement.textContent = `${Math.round(scrollPercentage)}%`;
-
-        // --- Calculate and Update Interpolated Date Text ---
-        let estimatedDate = timelineStartDate; // Default to start date
-
-        if (timelineDurationMs > 0) { // Avoid calculation if duration is zero
-            const timeOffset = timelineDurationMs * (scrollPercentage / 100);
-            const estimatedTimeMs = timelineStartDate.getTime() + timeOffset;
-            estimatedDate = new Date(estimatedTimeMs);
-        }
-
-        // Format the estimated date
-        if (!isNaN(estimatedDate.getTime())) {
-            const monthYear = estimatedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-            progressBarTextElement.textContent = monthYear;
-        } else {
-            // Fallback if date calculation fails for some reason
-            progressBarTextElement.textContent = "Timeline Date";
-        }
+    .timeline-marker {
+        left: calc(20px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important; /* Position on left axis */
+        top: 15px;
     }
+     /* Hide horizontal connector line on mobile */
+     .timeline-marker::before { display: none; }
 
-    // --- Throttled Scroll Listener (same as before) ---
-    let isThrottled = false;
-    function throttledScrollHandler() {
-        if (!isThrottled) {
-            isThrottled = true;
-            requestAnimationFrame(() => {
-                updateProgressBarOnScroll();
-                isThrottled = false;
-            });
-        }
-    }
-    function addScrollListener() {
-       window.removeEventListener('scroll', throttledScrollHandler);
-       window.removeEventListener('resize', throttledScrollHandler);
-       window.addEventListener('scroll', throttledScrollHandler);
-       window.addEventListener('resize', throttledScrollHandler);
-    }
-
-    // --- Initial Load ---
-    fetchProjects();
-});
+    .timeline-card { flex-direction: column; gap: 15px; max-width: none;}
+    .timeline-item-right .timeline-card { flex-direction: column; }
+    .card-image-container { width: 100%; height: 180px; }
+}
+/* ... (Keep other mobile styles) ... */
