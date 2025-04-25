@@ -1,38 +1,295 @@
+/* File Location: ComSci-Projects/A6-Final/style.css */
+
+:root {
+    --timeline-color: #ccc;
+    --timeline-width: 3px;
+    --marker-size: 16px;
+    --marker-color: #333;
+    --card-bg: #ffffff;
+    --card-padding: 20px;
+    --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --card-radius: 12px;
+    --card-gap: 40px; /* Gap between card and timeline axis */
+    --text-color: #333;
+    --text-light: #666;
+    --accent-color: #4a90e2; /* Example accent color */
+    --header-font: 'Arial', sans-serif; /* Replace with your actual font */
+    --body-font: 'Arial', sans-serif;   /* Replace with your actual font */
+    --gradient-top: rgba(135, 206, 250, 0.3); /* Light Sky Blue gradient */
+    --gradient-bottom: rgba(70, 130, 180, 0.3); /* Steel Blue gradient */
+}
+
 body {
-    font-family: sans-serif;
-    line-height: 1.6;
-    margin: 20px;
+    font-family: var(--body-font);
+    color: var(--text-color);
+    background-color: #f8f9fa; /* Light background */
+    margin: 0;
+    padding-top: 80px; /* Space for header and top gradient */
+    padding-bottom: 120px; /* Space for progress bar and bottom gradient */
+    position: relative; /* Needed for pseudo-element gradients */
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
+/* Top and Bottom Gradients */
+body::before,
+body::after {
+    content: '';
+    position: fixed; /* Fixed position to stay during scroll */
+    left: 0;
+    right: 0;
+    height: 150px; /* Adjust height of gradient */
+    z-index: 1; /* Behind content, above background */
+    pointer-events: none; /* Allow clicks through */
+}
+
+body::before {
+    top: 0;
+    background: linear-gradient(to bottom, var(--gradient-top), transparent);
+}
+
+body::after {
+    bottom: 0;
+    background: linear-gradient(to top, var(--gradient-bottom), transparent);
+}
+
+
+/* Main Title */
+h1#main-title { /* Add id="main-title" to your H1 in index.html */
+    text-align: center;
+    font-family: var(--header-font);
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    font-weight: bold;
+    color: var(--text-color);
+    position: relative; /* Ensure title is above gradients */
+    z-index: 2;
+}
+
+/* Timeline Container & Axis */
 #timeline-container {
-    margin-top: 20px;
+    position: relative;
+    max-width: 1000px; /* Adjust max-width as needed */
+    margin: 0 auto;
+    padding: 0 20px;
+    z-index: 2; /* Position timeline above gradients */
 }
 
-.timeline-entry {
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    /* border-bottom: 1px solid #ccc; */ /* Using <hr> in HTML instead */
+/* The actual timeline line */
+#timeline-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: var(--timeline-width);
+    background-color: var(--timeline-color);
+    z-index: -1; /* Behind timeline items */
 }
 
-.timeline-entry h2 {
-    margin-bottom: 5px;
+/* Individual Timeline Item */
+.timeline-item {
+    position: relative;
+    margin-bottom: 60px; /* Space between items */
+    width: calc(50% - var(--card-gap)); /* Half width minus gap */
+    display: flex; /* Use flex for easier alignment if needed */
 }
 
-.timeline-entry p {
-    margin-top: 5px;
+.timeline-item-left {
+    left: 0;
+    padding-right: var(--card-gap); /* Push card away from center line */
+    justify-content: flex-end; /* Align card content to the right (near center) */
+}
+
+.timeline-item-right {
+    left: calc(50% + var(--card-gap)); /* Position to the right of the center line */
+    padding-left: var(--card-gap); /* Push card away from center line */
+}
+
+/* Timeline Marker (Dot) */
+.timeline-marker {
+    position: absolute;
+    top: 20px; /* Adjust vertical alignment of dot */
+    width: var(--marker-size);
+    height: var(--marker-size);
+    background-color: var(--marker-color);
+    border: 2px solid var(--card-bg); /* Match background for "cutout" effect */
+    border-radius: 50%;
+    z-index: 3; /* Above timeline line */
+}
+
+.timeline-item-left .timeline-marker {
+    right: calc(-1 * (var(--marker-size) / 2 + var(--timeline-width) / 2)); /* Position dot on the center line */
+}
+
+.timeline-item-right .timeline-marker {
+    left: calc(-1 * (var(--marker-size) / 2 + var(--timeline-width) / 2)); /* Position dot on the center line */
+}
+
+/* Timeline Card Styling */
+.timeline-card {
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    padding: var(--card-padding);
+    width: 100%; /* Take full width of the timeline-item half */
+    display: flex;
+    gap: 15px; /* Space between image and text content */
+    overflow: hidden; /* Ensure content respects border-radius */
+}
+
+.timeline-item-left .timeline-card {
+   /* Styles specific to left cards if needed */
+}
+
+.timeline-item-right .timeline-card {
+    flex-direction: row-reverse; /* Put image on the right */
+}
+
+/* Card Image */
+.card-image-container {
+    flex-shrink: 0; /* Prevent image container from shrinking */
+    width: 120px; /* Adjust image width */
+    height: auto; /* Maintain aspect ratio */
+    /* height: 100px; */ /* Or fixed height */
+    /* object-fit: cover; */ /* Crop image nicely */
+    border-radius: calc(var(--card-radius) / 2); /* Slightly rounded corners for image */
+    overflow: hidden;
+}
+
+.card-image-container img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Scale image nicely */
+}
+
+/* Card Content */
+.card-content {
+    flex-grow: 1; /* Allow text content to take remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.timeline-entry .images,
-.timeline-entry .tags {
-    font-size: 0.9em;
-    color: #555;
-    margin-top: 10px;
+.card-date {
+    font-weight: 600;
 }
 
-hr {
-    border: 0;
-    height: 1px;
-    background-color: #eee;
-    margin-top: 20px;
+.card-category {
+    /* Styling for category if needed */
+}
+
+.card-title {
+    font-family: var(--header-font);
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 0 8px 0;
+    color: var(--text-color);
+}
+
+.card-description {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+    color: var(--text-light);
+}
+
+
+/* Progress Bar */
+#progress-bar {
+    position: fixed;
+    bottom: 20px; /* Position from bottom */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px; /* Adjust width */
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+    border-radius: 20px;
+    padding: 8px 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10; /* Ensure it's above other content */
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+}
+
+#progress-bar-text {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+.progress-bar-track {
+    flex-grow: 1;
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+#progress-bar-indicator {
+    height: 100%;
+    width: 0%; /* Initially 0, updated by JS */
+    background-color: var(--accent-color);
+    border-radius: 3px;
+    transition: width 0.3s ease; /* Smooth transition for width changes */
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    /* Stack timeline items vertically on smaller screens */
+    #timeline-container::before {
+        left: var(--marker-size); /* Move line to the left */
+        transform: translateX(0);
+    }
+
+    .timeline-item {
+        width: 100%;
+        padding-left: calc(var(--marker-size) + var(--card-gap)); /* Space items away from the left line */
+        padding-right: 0;
+        left: 0 !important; /* Override left positioning */
+        margin-bottom: 30px;
+    }
+
+     .timeline-item-right,
+     .timeline-item-left {
+        left: 0; /* Reset positioning */
+        padding-left: calc(var(--marker-size) + var(--card-gap) / 2);
+     }
+
+    .timeline-marker {
+        left: calc(var(--marker-size) / 2 + var(--timeline-width) / 2) !important; /* Position marker on the left line */
+        top: 0; /* Align marker with top of card for vertical layout */
+    }
+
+    .timeline-card {
+       flex-direction: column; /* Stack image and text vertically */
+    }
+     .timeline-item-right .timeline-card {
+        flex-direction: column; /* Ensure right items also stack */
+    }
+
+    .card-image-container {
+       width: 100%; /* Full width image */
+       height: 150px; /* Fixed height for stacked image */
+       margin-bottom: 15px;
+    }
+
+    #progress-bar {
+        width: 90%;
+        max-width: 300px;
+        bottom: 10px;
+    }
 }
