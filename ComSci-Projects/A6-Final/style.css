@@ -278,3 +278,75 @@ h1#main-title {
     #progress-bar-percentage { font-size: 0.7rem; }
     #progress-bar-icon { width: 10px; height: 10px; }
 }
+
+
+
+/* File Location: Playground/ComSci-Projects/A6-Final/style.css */
+
+/* ... (Keep ALL previous CSS from the last response, including fonts, vars, base, gradients, typography, timeline container, item, marker, card styles, progress bar, responsive) ... */
+
+/* --- REMOVE/REPLACE Marker Horizontal Line --- */
+/* Remove this rule entirely */
+/*
+.timeline-marker::before {
+    content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+    height: var(--timeline-width); width: var(--horizontal-line-length);
+    background-color: var(--color-horizontal-line); z-index: -1;
+}
+.timeline-item-left .timeline-marker::before { right: calc(100% + 2px); }
+.timeline-item-right .timeline-marker::before { left: calc(100% + 2px); }
+*/
+
+/* --- ADD SVG Connector Styles --- */
+.connector-line {
+    position: absolute;
+    /* Positioning is handled by JS */
+    overflow: visible; /* Allow path to draw outside viewbox if needed */
+    z-index: 1; /* Behind card, above axis */
+    pointer-events: none; /* Allow clicks through */
+}
+
+.connector-line path {
+    stroke: var(--color-horizontal-line, #ced4da); /* Match axis color */
+    stroke-width: var(--timeline-width, 2px);
+    fill: none;
+}
+
+/* --- Minor Adjustments for Absolute Positioning Context --- */
+.timeline-item {
+    /* Ensure padding doesn't interfere with width calculation */
+    padding-left: 0;
+    padding-right: 0;
+}
+.timeline-item-left {
+    /* Occupy left half */
+    width: 50%;
+    left: 0;
+    justify-content: flex-end; /* Push card towards center */
+    padding-right: calc(var(--card-gap) / 2); /* Gap before center */
+}
+.timeline-item-right {
+     /* Occupy right half */
+    width: 50%;
+    left: 50%;
+    justify-content: flex-start; /* Push card away from center */
+    padding-left: calc(var(--card-gap) / 2); /* Gap after center */
+}
+.timeline-card {
+    /* Remove auto margins if item padding handles alignment */
+    margin-left: 0;
+    margin-right: 0;
+}
+
+
+/* --- Re-check Responsive Section for Absolute Positioning --- */
+@media (max-width: 800px) {
+    /* ... (Keep previous mobile rules resetting to relative flow) ... */
+
+     /* Ensure SVG connector is hidden on mobile where layout changes */
+    .connector-line {
+        display: none;
+    }
+     /* Re-enable marker horizontal line for mobile if desired */
+     /* .timeline-marker::before { display: block; width: 20px; background: red; } /* Example */
+}
