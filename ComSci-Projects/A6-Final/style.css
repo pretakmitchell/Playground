@@ -1,86 +1,77 @@
 /* File Location: Playground/ComSci-Projects/A6-Final/style.css */
 
 /* --- Font Loading --- */
-/* CRITICAL: Adjust these paths relative to *this* CSS file's location.
-   This assumes 'fonts' folder is at the root of the 'Playground' repo. */
-   @font-face {
+/* Ensure these paths are correct relative to this CSS file */
+@font-face {
     font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-Regular.woff2') format('woff2'),
-         url('../../fonts/Montserrat-Regular.woff') format('woff');
+    src: url('../../fonts/Montserrat-Regular.woff2') format('woff2'), url('../../fonts/Montserrat-Regular.woff') format('woff');
     font-weight: 400; font-style: normal; font-display: swap;
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-Medium.woff2') format('woff2'),
-         url('../../fonts/Montserrat-Medium.woff') format('woff');
+    src: url('../../fonts/Montserrat-Medium.woff2') format('woff2'), url('../../fonts/Montserrat-Medium.woff') format('woff');
     font-weight: 500; font-style: normal; font-display: swap;
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-SemiBold.woff2') format('woff2'),
-         url('../../fonts/Montserrat-SemiBold.woff') format('woff');
+    src: url('../../fonts/Montserrat-SemiBold.woff2') format('woff2'), url('../../fonts/Montserrat-SemiBold.woff') format('woff');
     font-weight: 600; font-style: normal; font-display: swap;
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-Bold.woff2') format('woff2'),
-         url('../../fonts/Montserrat-Bold.woff') format('woff');
+    src: url('../../fonts/Montserrat-Bold.woff2') format('woff2'), url('../../fonts/Montserrat-Bold.woff') format('woff');
     font-weight: 700; font-style: normal; font-display: swap;
 }
 @font-face {
     font-family: 'Roboto Mono';
-    src: url('../../fonts/RobotoMono-Regular.woff2') format('woff2'),
-         url('../../fonts/RobotoMono-Regular.woff') format('woff');
+    src: url('../../fonts/RobotoMono-Regular.woff2') format('woff2'), url('../../fonts/RobotoMono-Regular.woff') format('woff');
     font-weight: 400; font-style: normal; font-display: swap;
 }
 @font-face {
     font-family: 'Roboto Mono';
-    src: url('../../fonts/RobotoMono-Medium.woff2') format('woff2'),
-         url('../../fonts/RobotoMono-Medium.woff') format('woff');
+    src: url('../../fonts/RobotoMono-Medium.woff2') format('woff2'), url('../../fonts/RobotoMono-Medium.woff') format('woff');
     font-weight: 500; font-style: normal; font-display: swap;
 }
 
 /* --- CSS Variables --- */
 :root {
-    /* Fonts */
     --font-heading: 'Montserrat', sans-serif;
     --font-body: 'Montserrat', sans-serif;
     --font-mono: 'Roboto Mono', monospace;
 
-    /* Colors */
-    --color-text-dark: #212529;
+    --color-text-dark: #343a40; /* Darker grey */
     --color-text-medium: #495057;
     --color-text-light: #6c757d;
-    --color-bg: #f8f9fc;
+    --color-bg: #f7f9fc; /* Lighter, slightly cool background */
     --color-card-bg: #ffffff;
-    --color-timeline-axis: #dee2e6;
+    --color-timeline-axis: #ced4da; /* Light grey axis */
     --color-marker: #495057;
-    --color-marker-border: var(--color-card-bg);
-    --color-accent-blue: #0d6efd;
-    --color-shadow: rgba(108, 117, 125, 0.1); /* Softer shadow */
+    --color-marker-border: var(--color-bg); /* Match background */
+    --color-horizontal-line: var(--color-timeline-axis);
+    --color-accent-blue: #007bff;
+    --color-shadow: rgba(108, 117, 125, 0.12); /* Lighter shadow */
 
-    /* Gradients */
-    --gradient-top-start: rgba(220, 230, 255, 0.45);
-    --gradient-bottom-start: rgba(200, 220, 255, 0.45);
+    --gradient-top-start: rgba(220, 230, 255, 0.4);
+    --gradient-bottom-start: rgba(200, 220, 255, 0.4);
 
-    /* Layout */
     --timeline-width: 2px;
-    --marker-size: 14px;
-    --card-padding: 24px;
-    --card-radius: 12px;
-    --card-gap: 50px;
+    --marker-size: 12px;
+    --card-padding: 20px;
+    --card-radius: 16px;
+    --card-gap: 60px; /* Increased gap for horizontal line */
+    --horizontal-line-length: calc(var(--card-gap) - var(--marker-size) / 2 - var(--timeline-width) / 2 - 1px); /* Adjust as needed */
 }
 
 /* --- Base Styles --- */
 *, *::before, *::after { box-sizing: border-box; }
-
+html { scroll-behavior: smooth; } /* Optional smooth scroll */
 body {
     font-family: var(--font-body);
     color: var(--color-text-dark);
     background-color: var(--color-bg);
     margin: 0;
-    padding-top: 100px;
-    padding-bottom: 150px;
+    padding-top: 120px; /* More space */
+    padding-bottom: 180px; /* More space */
     position: relative;
     overflow-x: hidden;
     line-height: 1.6;
@@ -89,177 +80,189 @@ body {
 /* --- Top/Bottom Gradients & Blur --- */
 body::before, body::after {
     content: '';
-    position: fixed;
-    left: 0; right: 0;
-    height: 200px;
+    position: fixed; left: 0; right: 0;
+    height: 250px; /* Increased height */
     z-index: 5;
     pointer-events: none;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px); /* Increased blur */
+    -webkit-backdrop-filter: blur(10px);
 }
 body::before {
     top: 0;
-    background: linear-gradient(to bottom, var(--gradient-top-start), transparent 90%);
+    background: linear-gradient(to bottom, var(--gradient-top-start), transparent 85%);
 }
 body::after {
     bottom: 0;
-    background: linear-gradient(to top, var(--gradient-bottom-start), transparent 90%);
+    background: linear-gradient(to top, var(--gradient-bottom-start), transparent 85%);
 }
 
 /* --- Typography --- */
 h1#main-title {
-    text-align: center;
-    font-family: var(--font-heading);
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
-    margin-bottom: 70px;
-    font-weight: 700;
-    color: var(--color-text-dark);
-    position: relative;
-    z-index: 6;
+    text-align: center; font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 80px; font-weight: 700;
+    color: var(--color-text-dark); position: relative; z-index: 6;
 }
 .loading-message, .error-message {
-    text-align: center;
-    font-size: 1rem;
-    color: var(--color-text-light);
-    padding: 50px 20px;
+    text-align: center; font-size: 1.1rem; color: var(--color-text-light);
+    padding: 60px 20px; font-weight: 500;
 }
-.error-message { color: #dc3545; }
+.error-message { color: #e74c3c; } /* Error red */
 
 
 /* --- Timeline Container & Axis --- */
 #timeline-container {
-    position: relative;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 20px;
-    z-index: 6;
-    min-height: calc(100vh - 250px);
+    position: relative; max-width: 1050px; margin: 0 auto;
+    padding: 0 25px; z-index: 6; min-height: 100vh;
 }
-#timeline-container::before {
-    content: '';
-    position: absolute;
-    top: -500px; bottom: -500px; /* Extend line visually */
-    left: 50%;
-    transform: translateX(-50%);
-    width: var(--timeline-width);
-    background-color: var(--color-timeline-axis);
-    z-index: 0;
+#timeline-container::before { /* The central vertical axis */
+    content: ''; position: absolute; top: -500px; bottom: -500px;
+    left: 50%; transform: translateX(-50%); width: var(--timeline-width);
+    background-color: var(--color-timeline-axis); z-index: 0;
 }
 
 /* --- Timeline Item --- */
 .timeline-item {
-    position: relative;
-    /* margin-top applied by JS */
-    width: calc(50% - var(--card-gap) / 2);
-    display: flex;
-    margin-top: 0; /* Default for first item */
+    position: relative; width: calc(50% - var(--card-gap) / 2); display: flex;
+    margin-top: 0; /* Set by JS */
+    padding-bottom: 1px; /* Prevent margin collapse */
 }
 .timeline-item-left {
-    left: 0;
-    padding-right: var(--card-gap);
-    justify-content: flex-end;
+    left: 0; justify-content: flex-end;
 }
 .timeline-item-right {
     left: calc(50% + var(--card-gap) / 2);
-    padding-left: var(--card-gap);
 }
 
-/* --- Timeline Marker (Dot) --- */
+/* --- Timeline Marker (Dot) & Horizontal Line --- */
 .timeline-marker {
-    position: absolute;
-    top: 25px;
-    width: var(--marker-size);
-    height: var(--marker-size);
-    background-color: var(--color-marker);
-    border: 3px solid var(--color-marker-border);
-    border-radius: 50%;
-    z-index: 7;
-    box-shadow: 0 0 0 3px var(--color-timeline-axis);
+    position: absolute; top: 35px; /* Align roughly with card vertical center */
+    width: var(--marker-size); height: var(--marker-size);
+    background-color: var(--color-marker); border: 0; /* Remove border */
+    border-radius: 50%; z-index: 7;
+    box-shadow: 0 0 0 4px var(--color-bg); /* Use background color for cutout */
 }
-.timeline-item-left .timeline-marker { right: calc(-1 * (var(--marker-size) / 2 + var(--timeline-width) / 2)); }
-.timeline-item-right .timeline-marker { left: calc(-1 * (var(--marker-size) / 2 + var(--timeline-width) / 2)); }
+/* Horizontal connecting line */
+.timeline-marker::before {
+    content: ''; position: absolute; top: 50%;
+    transform: translateY(-50%); height: var(--timeline-width);
+    width: var(--horizontal-line-length); background-color: var(--color-horizontal-line);
+    z-index: -1; /* Behind marker dot */
+}
+.timeline-item-left .timeline-marker {
+    right: calc(-1 * var(--card-gap) + var(--horizontal-line-length) + var(--marker-size)/2 + var(--timeline-width)/2);
+}
+.timeline-item-left .timeline-marker::before {
+    right: 100%; /* Line extends left from marker */
+}
+.timeline-item-right .timeline-marker {
+    left: calc(-1 * var(--card-gap) + var(--horizontal-line-length) + var(--marker-size)/2 + var(--timeline-width)/2);
+}
+.timeline-item-right .timeline-marker::before {
+    left: 100%; /* Line extends right from marker */
+}
 
-/* --- Timeline Card --- */
+/* --- Timeline Card Styling (Matches Reference) --- */
 .timeline-card {
-    background: var(--color-card-bg);
+    background: #f0f3f7; /* Light greyish-blue background */
     border-radius: var(--card-radius);
-    box-shadow: 0 6px 18px var(--color-shadow); /* Refined shadow */
-    padding: var(--card-padding);
-    width: 100%;
-    display: flex;
-    gap: 20px;
-    overflow: hidden;
-    border: 1px solid #e9ecef;
+    /* Inner shadow + subtle outer shadow */
+    box-shadow: inset 0 0 1px rgba(255, 255, 255, 0.5),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.03),
+                0 10px 30px var(--color-shadow);
+    padding: var(--card-padding); width: 100%; display: flex;
+    gap: 20px; overflow: hidden; border: none; /* No border */
+    position: relative; /* Needed for positioning relative to timeline item */
 }
 .timeline-item-right .timeline-card { flex-direction: row-reverse; }
 
 /* --- Card Image --- */
 .card-image-container {
-    flex-shrink: 0;
-    width: 150px; height: 100px;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #f0f0f0;
+    flex-shrink: 0; width: 140px; height: 90px; /* Adjusted size */
+    border-radius: 8px; overflow: hidden; background-color: #e0e0e0;
+    border: 1px solid rgba(0, 0, 0, 0.05); /* Subtle border */
 }
-.card-image-container img {
-    display: block; width: 100%; height: 100%; object-fit: cover;
-}
+.card-image-container img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* --- Card Content --- */
 .card-content { flex-grow: 1; display: flex; flex-direction: column; }
 .card-header {
-    display: flex; align-items: center;
-    margin-bottom: 8px; font-size: 0.75rem;
-    color: var(--color-text-light); font-family: var(--font-mono);
-    text-transform: uppercase; letter-spacing: 0.5px; font-weight: 500;
+    display: flex; align-items: center; flex-wrap: wrap; /* Allow wrapping */
+    margin-bottom: 6px; font-size: 0.7rem; color: var(--color-text-light);
+    font-family: var(--font-mono); text-transform: uppercase;
+    letter-spacing: 0.6px; font-weight: 500; line-height: 1.3;
 }
-.card-header .card-date { font-weight: 600; margin-right: 10px; }
+.card-header .card-date { font-weight: 500; margin-right: 8px; }
+.card-header .card-category { margin-left: 8px; /* Create space after '-' */ }
+.card-header::after { /* Add the '-' separator */
+    content: '-';
+    margin: 0 0 0 8px; /* Space before category */
+    display: inline-block;
+}
 .card-title {
-    font-family: var(--font-heading); font-size: 1.15rem; font-weight: 600; /* Semibold */
-    margin: 0 0 8px 0; color: var(--color-text-medium); line-height: 1.4;
+    font-family: var(--font-heading); font-size: 1.1rem; font-weight: 700; /* Bold */
+    margin: 0 0 10px 0; color: var(--color-text-dark); line-height: 1.3;
 }
 .card-description {
-    font-size: 0.9rem; line-height: 1.6; margin: 0; color: var(--color-text-light);
-    /* Allow descriptions to grow if needed */
-    /* flex-grow: 1; */
+    font-size: 0.88rem; line-height: 1.6; margin: 0;
+    color: var(--color-text-medium); /* Darker grey for description */
 }
-.card-link { /* Styling for optional link */
-    margin-top: 10px;
-    font-size: 0.85rem;
-}
-.card-link a {
-    color: var(--color-accent-blue);
-    text-decoration: none;
-    font-weight: 500;
-}
+.card-link { margin-top: 12px; font-size: 0.8rem; }
+.card-link a { color: var(--color-accent-blue); text-decoration: none; font-weight: 600; }
 .card-link a:hover { text-decoration: underline; }
 
 
-/* --- Progress Bar --- */
+/* --- Progress Bar (Matches Reference) --- */
 #progress-bar {
-    position: fixed; bottom: 20px; left: 50%;
+    position: fixed; bottom: 25px; left: 50%;
     transform: translateX(-50%);
-    width: clamp(250px, 80vw, 350px);
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 25px; padding: 10px 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    min-width: 280px; /* Ensure minimum width */
+    background-color: rgba(225, 230, 240, 0.85); /* Light grey-blue background */
+    border-radius: 50px; /* Pill shape */
+    padding: 6px 15px 6px 20px; /* Adjust padding */
+    box-shadow: 0 5px 15px rgba(100, 110, 130, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3); /* More defined shadow */
     display: flex; align-items: center; gap: 15px;
     z-index: 10;
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(200, 200, 200, 0.5);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 #progress-bar-text {
-    font-size: 0.8rem; font-family: var(--font-mono);
-    color: var(--color-text-light); white-space: nowrap; font-weight: 500;
+    font-size: 0.75rem; font-family: var(--font-mono);
+    color: var(--color-text-medium); white-space: nowrap; font-weight: 500;
+    margin-right: 5px; /* Space before percentage circle */
+}
+/* Contains track/indicator + percentage text */
+.progress-bar-visual {
+    flex-grow: 1; /* Take remaining space */
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 .progress-bar-track {
-    flex-grow: 1; height: 6px;
-    background-color: #e9ecef; border-radius: 3px; overflow: hidden;
+    flex-grow: 1; height: 4px; /* Thinner track */
+    background-color: rgba(0, 0, 0, 0.1); /* Darker track */
+    border-radius: 2px; overflow: hidden;
 }
 #progress-bar-indicator {
     height: 100%; width: 0%;
-    background-color: var(--color-accent-blue); border-radius: 3px;
-    transition: width 0.3s ease;
+    background: linear-gradient(90deg, #6c757d, #adb5bd); /* Grey gradient */
+    border-radius: 2px;
+    transition: width 0.1s linear; /* Faster, linear update */
+}
+#progress-bar-percentage { /* Style the percentage text */
+    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    color: var(--color-text-medium);
+    min-width: 3em; /* Reserve space */
+    text-align: right;
+}
+/* Optional: Add the circle outline icon */
+#progress-bar-icon {
+    width: 14px; height: 14px;
+    border: 1.5px solid var(--color-text-light);
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
 }
 
 /* --- Responsive Adjustments --- */
