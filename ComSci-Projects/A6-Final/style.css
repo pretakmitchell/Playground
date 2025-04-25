@@ -1,358 +1,164 @@
 /* File Location: Playground/ComSci-Projects/A6-Final/style.css */
-/* CSS ONLY UPDATE - Aiming for precise visual match to reference */
 
 /* --- Font Loading --- */
-/* CRITICAL: Adjust these paths relative to *this* CSS file's location.
-   This assumes 'fonts' folder is at the root of the 'Playground' repo. */
-/* --- Font Loading --- */
-/* CRITICAL: Adjust paths relative to *this* CSS file's location.
-   Using TTF format as specified. */
+/* (Keep your corrected @font-face rules using format('truetype')) */
 @font-face {
     font-family: 'Montserrat';
     src: url('../../fonts/Montserrat-Regular.ttf') format('truetype');
     font-weight: 400; font-style: normal; font-display: swap;
 }
-@font-face {
-    font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-Medium.ttf') format('truetype');
-    font-weight: 500; font-style: normal; font-display: swap;
-}
-@font-face {
-    font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-SemiBold.ttf') format('truetype');
-    font-weight: 600; font-style: normal; font-display: swap;
-}
-@font-face {
-    font-family: 'Montserrat';
-    src: url('../../fonts/Montserrat-Bold.ttf') format('truetype');
-    font-weight: 700; font-style: normal; font-display: swap;
-}
-@font-face {
-    font-family: 'Roboto Mono';
-    src: url('../../fonts/RobotoMono-Regular.ttf') format('truetype');
-    font-weight: 400; font-style: normal; font-display: swap;
-}
+/* ... other font faces ... */
 @font-face {
     font-family: 'Roboto Mono';
     src: url('../../fonts/RobotoMono-Medium.ttf') format('truetype');
     font-weight: 500; font-style: normal; font-display: swap;
 }
 
-/* --- REST OF YOUR CSS REMAINS THE SAME AS THE PREVIOUS VERSION --- */
-/* ... (:root variables, base styles, gradients, timeline, card, progress bar, responsive, etc.) ... */
-
-/* --- CSS Variables (Derived from Reference) --- */
+/* --- CSS Variables --- */
 :root {
-    /* Fonts */
-    --font-heading: 'Montserrat', sans-serif;
-    --font-body: 'Montserrat', sans-serif;
-    --font-mono: 'Roboto Mono', monospace;
-
-    /* Colors */
-    --color-text-dark: #383838; /* Dark text for titles */
-    --color-text-medium: #555555; /* Slightly lighter for descriptions */
-    --color-text-light: #999999; /* Light grey for dates/cats */
-    --color-bg: #f5f6f8; /* Very light grey background */
-    --color-card-bg: #eaeef2; /* Card background greyish-blue */
-    --color-timeline-axis: #d1d5db; /* Axis and horizontal line color */
-    --color-marker: #50555c; /* Dark grey marker */
-    --color-marker-border: var(--color-bg); /* Match background for cutout */
-    --color-shadow: rgba(100, 110, 130, 0.15); /* Diffused shadow */
-    --color-progress-bg: rgba(222, 226, 232, 0.88); /* Progress bar background */
-    --color-progress-track: rgba(0, 0, 0, 0.1);
-    --color-progress-indicator: #6c757d; /* Grey indicator */
-    --color-progress-border: rgba(0, 0, 0, 0.07);
-    --color-progress-icon-border: #b0b5bb;
-
-    /* Gradients (Subtle) */
-    --gradient-top-start: rgba(230, 235, 245, 0.4);
-    --gradient-bottom-start: rgba(215, 225, 240, 0.4);
-
-    /* Layout */
-    --timeline-width: 2px;
-    --marker-size: 10px; /* Smaller marker dot */
-    --card-padding-y: 20px;
-    --card-padding-x: 24px;
-    --card-radius: 18px; /* More rounded */
-    --card-gap: 55px; /* Horizontal space from center */
-    --card-fixed-height: 140px; /* ** NEW: Fixed height for card content area ** */
-    --horizontal-line-length: calc(var(--card-gap) - var(--marker-size) / 2 - var(--timeline-width) / 2 - 1px);
+    /* ... (Keep ALL previous variables: fonts, colors, layout etc.) ... */
+     --blur-height: 180px; /* Height of the blur effect area */
+     --blur-intensity: 12px; /* Adjust blur amount */
+     --blur-fade-distance: 70%; /* How far the blur fades out (percentage of blur height) */
 }
 
 /* --- Base Styles --- */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-    font-family: var(--font-body); font-weight: 400;
-    color: var(--color-text-medium); background-color: var(--color-bg);
-    margin: 0; padding-top: 110px; padding-bottom: 160px;
-    position: relative; overflow-x: hidden; line-height: 1.55;
+    /* ... (Keep existing body styles: font, color, background, margin, etc.) ... */
+    padding-top: 110px;
+    padding-bottom: 160px;
+    position: relative; /* Still needed */
+    overflow-x: hidden;
+    line-height: 1.6;
 }
 
-/* --- Top/Bottom Gradients & Blur --- */
+/* --- Color Gradients ONLY (No Blur Here) --- */
 body::before, body::after {
-    content: ''; position: fixed; left: 0; right: 0; height: 220px;
-    z-index: 5; pointer-events: none;
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    content: '';
+    position: fixed;
+    left: 0; right: 0;
+    height: calc(var(--blur-height) * 1.2); /* Make gradient slightly taller than blur */
+    z-index: 2; /* Below blur overlays, title, and progress bar */
+    pointer-events: none;
+    /* REMOVE backdrop-filter from here */
 }
-body::before { top: 0; background: linear-gradient(to bottom, var(--gradient-top-start) 10%, transparent 90%); }
-body::after { bottom: 0; background: linear-gradient(to top, var(--gradient-bottom-start) 10%, transparent 90%); }
+body::before {
+    top: 0;
+    background: linear-gradient(to bottom, var(--gradient-top-start), transparent 95%); /* Fade out gradient */
+}
+body::after {
+    bottom: 0;
+    background: linear-gradient(to top, var(--gradient-bottom-start), transparent 95%); /* Fade out gradient */
+}
+
+/* --- NEW: Blur Overlays --- */
+.blur-overlay {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: var(--blur-height);
+    z-index: 3; /* Above gradients and timeline, below title/progress */
+    pointer-events: none; /* Allow interaction with content below */
+    backdrop-filter: blur(var(--blur-intensity));
+    -webkit-backdrop-filter: blur(var(--blur-intensity));
+    /* Mask to create progressive blur */
+    -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+}
+.blur-overlay.top {
+    top: 0;
+    /* Mask fades from opaque (blur visible) at top to transparent (no blur) */
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black var(--blur-fade-distance), transparent 100%);
+            mask-image: linear-gradient(to bottom, black 0%, black var(--blur-fade-distance), transparent 100%);
+}
+.blur-overlay.bottom {
+    bottom: 0;
+    /* Mask fades from opaque (blur visible) at bottom to transparent (no blur) */
+    -webkit-mask-image: linear-gradient(to top, black 0%, black var(--blur-fade-distance), transparent 100%);
+            mask-image: linear-gradient(to top, black 0%, black var(--blur-fade-distance), transparent 100%);
+}
+
 
 /* --- Typography --- */
 h1#main-title {
-    text-align: center; font-family: var(--font-heading);
-    font-size: clamp(1.9rem, 4.5vw, 2.7rem); margin-bottom: 75px; font-weight: 700;
-    color: var(--color-text-dark); position: relative; z-index: 6;
+    /* ... (Keep existing title styles) ... */
+    position: relative; /* Needed for z-index */
+    z-index: 4; /* Above top blur overlay */
 }
-.loading-message, .error-message {
-    text-align: center; font-size: 1rem; color: var(--color-text-light);
-    padding: 50px 20px; font-weight: 500;
-}
-.error-message { color: #d9534f; } /* Softer error red */
+/* ... (Keep loading/error message styles) ... */
 
 
 /* --- Timeline Container & Axis --- */
 #timeline-container {
-    position: relative; max-width: 1000px; margin: 0 auto;
-    padding: 0 20px; z-index: 6; min-height: 110vh; /* Ensure line visibility */
+    position: relative; /* Still needed for absolute items */
+    /* ... (Keep existing styles: max-width, margin, padding, min-height) ... */
+    z-index: 1; /* Below gradients and blur */
 }
 #timeline-container::before { /* Vertical axis */
-    content: ''; position: absolute; top: -300px; bottom: -300px; /* Extend */
-    left: 50%; transform: translateX(-50%); width: var(--timeline-width);
-    background-color: var(--color-timeline-axis); z-index: 0;
+    /* ... (Keep existing axis styles) ... */
+    z-index: 0; /* Behind items */
 }
 
-/* --- Timeline Item (Relative Positioning) --- */
+/* --- Timeline Item --- */
 .timeline-item {
-    position: relative; /* Position relative to flow */
-    width: calc(50% - var(--card-gap) / 2); display: flex;
-    margin-top: 0; /* JS applies spacing via margin-top */
-    padding-bottom: 1px; /* Prevent margin collapse */
+    /* ... (Keep existing item styles: position: absolute, width, display, top set by JS) ... */
+    z-index: 1; /* Ensure items are above axis but below blur */
 }
-.timeline-item-left { left: 0; justify-content: flex-end; }
-.timeline-item-right { left: calc(50% + var(--card-gap) / 2); }
+/* ... (Keep left/right positioning styles) ... */
 
-/* --- Timeline Marker (Dot) & Horizontal Line --- */
+/* --- Timeline Marker (Dot) & SVG Connector --- */
 .timeline-marker {
-    position: absolute; top: calc(var(--card-fixed-height) / 2 + var(--card-padding-y)); /* Center vertically relative to card content height */
-    transform: translateY(-50%); /* Precise vertical centering */
-    width: var(--marker-size); height: var(--marker-size);
-    background-color: var(--color-marker); border-radius: 50%; z-index: 7;
-    box-shadow: 0 0 0 4px var(--color-marker-border); /* Cutout effect */
+     /* ... (Keep existing marker styles: position, top, size, bg, radius, shadow) ... */
+     z-index: 2; /* Above axis, below card */
 }
-.timeline-marker::before { /* Horizontal line */
-    content: ''; position: absolute; top: 50%; transform: translateY(-50%);
-    height: var(--timeline-width); width: var(--horizontal-line-length);
-    background-color: var(--color-horizontal-line); z-index: -1;
+.connector-line {
+    /* ... (Keep existing SVG styles: position, overflow, z-index, pointer-events) ... */
+    z-index: 1; /* Below marker, above axis */
 }
-.timeline-item-left .timeline-marker { right: calc(-1 * var(--card-gap) + var(--horizontal-line-length) + var(--marker-size)/2 + var(--timeline-width)/2); }
-.timeline-item-left .timeline-marker::before { right: calc(100% + 2px); } /* Extend left */
-.timeline-item-right .timeline-marker { left: calc(-1 * var(--card-gap) + var(--horizontal-line-length) + var(--marker-size)/2 + var(--timeline-width)/2); }
-.timeline-item-right .timeline-marker::before { left: calc(100% + 2px); } /* Extend right */
+.connector-line path {
+     /* ... (Keep existing path styles: stroke, stroke-width, fill) ... */
+}
 
-/* --- Timeline Card Styling (Matches Reference) --- */
+/* --- Timeline Card Styling --- */
 .timeline-card {
-    background: var(--color-card-bg); border-radius: var(--card-radius);
-    box-shadow: 0 12px 28px var(--color-shadow); /* Refined shadow */
-    padding: var(--card-padding-y) var(--card-padding-x);
-    width: 100%; max-width: 420px; /* Control max width */
-    display: flex; gap: 18px; overflow: hidden; border: none;
-    position: relative; /* Context for marker alignment */
-    height: calc(var(--card-fixed-height) + 2 * var(--card-padding-y)); /* Total fixed height including padding */
+    /* ... (Keep existing card styles: background, radius, shadow, padding, width, display, gap, height, etc.) ... */
+    position: relative; /* Ensure card content is stacked correctly */
+    z-index: 2; /* Above connector line/marker shadow */
 }
-.timeline-item-left .timeline-card { margin-left: auto; } /* Align card */
-.timeline-item-right .timeline-card { margin-right: auto; flex-direction: row-reverse; }
+/* ... (Keep left/right card alignment) ... */
 
 /* --- Card Image --- */
-.card-image-container {
-    flex-shrink: 0; width: 120px; /* Slightly smaller */
-    height: var(--card-fixed-height); /* Match content height */
-    border-radius: 10px; /* More rounding */
-    overflow: hidden; background-color: #e9ecef;
-    border: 1px solid rgba(0, 0, 0, 0.04);
-}
-.card-image-container img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* ... (Keep existing image styles) ... */
 
-/* --- Card Content (Fixed Height & Truncation) --- */
-.card-content {
-    flex-grow: 1; display: flex; flex-direction: column;
-    height: var(--card-fixed-height); /* Enforce fixed height */
-    overflow: hidden; /* Hide content that overflows */
-}
-.card-header {
-    display: flex; align-items: center; flex-wrap: wrap;
-    margin-bottom: 6px; font-size: 0.7rem; color: var(--color-text-light);
-    font-family: var(--font-mono); text-transform: uppercase;
-    letter-spacing: 0.7px; font-weight: 500; line-height: 1.2;
-}
-.card-header .card-date { margin-right: 8px; }
-.card-header .separator { margin: 0 8px; } /* Styling for separator */
-.card-title {
-    font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; /* Bold */
-    margin: 0 0 8px 0; color: var(--color-text-dark); line-height: 1.3;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; /* Truncate title if too long */
-}
-.card-description {
-    font-size: 0.85rem; line-height: 1.5; margin: 0;
-    color: var(--color-text-medium);
-    flex-grow: 1; /* Allow description to take space */
-    /* ** Multi-line truncation ** */
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* Adjust number of lines to show */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.card-link { display: none; } /* Hide link if truncation is active */
+/* --- Card Content --- */
+/* ... (Keep existing content styles, including truncation) ... */
 
 
-/* --- Progress Bar (Matches Reference) --- */
+/* --- Progress Bar --- */
 #progress-bar {
-    position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
-    min-width: 280px; background-color: var(--color-progress-bg);
-    border-radius: 50px; padding: 6px 15px 6px 20px;
-    box-shadow: 0 6px 18px rgba(100, 110, 130, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-    display: flex; align-items: center; gap: 15px; z-index: 10;
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--color-progress-border);
+    /* ... (Keep existing progress bar styles: position, bottom, left, transform, background, radius, padding, shadow, display, etc.) ... */
+    z-index: 10; /* Highest: above bottom blur overlay */
+    backdrop-filter: blur(12px); /* Keep its own blur */
+    -webkit-backdrop-filter: blur(12px);
 }
-#progress-bar-text {
-    font-size: 0.75rem; font-family: var(--font-mono);
-    color: var(--color-text-medium); white-space: nowrap; font-weight: 500;
-    margin-right: 5px;
-}
-.progress-bar-visual { flex-grow: 1; display: flex; align-items: center; gap: 10px; }
-.progress-bar-track {
-    flex-grow: 1; height: 4px; background-color: var(--color-progress-track);
-    border-radius: 2px; overflow: hidden;
-}
-#progress-bar-indicator {
-    height: 100%; width: 0%;
-    background: linear-gradient(90deg, var(--color-text-light), var(--color-text-medium)); /* Grey gradient */
-    border-radius: 2px; transition: width 0.1s linear;
-}
-#progress-bar-percentage {
-    font-size: 0.75rem; font-family: var(--font-mono); font-weight: 500;
-    color: var(--color-text-medium); min-width: 2.8em; text-align: right;
-}
-#progress-bar-icon {
-    width: 12px; height: 12px; border: 1.5px solid var(--color-progress-icon-border);
-    border-radius: 50%; display: inline-block; flex-shrink: 0;
-}
+/* ... (Keep existing progress bar inner element styles) ... */
+
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 800px) {
-    :root { --card-fixed-height: 150px; /* Adjust fixed height for mobile if needed */ }
-    #timeline-container { padding: 0 15px; }
-    #timeline-container::before { left: 15px; transform: translateX(0); }
+    /* ... (Keep existing responsive rules, ensure .timeline-item position becomes relative again) ... */
     .timeline-item {
         position: relative !important; /* Back to relative flow */
-        top: auto !important; left: 0 !important; width: 100%;
-        padding-left: calc(15px + var(--card-gap) / 2); padding-right: 0;
-        margin-top: 0 !important; /* Reset */
-        margin-bottom: var(--min-spacing-mobile, 40px); /* Add margin back */
+        top: auto !important; left: 0 !important;
+        /* ... other mobile item styles ... */
     }
-     .timeline-item:first-child { margin-top: 0; } /* No margin on first */
-    .timeline-item-right, .timeline-item-left { left: 0; padding-left: calc(15px + var(--card-gap) / 2); }
-    .timeline-marker {
-        left: calc(15px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important;
-        top: 20px; /* Adjust Y */
-    }
-    .timeline-marker::before { display: none; } /* Hide horizontal line */
-    .timeline-card {
-        flex-direction: column; gap: 15px; max-width: none;
-        height: auto; /* Allow height to be determined by content */
-    }
-    .timeline-item-right .timeline-card { flex-direction: column; }
-    .card-image-container { width: 100%; height: 160px; }
-    .card-content { height: auto; } /* Allow content height */
-    .card-description { -webkit-line-clamp: 4; /* Allow more lines */ }
-}
-@media (max-width: 480px) {
-    body { padding-top: 70px; padding-bottom: 120px; }
-    h1#main-title { margin-bottom: 40px; font-size: clamp(1.6rem, 6vw, 2.1rem); }
-    #timeline-container { padding: 0 10px; }
-    #timeline-container::before { left: 10px; }
-    .timeline-item-right, .timeline-item-left { padding-left: calc(10px + var(--card-gap) / 2.5); }
-    .timeline-marker { left: calc(10px - var(--marker-size) / 2 - var(--timeline-width) / 2 + 1px) !important; }
-    .timeline-card { padding: 15px; }
-    .card-image-container { height: 130px; }
-    .card-title { font-size: 1rem; }
-    .card-description { font-size: 0.8rem; -webkit-line-clamp: 3; }
-    #progress-bar { width: calc(100% - 20px); bottom: 15px; padding: 6px 12px; gap: 10px; }
-    #progress-bar-text { font-size: 0.7rem; }
-    #progress-bar-percentage { font-size: 0.7rem; }
-    #progress-bar-icon { width: 10px; height: 10px; }
-}
-
-
-
-/* File Location: Playground/ComSci-Projects/A6-Final/style.css */
-
-/* ... (Keep ALL previous CSS from the last response, including fonts, vars, base, gradients, typography, timeline container, item, marker, card styles, progress bar, responsive) ... */
-
-/* --- REMOVE/REPLACE Marker Horizontal Line --- */
-/* Remove this rule entirely */
-/*
-.timeline-marker::before {
-    content: ''; position: absolute; top: 50%; transform: translateY(-50%);
-    height: var(--timeline-width); width: var(--horizontal-line-length);
-    background-color: var(--color-horizontal-line); z-index: -1;
-}
-.timeline-item-left .timeline-marker::before { right: calc(100% + 2px); }
-.timeline-item-right .timeline-marker::before { left: calc(100% + 2px); }
-*/
-
-/* --- ADD SVG Connector Styles --- */
-.connector-line {
-    position: absolute;
-    /* Positioning is handled by JS */
-    overflow: visible; /* Allow path to draw outside viewbox if needed */
-    z-index: 1; /* Behind card, above axis */
-    pointer-events: none; /* Allow clicks through */
-}
-
-.connector-line path {
-    stroke: var(--color-horizontal-line, #ced4da); /* Match axis color */
-    stroke-width: var(--timeline-width, 2px);
-    fill: none;
-}
-
-/* --- Minor Adjustments for Absolute Positioning Context --- */
-.timeline-item {
-    /* Ensure padding doesn't interfere with width calculation */
-    padding-left: 0;
-    padding-right: 0;
-}
-.timeline-item-left {
-    /* Occupy left half */
-    width: 50%;
-    left: 0;
-    justify-content: flex-end; /* Push card towards center */
-    padding-right: calc(var(--card-gap) / 2); /* Gap before center */
-}
-.timeline-item-right {
-     /* Occupy right half */
-    width: 50%;
-    left: 50%;
-    justify-content: flex-start; /* Push card away from center */
-    padding-left: calc(var(--card-gap) / 2); /* Gap after center */
-}
-.timeline-card {
-    /* Remove auto margins if item padding handles alignment */
-    margin-left: 0;
-    margin-right: 0;
-}
-
-
-/* --- Re-check Responsive Section for Absolute Positioning --- */
-@media (max-width: 800px) {
-    /* ... (Keep previous mobile rules resetting to relative flow) ... */
-
-     /* Ensure SVG connector is hidden on mobile where layout changes */
-    .connector-line {
+     /* Optionally hide blur overlays on mobile if performance is a concern or design changes */
+    /*
+    .blur-overlay {
         display: none;
     }
-     /* Re-enable marker horizontal line for mobile if desired */
-     /* .timeline-marker::before { display: block; width: 20px; background: red; } /* Example */
+    */
 }
+/* ... (Keep other mobile styles) ... */
