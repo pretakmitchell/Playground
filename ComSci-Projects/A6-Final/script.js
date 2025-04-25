@@ -1,290 +1,162 @@
-// File Location: Playground/ComSci-Projects/A6-Final/script.js
+/* -------------------------------------------------------------
+   Mitchell Pretak  •  Portfolio Timeline
+   -------------------------------------------------------------
+   WHAT’S NEW?
+   1.   pixel-per-day spacing between cards      →   space = time
+   2.   scroll-driven Month + Year in progress-bar (no-project
+        months are now shown too)
+----------------------------------------------------------------*/
 
-document.addEventListener('DOMContentLoaded', () => {
-    const timelineContainer = document.getElementById('timeline-container');
-    const initialLoadingMessage = document.querySelector('.loading-message');
+/* -------- 1. PROJECT DATA  (import, fetch or paste inline) --- */
+import projects from './projects.json'  // or however you bring them in
+// Each project ➜  { id, title, date, description, images, tags, link, … }
 
-    // --- CONFIGURATION FOR DYNAMIC SPACING ---
-    const MIN_SPACING_PX = 60;    // Min vertical space (pixels) between cards
-    const MAX_SPACING_PX = 450;   // Max vertical space for large gaps
-    const MS_PER_DAY = 1000 * 60 * 60 * 24;
-    // --- ADJUST THIS VALUE to control spacing sensitivity ---
-    const PX_PER_DAY = 1.5;       // Pixels of margin added per day difference
+/* -------- 2. CONFIG CONSTANTS -------------------------------- */
+const PIXELS_PER_DAY   = 4;                 // 14 days ≈ 56 px on canvas
+const CARD_SIDE_OFFSET = 1;                 // 0 = start left, 1 = start right
 
-    // --- Variables for Progress Bar ---
-    let progressBarElement = null;
-    let progressBarTextElement = null;
-    let progressBarIndicatorElement = null;
-    let progressBarPercentageElement = null;
-    let timelineItems = []; // Store references to timeline items for scroll calculation
-    let sortedProjects = []; // Store sorted project data
+/* -------- 3. BUILD THE TIMELINE ------------------------------ */
+const container = document.getElementById('timeline-container');
+const frag      = document.createDocumentFragment();
 
-    async function fetchProjects() {
-        try {
-            const response = await fetch('/api/a6-timeline-projects'); // Check this API path
+// sort chronologically
+projects.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}. Response: ${errorText}`);
-            }
+let prevDate = null;
+projects.forEach((proj, idx) => {
 
-            const projects = await response.json();
+  // --- A. VERTICAL GAP based on days since previous project ----
+  let marginTop = 0;
+  if (prevDate) {
+    const daysGap  = (new Date(proj.date) - prevDate) / 8.64e7; // ms→days
+    marginTop      = Math.round(daysGap * PIXELS_PER_DAY);
+  }
+  prevDate = new Date(proj.date);
 
-            if (initialLoadingMessage) initialLoadingMessage.remove();
-            timelineContainer.innerHTML = '';
+  // --- B. Create DOM for this card + marker -------------------
+  const item   = document.createElement('article');
+  item.className = `timeline-item ${((idx + CARD_SIDE_OFFSET) % 2 ? 'timeline-item-left'
+                                                                      : 'timeline-item-right')}`;
+  item.style.marginTop = `${marginTop}px`;
 
-            if (!projects || !Array.isArray(projects) || projects.length === 0) {
-                timelineContainer.innerHTML = '<p class="error-message">No projects found or data is invalid.</p>';
-                console.warn("No projects found or received invalid data:", projects);
-                return;
-            }
+  /* marker */
+  const marker = document.createElement('span');
+  marker.className = 'timeline-marker';
+  item.appendChild(marker);
 
-            // --- Process and Sort Projects ---
-            // Filter out projects with invalid dates first, but keep them for potential rendering later if needed
-            const validDateProjects = projects
-                .map(p => ({ ...p, dateObj: p.date ? new Date(p.date) : null })) // Add Date object
-                .filter(p => p.dateObj && !isNaN(p.dateObj.getTime())); // Keep only valid dates
+  /* card */
+  item.appendChild(buildCard(proj));
 
-            const invalidDateProjects = projects
-                .filter(p => !p.date || isNaN(new Date(p.date).getTime()));
-
-
-            // Sort only the projects with valid dates
-            validDateProjects.sort((a, b) => a.dateObj.getTime() - b.dateObj.getTime()); // Oldest first
-
-            // Combine sorted valid projects with invalid date projects at the end (or beginning if preferred)
-            sortedProjects = [...validDateProjects, ...invalidDateProjects];
-
-
-            // --- Render Timeline Items ---
-            timelineItems = []; // Clear previous items if any
-            let previousProjectDate = null; // Track last VALID date
-
-            sortedProjects.forEach((project, index) => {
-                const timelineItem = document.createElement('div');
-                timelineItem.classList.add('timeline-item', index % 2 === 0 ? 'timeline-item-left' : 'timeline-item-right');
-                // Add data attribute for date (useful for progress bar text)
-                if (project.dateObj && !isNaN(project.dateObj.getTime())) {
-                   timelineItem.dataset.date = project.dateObj.toISOString();
-                }
-
-
-                // --- Calculate and Apply Dynamic Spacing ---
-                let calculatedMargin = 0;
-                const currentProjectDate = project.dateObj; // Already validated or null
-                const isValidDate = currentProjectDate && !isNaN(currentProjectDate.getTime());
-
-                if (index > 0) { // Apply spacing only after the first item
-                    if (previousProjectDate && isValidDate) {
-                        const timeDifferenceMs = currentProjectDate.getTime() - previousProjectDate.getTime();
-                        const timeDifferenceDays = Math.max(0, timeDifferenceMs / MS_PER_DAY);
-
-                        calculatedMargin = MIN_SPACING_PX + (timeDifferenceDays * PX_PER_DAY);
-                        calculatedMargin = Math.max(MIN_SPACING_PX, Math.min(MAX_SPACING_PX, calculatedMargin));
-                    } else {
-                        // Use minimum spacing if previous or current date is invalid/missing
-                        calculatedMargin = MIN_SPACING_PX;
-                    }
-                    timelineItem.style.marginTop = `${calculatedMargin}px`;
-                }
-                // End Spacing Calculation
-
-                // Update previous date ONLY if the current date was valid
-                if (isValidDate) {
-                   previousProjectDate = currentProjectDate;
-                }
-
-                // --- Format Date for Display ---
-                let displayDate = 'Date N/A';
-                if (isValidDate) {
-                    displayDate = currentProjectDate.toLocaleDateString('en-US', {
-                        month: 'short', day: 'numeric', year: 'numeric'
-                    }).toUpperCase();
-                }
-
-                // --- Get Image and Category ---
-                const firstImage = project.images && project.images.length > 0 ? project.images[0] : null;
-                const imagePath = firstImage ? `assets/${firstImage}` : '';
-                const category = project.tags && project.tags.length > 0 ? project.tags[0].toUpperCase() : '';
-
-                // --- Generate HTML ---
-                timelineItem.innerHTML = `
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-card">
-                        ${imagePath ? `
-                        <div class="card-image-container">
-                           <img src="${imagePath}" alt="${project.title || 'Project image'}" loading="lazy">
-                        </div>` : '<div class="card-image-container"></div>'}
-                        <div class="card-content">
-                            <div class="card-header">
-                                <span class="card-date">${displayDate}</span>
-                                ${category ? `<span class="card-category">${category}</span>` : ''}
-                                ${category ? `<span class="separator">-</span>` : ''} <!-- Add separator dynamically -->
-                            </div>
-                            <h3 class="card-title">${project.title || 'Untitled Project'}</h3>
-                            <p class="card-description">${project.description || 'No description available.'}</p>
-                            ${project.link ? `<p class="card-link"><a href="${project.link}" target="_blank" rel="noopener noreferrer">View Project</a></p>` : ''}
-                        </div>
-                    </div>
-                `;
-                timelineContainer.appendChild(timelineItem);
-                timelineItems.push(timelineItem); // Store item reference
-            });
-            // --- END Rendering ---
-
-            // Set up the progress bar elements and add scroll listener
-            setupProgressBar();
-            addScrollListener();
-            // Initial update after layout calculation
-            requestAnimationFrame(updateProgressBarOnScroll);
-
-
-        } catch (error) {
-            console.error('Error fetching or displaying projects:', error);
-            if (initialLoadingMessage) initialLoadingMessage.remove();
-            timelineContainer.innerHTML = `<p class="error-message">Error loading projects: ${error.message}. Please check the console.</p>`;
-        }
-    }
-
-    // --- Progress Bar Setup ---
-    function setupProgressBar() {
-        progressBarElement = document.getElementById('progress-bar');
-        if (!progressBarElement) {
-           progressBarElement = document.createElement('footer');
-           progressBarElement.id = 'progress-bar';
-           // Match reference structure more closely
-           progressBarElement.innerHTML = `
-              <span id="progress-bar-text">Timeline Start</span> <!-- Combined text -->
-              <div class="progress-bar-visual">
-                 <div class="progress-bar-track">
-                    <div id="progress-bar-indicator"></div>
-                 </div>
-                 <span id="progress-bar-percentage">0%</span>
-                 <span id="progress-bar-icon"></span> <!-- Icon from CSS -->
-              </div>
-           `;
-           document.body.appendChild(progressBarElement);
-        }
-        // Get references to the inner elements
-        progressBarTextElement = document.getElementById('progress-bar-text');
-        progressBarIndicatorElement = document.getElementById('progress-bar-indicator');
-        progressBarPercentageElement = document.getElementById('progress-bar-percentage');
-    }
-
-    // --- Scroll Handler ---
-    function updateProgressBarOnScroll() {
-        if (!progressBarIndicatorElement || !progressBarTextElement || !progressBarPercentageElement || timelineItems.length === 0) {
-            // console.log("Progress bar elements or timeline items not ready.");
-            return;
-        }
-
-        // --- Calculate Scroll Percentage ---
-        const timelineTop = timelineContainer.offsetTop; // Top position of the timeline container
-        const timelineHeight = timelineContainer.offsetHeight; // Total height of the timeline content
-        const viewportHeight = window.innerHeight;
-        const scrollY = window.scrollY;
-
-        // Calculate how far the user has scrolled *within* the timeline content area
-        // Start percentage calculation when the top of the timeline container enters the viewport
-        const scrollStartOffset = timelineTop;
-        // Consider the scrollable range to be the timeline height minus the viewport height
-        // (once the bottom of the timeline hits the bottom of the viewport, you're at 100%)
-        const totalScrollableDistance = timelineHeight - viewportHeight;
-
-        let currentScrollPositionInTimeline = scrollY - scrollStartOffset;
-
-        // Clamp the scroll position within the timeline bounds (0 to totalScrollableDistance)
-        currentScrollPositionInTimeline = Math.max(0, Math.min(currentScrollPositionInTimeline, totalScrollableDistance));
-
-        let scrollPercentage = 0;
-        if (totalScrollableDistance > 0) {
-             scrollPercentage = (currentScrollPositionInTimeline / totalScrollableDistance) * 100;
-        } else if (scrollY + viewportHeight >= timelineTop + timelineHeight) {
-             // If timeline is shorter than viewport height, set to 100% when fully visible
-             scrollPercentage = 100;
-        }
-
-        // Clamp percentage between 0 and 100
-        scrollPercentage = Math.max(0, Math.min(100, scrollPercentage));
-
-        // Update Progress Bar Visuals
-        progressBarIndicatorElement.style.width = `${scrollPercentage}%`;
-        progressBarPercentageElement.textContent = `${Math.round(scrollPercentage)}%`;
-
-        // --- Update Progress Bar Text (Date Range) ---
-        // Find the item closest to the middle of the viewport
-        const viewportCenterY = scrollY + viewportHeight / 2;
-        let closestItem = null;
-        let minDistance = Infinity;
-
-        timelineItems.forEach(item => {
-            const itemRect = item.getBoundingClientRect();
-            const itemCenterY = window.scrollY + itemRect.top + itemRect.height / 2;
-            const distance = Math.abs(viewportCenterY - itemCenterY);
-
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestItem = item;
-            }
-        });
-
-        // Update text based on the closest item's date
-        if (closestItem && closestItem.dataset.date) {
-             try {
-                 const itemDate = new Date(closestItem.dataset.date);
-                 if (!isNaN(itemDate.getTime())) {
-                      // Format: Month YYYY (e.g., July 2022)
-                      const monthYear = itemDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-                      progressBarTextElement.textContent = monthYear;
-                 } else {
-                     progressBarTextElement.textContent = "Current View"; // Fallback
-                 }
-             } catch (e) {
-                  progressBarTextElement.textContent = "Current View"; // Fallback on error
-                  console.error("Error parsing date from dataset:", e);
-             }
-        } else if (timelineItems.length > 0 && timelineItems[0].dataset.date) {
-            // Fallback to first item's date range if no item is centered
-            const firstDate = new Date(timelineItems[0].dataset.date);
-             const lastDate = new Date(timelineItems[timelineItems.length - 1].dataset.date);
-             if (!isNaN(firstDate.getTime()) && !isNaN(lastDate.getTime())) {
-                 progressBarTextElement.textContent = `${firstDate.getFullYear()} - ${lastDate.getFullYear()}`;
-             } else {
-                 progressBarTextElement.textContent = "Timeline Range";
-             }
-
-        } else {
-             progressBarTextElement.textContent = "Timeline"; // Default
-        }
-
-        // Request next frame for smooth animation (optional but good practice)
-        // requestAnimationFrame(updateProgressBarOnScroll); // Creates a loop, use throttling instead
-    }
-
-
-    // --- Throttled Scroll Listener ---
-    // Avoid running the update function too frequently on scroll
-    let isThrottled = false;
-    function throttledScrollHandler() {
-        if (!isThrottled) {
-            isThrottled = true;
-            requestAnimationFrame(() => { // Use rAF for smooth visual updates
-                updateProgressBarOnScroll();
-                isThrottled = false;
-            });
-        }
-    }
-
-    function addScrollListener() {
-       // Remove existing listener first to avoid duplicates if fetchProjects is called again
-       window.removeEventListener('scroll', throttledScrollHandler);
-       window.removeEventListener('resize', throttledScrollHandler); // Also update on resize
-
-       // Add the throttled listener
-       window.addEventListener('scroll', throttledScrollHandler);
-       window.addEventListener('resize', throttledScrollHandler);
-    }
-
-    // --- Initial Load ---
-    fetchProjects(); // Fetch data, render items, setup progress bar, add listener
+  frag.appendChild(item);
 });
+
+container.innerHTML = '';          // wipe “Loading…” message
+container.appendChild(frag);
+
+/* helper: buildCard() */
+function buildCard(p){
+  const card        = document.createElement('div');
+  card.className    = 'timeline-card';
+
+  // thumbnail
+  const thumbWrap   = document.createElement('div');
+  thumbWrap.className = 'card-image-container';
+  const img         = document.createElement('img');
+  img.loading = 'lazy';
+  img.src    = `assets/images/${p.images?.[0] ?? 'placeholder.jpg'}`;
+  img.alt    = p.title;
+  thumbWrap.appendChild(img);
+  card.appendChild(thumbWrap);
+
+  // content
+  const content     = document.createElement('div');
+  content.className = 'card-content';
+
+  const header      = document.createElement('div');
+  header.className  = 'card-header';
+  const dateSpan    = document.createElement('span');
+  dateSpan.className = 'card-date';
+  dateSpan.textContent = new Date(p.date).toLocaleDateString(undefined,
+                             { day:'numeric', month:'short', year:'numeric' });
+  const catSpan     = document.createElement('span');
+  catSpan.className = 'card-category';
+  catSpan.textContent = (p.tags?.[0] ?? 'project').replace(/[-_]/g,' ');
+  header.append(dateSpan, catSpan);
+  content.appendChild(header);
+
+  const titleEl     = document.createElement('h3');
+  titleEl.className = 'card-title';
+  titleEl.textContent = p.title;
+  content.appendChild(titleEl);
+
+  const descEl      = document.createElement('p');
+  descEl.className  = 'card-description';
+  descEl.textContent = p.description;
+  content.appendChild(descEl);
+
+  if (p.link){
+    const linkWrap  = document.createElement('div');
+    linkWrap.className = 'card-link';
+    linkWrap.innerHTML = `<a href="${p.link}" target="_blank" rel="noreferrer">View Project ↗︎</a>`;
+    content.appendChild(linkWrap);
+  }
+
+  card.appendChild(content);
+  return card;
+}
+
+/* -------- 4. PROGRESS BAR  ----------------------------------- */
+buildProgressBar();                      // once
+window.addEventListener('scroll', updateProgressBar, { passive:true });
+updateProgressBar();                     // and initialise
+
+function buildProgressBar(){
+  const bar          = document.createElement('footer');
+  bar.id             = 'progress-bar';
+
+  const text         = document.createElement('div');
+  text.id            = 'progress-bar-text';           // ⇠ Month Year goes here
+  bar.appendChild(text);
+
+  const visualWrap   = document.createElement('div');
+  visualWrap.className = 'progress-bar-visual';
+
+  const track        = document.createElement('div');
+  track.className    = 'progress-bar-track';
+  const indicator    = document.createElement('div');
+  indicator.id       = 'progress-bar-indicator';
+  track.appendChild(indicator);
+  visualWrap.appendChild(track);
+
+  const pct          = document.createElement('span');
+  pct.id             = 'progress-bar-percentage';
+  visualWrap.appendChild(pct);
+
+  bar.appendChild(visualWrap);
+  document.body.appendChild(bar);
+}
+
+const firstDate = new Date(projects[0].date);
+const lastDate  = new Date(projects.at(-1).date);
+const totalDays = (lastDate - firstDate) / 8.64e7;     // ms→days
+
+function updateProgressBar(){
+  const barText   = document.getElementById('progress-bar-text');
+  const indicator = document.getElementById('progress-bar-indicator');
+  const pctText   = document.getElementById('progress-bar-percentage');
+
+  const scrolled  = window.scrollY + window.innerHeight * 0.5; // mid-viewport
+  const top       = container.offsetTop;
+  const height    = container.scrollHeight;
+  const rel       = Math.min(Math.max((scrolled - top) / height, 0), 1); // 0→1
+
+  /* A. percentage line */
+  indicator.style.width = (rel * 100).toFixed(2) + '%';
+  pctText.textContent   = Math.round(rel * 100) + '%';
+
+  /* B. Month + Year label */
+  const currentDays     = totalDays * rel;
+  const currentDate     = new Date(firstDate.getTime() + currentDays * 8.64e7);
+  barText.textContent   = currentDate.toLocaleDateString(undefined,
+                           { month:'long', year:'numeric' });
+}
