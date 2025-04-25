@@ -1,0 +1,96 @@
+<!-- 
+  Assignment 4 – Arrays in P5.js
+  "The World's Worst Search"
+
+  This intentionally frustrating search tool was built using P5.js.
+  Users drag letters one by one into a tiny drop zone to assemble a search query.
+  The sketch demonstrates use of arrays, object data, DOM manipulation, and array methods.
+
+  
+  Requirements Met:
+  – Uses multiple arrays (letters, currentWord, project data)
+  – Uses for loops, .push(), .join(), and an array of objects
+  – Interacts with the DOM using an array of HTMLElements
+  – Includes .concat(), .join(), and array lifecycle logic via reset
+  – Tutorials cited below per assignment requirement
+
+
+  Tutorials / References:
+  – MDN Web Docs: HTML Drag and Drop API  
+    https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
+
+  – P5.js DOM Reference  
+    https://p5js.org/reference/#group-DOM
+
+  – JavaScript Array Methods – .push(), .join(), .filter()  
+    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+  – A Beginner’s Guide to the DOM – JavaScript Info  
+    https://javascript.info/dom-nodes
+
+-->
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Worst Portfolio Search Page Ever</title>
+  <!-- Link to external CSS file -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+    <!-- Header -->
+    <header class="lab4-header">
+      <h1 class="section-heading">L4 – Media for Project Details</h1>
+      <a href="../../index.html" class="cta-button">
+        <div class="button-text">Return to Homepage</div>
+      </a>
+    </header>
+  
+  
+  
+  <h1>The Worst Search System Imaginable</h1>
+
+  <div class="intro-steps">
+    <p>
+      Welcome to the worst portfolio search page you'll ever use! 
+      Here’s how to “search”:
+    </p>
+    <ol>
+      <li>Drag <strong>one letter</strong> to the <em>Tiny Drop Zone</em>.</li>
+      <li>Press <strong>Done</strong> to lock in that letter to your current word (the letters will reshuffle – have fun!).</li>
+      <li>Repeat for each letter in your word.</li>
+      <li>When you’re ready, click <strong>Start Search</strong> to see if anything matches your typed word.</li>
+      <li>If you want to start over (because let’s face it, you will), press <strong>Clear Word</strong> to reset everything.</li>
+    </ol>
+    <p>Good luck… you’ll need it!</p>
+  </div>
+
+  <div class="container">
+    <!-- The TINY DROP ZONE and controls -->
+    <div class="drop-zone">
+      <div class="zone-label">DROP HERE</div>
+    </div>
+    <button id="doneBtn">Done</button>
+    <button id="startSearchBtn">Start Search</button>
+    <button id="clearWordBtn">Clear Word</button>
+
+    <!-- Display the "Current Word" being built -->
+    <div id="currentWordDisplay" class="word-display">(No letters yet)</div>
+
+    <!-- This is where search results appear -->
+    <div id="searchResults" class="results-container"></div>
+  </div>
+
+  <!-- The letters A–Z will be created dynamically by script.js in the .container -->
+
+  <!-- 1) Data for portfolio items -->
+  <script src="data.js"></script>
+  <!-- 2) Our main script -->
+  <script src="script.js"></script>
+</body>
+</html>

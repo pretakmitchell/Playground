@@ -1,0 +1,19 @@
+{
+  "id": "project-caraclip",
+  "title": "CaraClip \u2013 Vacuum-Formed Packaging Design",
+  "date": "2024-09-01",
+  "description": "A packaging project utilizing vacuum forming techniques to create a retail-ready blister pack for a 3D-printed carabiner.",
+  "images": [
+    "project-caraclip1.jpg",
+    "project-caraclip2.jpg"
+  ],
+  "details": "CaraClip focuses on designing a two-layer blister package to securely display a 3D-printed carabiner. The project involved creating precise 3D-printed molds, experimenting with air-dry clay alternatives, and refining vacuum forming processes to achieve a professional finish. The final packaging includes a clear plastic cover and a printed back card, assembled with attention to detail to hide seams and ensure product protection during transport.",
+  "tags": [
+    "packaging-design",
+    "vacuum-forming",
+    "3D-printing",
+    "product-display",
+    "fabrication"
+  ],
+  "link": "https://www.mitchellpretak.com/works/caraclip"
+}

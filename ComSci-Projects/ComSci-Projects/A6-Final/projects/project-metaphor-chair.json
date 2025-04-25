@@ -1,0 +1,19 @@
+{
+  "id": "project-metaphor-chair",
+  "title": "Metaphor Chair \u2013 Representing Personal Traits Through Design",
+  "date": "2023-11-01",
+  "description": "A conceptual chair design translating a classmate's personality traits into physical form.",
+  "images": [
+    "project-metaphor-chair1.jpg",
+    "project-metaphor-chair2.jpg"
+  ],
+  "details": "The Metaphor Chair project explores how personal characteristics can be embodied in furniture design. By analyzing a classmate's traits such as creativity, perseverance, and thoughtfulness, the chair incorporates materials and forms that reflect these qualities. Features include a wooden frame for adaptability, steel reinforcements symbolizing strength, and interchangeable cushions for personalization. The design process involved CAD modeling, prototyping with birch plywood and steel rods, and iterative testing to achieve a balance between metaphorical representation and functionality.",
+  "tags": [
+    "product-design",
+    "furniture",
+    "conceptual-design",
+    "CAD",
+    "prototyping"
+  ],
+  "link": "https://www.mitchellpretak.com/works/metaphor-chair"
+}
