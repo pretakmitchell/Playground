@@ -211,26 +211,54 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateContainerHeight() { /* ... (Keep same logic) ... */ }
 
     // --- Helper: Progress Bar Setup ---
+        // --- Helper: Progress Bar Setup ---
     function setupProgressBar() {
-        try { // Add try-catch for safety
+        console.log("Setting up progress bar..."); // Log: Start setup
+        try {
             progressBarElement = document.getElementById('progress-bar');
+
+            // If the footer doesn't exist, create and append it
             if (!progressBarElement) {
                progressBarElement = document.createElement('footer');
                progressBarElement.id = 'progress-bar';
-               progressBarElement.innerHTML = `...`; // same innerHTML structure
+               // ** Ensure this structure exactly matches your CSS **
+               progressBarElement.innerHTML = `
+                  <span id="progress-bar-text">Loading Date...</span>
+                  <div class="progress-bar-visual">
+                     <div class="progress-bar-track">
+                        <div id="progress-bar-indicator"></div>
+                     </div>
+                     <span id="progress-bar-percentage">0%</span>
+                     <span id="progress-bar-icon"></span>
+                  </div>
+               `;
                document.body.appendChild(progressBarElement);
-               console.log("Progress bar element created.");
+               console.log("Progress bar element CREATED and appended.");
             } else {
-                console.log("Progress bar element found.");
+                 console.log("Progress bar element found existing in DOM.");
             }
+
+            // Now, query *within* the progressBarElement (or document) to find the parts
+            // Querying the document is generally safer if the element was just added
             progressBarTextElement = document.getElementById('progress-bar-text');
             progressBarIndicatorElement = document.getElementById('progress-bar-indicator');
             progressBarPercentageElement = document.getElementById('progress-bar-percentage');
-            if(!progressBarTextElement || !progressBarIndicatorElement || !progressBarPercentageElement) {
-                console.error("Failed to find one or more progress bar inner elements!");
-            }
+
+            // Check if elements were found
+            if (!progressBarTextElement) { console.error("Failed to find #progress-bar-text"); }
+            if (!progressBarIndicatorElement) { console.error("Failed to find #progress-bar-indicator"); }
+            if (!progressBarPercentageElement) { console.error("Failed to find #progress-bar-percentage"); }
+
+            // Initial visual state (optional, scroll handler updates anyway)
+            if (progressBarIndicatorElement) progressBarIndicatorElement.style.width = '0%';
+            if (progressBarPercentageElement) progressBarPercentageElement.textContent = '0%';
+            if (progressBarTextElement) progressBarTextElement.textContent = 'Timeline Start'; // More descriptive initial text
+
         } catch (e) {
-            console.error("Error setting up progress bar:", e);
+            console.error("Error during progress bar setup:", e);
+            // Fallback: try to remove potentially broken progress bar
+            if (progressBarElement) progressBarElement.remove();
+            progressBarElement = null; // Ensure it's null so update function doesn't run
         }
     }
 
