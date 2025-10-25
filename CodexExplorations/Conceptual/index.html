@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dream Regenerative Opportunities Map</title>
+    <meta
+      name="description"
+      content="Interactive concept map of Dream’s regenerative opportunities."
+    />
+    <link rel="icon" href="../../assets/logo.svg" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["'Montserrat'", "ui-sans-serif", "system-ui"],
+              mono: ["'Roboto Mono'", "ui-monospace", "SFMono-Regular"],
+            },
+            colors: {
+              dream: {
+                primary: "#5cce93",
+                deep: "#014621",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background: #f8fafc;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-slate-50 font-sans">
+    <noscript>
+      <p style="padding: 1rem; font-family: 'Montserrat', ui-sans-serif;">
+        This interactive map requires JavaScript. Please enable it to view the nodes and connections.
+      </p>
+    </noscript>
+    <div id="dream-map-root" class="min-h-screen"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7/babel.min.js"></script>
+    <script
+      type="text/babel"
+      data-presets="react"
+      data-plugins="transform-typescript"
+      src="./dream_regenerative_opportunities_map_structured_v_4.jsx"
+    ></script>
+  </body>
+</html>

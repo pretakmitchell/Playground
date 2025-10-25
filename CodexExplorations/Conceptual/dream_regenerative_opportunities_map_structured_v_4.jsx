@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import * as d3 from "d3";
+/* global React, ReactDOM, d3 */
+
+const { useEffect, useMemo, useRef, useState } = React;
 
 /**
  * Dream — Opportunities in Regenerative Economies (Structured Radial Map • v4)
@@ -13,7 +14,7 @@ import * as d3 from "d3";
  * - Wavy links render behind nodes with subtle gradients.
  */
 
-export default function DreamOpportunitiesMapV4() {
+function DreamOpportunitiesMapV4() {
   /** ====== CONFIG ====== */
   const COLORS = {
     brand: { primary: "#5cce93", deep: "#014621", mint: "#b9f6d8" },
@@ -215,6 +216,102 @@ export default function DreamOpportunitiesMapV4() {
 
   const allNodes: GraphNode[] = useMemo(() => [core, ...mixed, des, ...desComponents, ...largeIdeas, ...microNodes], []);
 
+  /** ====== TYPOGRAPHY & DIMENSIONS HELPERS ====== */
+  function fontSizeFor(n: GraphNode) {
+    if (n.type === "core") return 15;
+    if (n.type === "mixed") return 15;
+    if (n.type === "microtrend") return 12;
+    if (n.type === "component") return 10.5;
+    return (n.size || 0) < 90 ? 10.5 : 13;
+  }
+
+  function wrapLines(label: string, maxChars: number) {
+    if (!label) return [""];
+    if (label.includes("\n")) return label.split("\n");
+    const words = label.split(/\s+/);
+    const lines: string[] = [];
+    let line = "";
+    for (const w of words) {
+      const test = (line ? line + " " : "") + w;
+      if (test.length <= maxChars) line = test;
+      else {
+        if (line) lines.push(line);
+        line = w;
+      }
+    }
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function pillDims(n: GraphNode) {
+    const f = fontSizeFor(n);
+    const charW = f * 0.6;
+    const baseTarget =
+      n.type === "mixed"
+        ? 340
+        : n.type === "microtrend"
+        ? 240
+        : n.type === "idea"
+        ? (n.size || 0) < 90
+          ? 210
+          : 270
+        : 250;
+    const targetW = baseTarget;
+    const paddingX = 36;
+    const paddingY = 14;
+    const maxChars = Math.max(8, Math.floor((targetW - paddingX) / charW));
+    const lines = wrapLines(n.label, maxChars);
+    const longest = Math.max(...lines.map((l) => l.length), 1);
+    const w = Math.max(72, Math.min(targetW, longest * charW + paddingX));
+    const lineH = f * 1.24;
+    const h = Math.max(28, lines.length * lineH + paddingY);
+    return { w, h, f, lines, lineH };
+  }
+
+  function coreCircleDims(n: GraphNode) {
+    const f = 14;
+    const charW = f * 0.62;
+    const lines = wrapLines(n.label, 22);
+    const longest = Math.max(...lines.map((l) => l.length), 1);
+    const textW = longest * charW + 32;
+    const lineH = f * 1.2;
+    const textH = lines.length * lineH + 20;
+    const r = Math.max(120, Math.max(textW / 2 + 32, textH / 2 + 32));
+    return { r, f, lines, lineH };
+  }
+
+  function nodeOpacity(n: GraphNode) {
+    if (n.type === "core" || n.type === "mixed") return 1;
+    if (n.type === "microtrend") return 0.25;
+    if (n.type === "component" || (n.type === "idea" && (n.size || 0) < 90)) return 0.12;
+    const s = Math.max(60, Math.min(120, n.size ?? 100));
+    const scaled = 0.22 + ((s - 60) / 60) * 0.15;
+    return Math.min(0.38, scaled);
+  }
+
+  function rawNodeColor(n: GraphNode) {
+    if (n.type === "core") return COLORS.brand.deep;
+    if (n.type === "mixed") return (n.trend && COLORS.trends[n.trend]) || COLORS.brand.mint;
+    if (n.type === "microtrend")
+      return COLORS.micro[n.microtrend as keyof typeof COLORS.micro] || (n.trend && COLORS.trends[n.trend]) || COLORS.brand.mint;
+    const t = n.trend || (n.trends && n.trends[0]);
+    return t ? COLORS.trends[t] : COLORS.brand.mint;
+  }
+
+  const estimatedMetrics = useMemo(() => {
+    const map = new Map<string, { w?: number; h?: number; r?: number }>();
+    allNodes.forEach((n) => {
+      if (n.type === "core") {
+        const { r } = coreCircleDims(n);
+        map.set(n.id, { r });
+      } else {
+        const { w, h } = pillDims(n);
+        map.set(n.id, { w, h });
+      }
+    });
+    return map;
+  }, [allNodes]);
+
   /** ====== FILTERING ====== */
   const visibleNodeIds = useMemo(() => {
     const ids = new Set<string>();
@@ -260,7 +357,7 @@ export default function DreamOpportunitiesMapV4() {
     const R4 = M * 0.78; // small ideas outer ring
     const R4b = R4 + 22; // second outer ring for spacing
 
-    const pos = new Map<string, { x: number; y: number; a?: number }>();
+    const pos = new Map<string, { x: number; y: number; a?: number; r?: number }>();
 
     // center
     pos.set("core", { x: cx, y: cy });
@@ -269,7 +366,7 @@ export default function DreamOpportunitiesMapV4() {
     (["SSC", "RA", "RL"] as TrendKey[]).forEach((t) => {
       const { center } = sectorAngles(t);
       const p = polar(cx, cy, R1, center);
-      pos.set(t.toLowerCase(), { x: p.x, y: p.y, a: center });
+      pos.set(t.toLowerCase(), { x: p.x, y: p.y, a: center, r: R1 });
     });
 
     (pos as any).__R = { R1, R2, R3, R3b, R4, R4b, cx, cy, M };
@@ -277,18 +374,65 @@ export default function DreamOpportunitiesMapV4() {
     // microtrends along R2
     const byTrend: Record<TrendKey, GraphNode[]> = { SSC: [], RA: [], RL: [] } as any;
     microNodes.forEach((m) => byTrend[m.trend as TrendKey].push(m));
+
+    function layoutBand(
+      items: { node: GraphNode; radius: number }[],
+      angleStart: number,
+      angleEnd: number,
+      padding: number,
+    ) {
+      if (!items.length) return;
+      const start = angleStart + padding;
+      const end = angleEnd - padding;
+      if (end <= start) {
+        items.forEach(({ node, radius }) => {
+          const a = (angleStart + angleEnd) / 2;
+          const p = polar(cx, cy, radius, a);
+          pos.set(node.id, { x: p.x, y: p.y, a, r: radius });
+        });
+        return;
+      }
+
+      const entries = items.map(({ node, radius }) => {
+        const metric = estimatedMetrics.get(node.id);
+        const width = (metric?.w ?? 160) + 48;
+        return { node, radius, width };
+      });
+
+      const available = end - start;
+      let arcs = entries.map((entry) => entry.width / entry.radius);
+      let totalArc = d3.sum(arcs);
+      if (totalArc > available) {
+        const scale = Math.min(totalArc / Math.max(available, 0.0001) + 0.08, 1.8);
+        entries.forEach((entry) => {
+          entry.radius *= scale;
+        });
+        arcs = entries.map((entry) => entry.width / entry.radius);
+        totalArc = d3.sum(arcs);
+      }
+
+      const gap = Math.max((available - totalArc) / (entries.length + 1), (6 * Math.PI) / 180 / (entries.length || 1));
+      let cursor = start + gap;
+      entries.forEach((entry, idx) => {
+        const arc = entry.width / entry.radius;
+        const angle = cursor + arc / 2;
+        cursor += arc + gap;
+        const p = polar(cx, cy, entry.radius, angle);
+        pos.set(entry.node.id, { x: p.x, y: p.y, a: angle, r: entry.radius });
+      });
+    }
+
     (Object.keys(byTrend) as TrendKey[]).forEach((t) => {
       const arr = byTrend[t];
       const { start, end } = sectorAngles(t);
-      const pad = (12 * Math.PI) / 180;
-      const angles = d3.range(arr.length).map((i) => d3.interpolateNumber(start + pad, end - pad)(arr.length === 1 ? 0.5 : i / (arr.length - 1)));
-      arr.forEach((n, i) => { const a = angles[i]; const p = polar(cx, cy, R2, a); pos.set(n.id, { x: p.x, y: p.y, a }); });
+      const items = arr.map((node) => ({ node, radius: R2 }));
+      layoutBand(items, start, end, (14 * Math.PI) / 180);
     });
 
     // DES on R2 within SSC
     const aDes = sectorAngles("SSC").center + (18 * Math.PI) / 180;
     const pDes = polar(cx, cy, R2, aDes);
-    pos.set("des", { x: pDes.x, y: pDes.y, a: aDes });
+    pos.set("des", { x: pDes.x, y: pDes.y, a: aDes, r: R2 });
 
     // DES components orbit
     const compR = 130;
@@ -302,33 +446,56 @@ export default function DreamOpportunitiesMapV4() {
     const big: GraphNode[] = [], small: GraphNode[] = [];
     largeIdeas.forEach((n) => ((n.size ?? 0) >= 90 ? big : small).push(n));
 
-    function placeRing(arr: GraphNode[], trend: TrendKey, Rprimary: number, Ralt: number) {
-      const subset = arr.filter((n) => (n.trend || n.trends?.[0]) === trend || (n.trends && n.trends.length === 1 && n.trends[0] === trend));
-      const { start, end } = sectorAngles(trend);
-      const pad = (18 * Math.PI) / 180;
-      const angles = d3.range(subset.length).map((i) => d3.interpolateNumber(start + pad, end - pad)(subset.length === 1 ? 0.5 : i / (subset.length - 1)));
-      subset.forEach((n, i) => {
-        const a = angles[i];
-        const r = i % 2 === 0 ? Rprimary : Ralt; // stagger radius to reduce overlaps
-        const p = polar(cx, cy, r, a);
-        pos.set(n.id, { x: p.x, y: p.y, a });
+    function filterByTrend(arr: GraphNode[], trend: TrendKey) {
+      return arr.filter(
+        (n) =>
+          n.trend === trend ||
+          (!!n.trends && n.trends.length === 1 && n.trends[0] === trend) ||
+          (n.trends && n.trends.length > 1 && n.trends.includes(trend)),
+      );
+    }
+
+    (["SSC", "RA", "RL"] as TrendKey[]).forEach((t) => {
+      const subset = filterByTrend(big, t).filter((n) => !(n.trends && n.trends.length > 1));
+      const { start, end } = sectorAngles(t);
+      const items = subset.map((n, i) => ({ node: n, radius: i % 2 === 0 ? R3 : R3b }));
+      layoutBand(items, start, end, (20 * Math.PI) / 180);
+    });
+
+    (["SSC", "RA", "RL"] as TrendKey[]).forEach((t) => {
+      const subset = filterByTrend(small, t).filter((n) => !(n.trends && n.trends.length > 1));
+      const { start, end } = sectorAngles(t);
+      const items = subset.map((n, i) => ({ node: n, radius: i % 2 === 0 ? R4 : R4b }));
+      layoutBand(items, start, end, (22 * Math.PI) / 180);
+    });
+
+    const multiTrendIdeas = largeIdeas.filter((n) => (n.trends || []).length > 1);
+    if (multiTrendIdeas.length) {
+      const items = multiTrendIdeas.map((n) => {
+        const angs = (n.trends || []).map((t) => sectorAngles(t as TrendKey).center);
+        const a = averageAngles(angs);
+        return { node: n, radius: R3 + 24, angle: a };
+      });
+      items.sort((a, b) => a.angle - b.angle);
+      const minSpacing = (18 * Math.PI) / 180;
+      for (let i = 1; i < items.length; i++) {
+        const prev = items[i - 1];
+        const curr = items[i];
+        if (curr.angle - prev.angle < minSpacing) {
+          const shift = minSpacing - (curr.angle - prev.angle);
+          curr.angle += shift;
+        }
+      }
+      items.forEach(({ node, radius, angle }) => {
+        const p = polar(cx, cy, radius, angle);
+        pos.set(node.id, { x: p.x, y: p.y, a: angle, r: radius });
       });
     }
 
-    (["SSC", "RA", "RL"] as TrendKey[]).forEach((t) => placeRing(big, t, R3, R3b));
-    (["SSC", "RA", "RL"] as TrendKey[]).forEach((t) => placeRing(small, t, R4, R4b));
-
-    // multi‑trend ideas averaged, placed between R3 and R4
-    largeIdeas.filter((n) => (n.trends || []).length > 1).forEach((n, idx) => {
-      const angs = (n.trends || []).map((t) => sectorAngles(t as TrendKey).center);
-      const a = averageAngles(angs);
-      const r = R3 + 10 + (idx % 3) * 16; // stagger three bands
-      const p = polar(cx, cy, r, a);
-      pos.set(n.id, { x: p.x, y: p.y, a });
-    });
-
     return pos;
-  }, [dims]);
+  }, [dims, estimatedMetrics, microNodes, desComponents, largeIdeas]);
+
+  const layoutPositionsRef = useRef(positions);
 
   /** ====== RENDER ====== */
   useEffect(() => {
@@ -338,14 +505,55 @@ export default function DreamOpportunitiesMapV4() {
     svg.selectAll("defs").remove();
     const defs = svg.append("defs");
 
+    const shadow = defs
+      .append("filter")
+      .attr("id", "nodeShadow")
+      .attr("x", "-40%")
+      .attr("y", "-40%")
+      .attr("width", "180%")
+      .attr("height", "180%")
+      .attr("color-interpolation-filters", "sRGB");
+    shadow
+      .append("feDropShadow")
+      .attr("dx", 0)
+      .attr("dy", 0)
+      .attr("stdDeviation", 6)
+      .attr("flood-color", "#1c5c40")
+      .attr("flood-opacity", 0.45);
+
     const nodes = allNodes.filter((n) => visibleNodeIds.has(n.id));
     const links = visibleEdges.map((e, i) => ({ ...e, __id: i }));
+
+    layoutPositionsRef.current = new Map(positions);
+
+    type Metric =
+      | (ReturnType<typeof pillDims> & { r?: number })
+      | (ReturnType<typeof coreCircleDims> & { w?: number; h?: number });
+    const metricsCache = new Map<string, Metric>();
+    nodes.forEach((n) => {
+      const metric = n.type === "core" ? coreCircleDims(n) : pillDims(n);
+      metricsCache.set(n.id, metric as Metric);
+    });
+
+    const adjacency = new Map<string, Set<string>>();
+    links.forEach((l) => {
+      if (!adjacency.has(l.source)) adjacency.set(l.source, new Set());
+      if (!adjacency.has(l.target)) adjacency.set(l.target, new Set());
+      adjacency.get(l.source)!.add(l.target);
+      adjacency.get(l.target)!.add(l.source);
+    });
+
+    const neighborSet = new Set<string>();
+    if (selectedId) {
+      neighborSet.add(selectedId);
+      adjacency.get(selectedId)?.forEach((id) => neighborSet.add(id));
+    }
 
     links.forEach((l) => {
       const a = nodeById.get(l.source)!; const b = nodeById.get(l.target)!;
       const id = `grad_${l.__id}`;
-      const c1 = colorOn ? baseColor(a) : COLORS.gray.edge;
-      const c2 = colorOn ? baseColor(b) : COLORS.gray.edge;
+      const c1 = rawNodeColor(a);
+      const c2 = rawNodeColor(b);
       const grad = defs.append("linearGradient").attr("id", id).attr("gradientUnits", "userSpaceOnUse");
       grad.append("stop").attr("offset", "0%").attr("stop-color", c1);
       grad.append("stop").attr("offset", "100%" ).attr("stop-color", c2);
@@ -355,72 +563,26 @@ export default function DreamOpportunitiesMapV4() {
     const gLinks = g.selectAll("g.edge-layer").data([0]).join("g").attr("class", "edge-layer");
     const gNodes = g.selectAll("g.node-layer").data([0]).join("g").attr("class", "node-layer");
 
-    function baseColor(n: GraphNode) {
-      if (n.type === "core") return COLORS.brand.deep;
-      if (n.type === "mixed") return (n.trend && COLORS.trends[n.trend]) || COLORS.brand.mint;
-      if (n.type === "microtrend") return COLORS.micro[n.microtrend as keyof typeof COLORS.micro] || (n.trend && COLORS.trends[n.trend]) || COLORS.brand.mint;
-      const t = n.trend || (n.trends && n.trends[0]);
-      return t ? COLORS.trends[t] : COLORS.brand.mint;
-    }
-
-    function nodeOpacity(n: GraphNode) {
-      if (n.type === "core" || n.type === "mixed") return 1;
-      if (n.type === "microtrend") return 0.25;
-      // ideas/components translucent
-      if (n.type === "component" || (n.type === "idea" && (n.size || 0) < 90)) return 0.10; // micro ideas ≈10%
-      const s = Math.max(60, Math.min(120, n.size ?? 100));
-      const scaled = 0.2 + ((s - 60) / 60) * 0.15; // 0.20 → 0.35
-      return Math.min(0.35, scaled);
-    }
-
-    function fontSizeFor(n: GraphNode) {
-      if (n.type === "core") return 15;
-      if (n.type === "mixed") return 15;
-      if (n.type === "microtrend") return 12;
-      if (n.type === "component") return 10;
-      return (n.size || 0) < 90 ? 9.5 : 12.5; // small ideas much smaller
-    }
-
-    function wrapLines(label: string, maxChars: number) {
-      if (!label) return [""];
-      if (label.includes("\n")) return label.split("\n");
-      const words = label.split(/\s+/);
-      const lines: string[] = [];
-      let line = "";
-      for (const w of words) {
-        const test = (line ? line + " " : "") + w;
-        if (test.length <= maxChars) line = test; else { if (line) lines.push(line); line = w; }
+    function anchorPoint(id: string, otherId: string) {
+      const node = nodeById.get(id)!;
+      const p = positions.get(id)!;
+      const other = positions.get(otherId)!;
+      const angle = Math.atan2(other.y - p.y, other.x - p.x);
+      if (node.type === "core") {
+        const metric = metricsCache.get(id) || { r: 120 };
+        const r = (metric.r || 120) + 4;
+        return { x: p.x + Math.cos(angle) * r, y: p.y + Math.sin(angle) * r };
       }
-      if (line) lines.push(line);
-      return lines;
+      const metric = metricsCache.get(id) || { w: 160, h: 60 };
+      const hw = (metric.w ?? 160) / 2 + 6;
+      const hh = (metric.h ?? 60) / 2 + 6;
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+      const scale = 1 / Math.max(Math.abs(cos) / hw, Math.abs(sin) / hh, 0.0001);
+      return { x: p.x + cos * hw * scale, y: p.y + sin * hh * scale };
     }
 
-    function pillDims(n: GraphNode) {
-      const f = fontSizeFor(n);
-      const charW = f * 0.62;
-      const targetW = n.type === "mixed" ? 320 : n.type === "microtrend" ? 220 : n.type === "idea" ? ((n.size || 0) < 90 ? 180 : 250) : 240;
-      const maxChars = Math.max(8, Math.floor((targetW - 24) / charW));
-      const lines = wrapLines(n.label, maxChars);
-      const longest = Math.max(...lines.map((l) => l.length), 1);
-      const w = Math.max(68, Math.min(targetW, longest * charW + 24));
-      const lineH = f * 1.18;
-      const h = Math.max(24, lines.length * lineH + 8);
-      return { w, h, f, lines, lineH };
-    }
-
-    function coreCircleDims(n: GraphNode) {
-      const f = 14; // smaller to accommodate wraps
-      const charW = f * 0.62;
-      const lines = wrapLines(n.label, 22);
-      const longest = Math.max(...lines.map((l) => l.length), 1);
-      const textW = longest * charW + 24;
-      const lineH = f * 1.2;
-      const textH = lines.length * lineH + 14;
-      const r = Math.max(110, Math.max(textW / 2 + 28, textH / 2 + 28));
-      return { r, f, lines, lineH };
-    }
-
-    function linkPath(s: { x: number; y: number; a?: number }, t: { x: number; y: number; a?: number }) {
+    function linkPath(s: { x: number; y: number }, t: { x: number; y: number }) {
       const dx = t.x - s.x, dy = t.y - s.y;
       const dist = Math.hypot(dx, dy);
       const nx = -dy / (dist || 1), ny = dx / (dist || 1);
@@ -437,14 +599,27 @@ export default function DreamOpportunitiesMapV4() {
       .join((enter) => enter.append("path").attr("class", "link").attr("fill", "none").attr("stroke-width", 2).attr("stroke-linecap", "round"));
 
     linkSel
-      .attr("d", (d: any) => linkPath(positions.get(d.source)!, positions.get(d.target)!))
+      .attr("d", (d: any) => {
+        const start = anchorPoint(d.source, d.target);
+        const end = anchorPoint(d.target, d.source);
+        (d as any).__start = start;
+        (d as any).__end = end;
+        return linkPath(start, end);
+      })
       .attr("stroke", (d: any) => {
-        const p1 = positions.get(d.source)!; const p2 = positions.get(d.target)!;
+        const start = (d as any).__start;
+        const end = (d as any).__end;
         const lg = svg.select(`linearGradient#${(d as any).__grad}`);
-        lg.attr("x1", p1.x).attr("y1", p1.y).attr("x2", p2.x).attr("y2", p2.y);
+        lg.attr("x1", start.x).attr("y1", start.y).attr("x2", end.x).attr("y2", end.y);
+        const active = !selectedId || d.source === selectedId || d.target === selectedId;
+        if (!colorOn || !active) return COLORS.gray.edge;
         return `url(#${(d as any).__grad})`;
       })
-      .attr("opacity", 0.7);
+      .attr("opacity", (d: any) => {
+        const active = !selectedId || d.source === selectedId || d.target === selectedId;
+        return active ? 0.82 : 0.15;
+      })
+      .attr("stroke-width", (d: any) => (!selectedId || d.source === selectedId || d.target === selectedId ? 2.4 : 1.8));
 
     // NODES
     const nodeSel = gNodes
@@ -459,38 +634,76 @@ export default function DreamOpportunitiesMapV4() {
       })
       .on("click", (_evt: any, d: any) => {
         setSelectedId((prev) => (prev === d.id ? null : d.id));
-        const t = transformRef.current.k; const p = positions.get(d.id)!; const z = Math.max(1.1, t);
+        const t = transformRef.current.k;
+        const p = layoutPositionsRef.current.get(d.id) ?? positions.get(d.id)!;
+        const z = Math.max(1.1, t);
         const newT = d3.zoomIdentity.translate(dims.w / 2 - z * p.x, dims.h / 2 - z * p.y).scale(z);
         d3.select(svgRef.current).transition().duration(600).call(zoomRef.current!.transform as any, newT);
       });
 
     nodeSel.each(function (d: GraphNode) {
       const gN = d3.select(this); const p = positions.get(d.id)!;
+      const isSelected = selectedId === d.id;
+      const isNeighbor = neighborSet.has(d.id);
+      const shouldFade = !!selectedId && !isNeighbor;
 
       if (d.type === "core") {
         const { r, f, lines, lineH } = coreCircleDims(d);
         gN.select("rect").attr("display", "none");
-        gN.select("circle.core-circle").attr("display", "block").attr("r", r).attr("fill", COLORS.brand.deep).attr("stroke", d3.color(COLORS.brand.deep)!.darker(0.6).toString());
+        gN
+          .select("circle.core-circle")
+          .attr("display", "block")
+          .attr("r", r)
+          .attr("fill", colorOn && !shouldFade ? COLORS.brand.deep : COLORS.gray.nodeFill)
+          .attr("stroke", d3.color(colorOn && !shouldFade ? COLORS.brand.deep : COLORS.gray.nodeStroke)!.darker(0.2).toString())
+          .attr("opacity", isSelected ? 1 : shouldFade ? 0.65 : 1);
         const txt = gN.select("text"); txt.selectAll("tspan").remove();
-        txt.attr("font-family", "'Montserrat', ui-sans-serif").attr("font-weight", 700).attr("font-size", f).attr("fill", "#ffffff");
+        txt
+          .attr("font-family", "'Montserrat', ui-sans-serif")
+          .attr("font-weight", 700)
+          .attr("font-size", f)
+          .attr("fill", isSelected || (!shouldFade && colorOn) ? "#ffffff" : COLORS.gray.text);
         lines.forEach((ln, i) => txt.append("tspan").attr("x", 0).attr("dy", i === 0 ? -((lines.length - 1) * lineH) / 2 : lineH).text(ln));
         gN.attr("transform", `translate(${p.x},${p.y})`);
+        gN.attr("filter", isSelected ? "url(#nodeShadow)" : null);
         return;
       }
 
       const { w, h, f, lines, lineH } = pillDims(d);
-      const fill = colorOn ? baseColor(d) : COLORS.gray.nodeFill;
-      const stroke = colorOn ? d3.color(fill)?.darker(0.7)?.toString() || "#2c2c2c" : COLORS.gray.nodeStroke;
-      const op = nodeOpacity(d);
+      const fill = !colorOn || shouldFade ? COLORS.gray.nodeFill : rawNodeColor(d);
+      const stroke = !colorOn || shouldFade ? COLORS.gray.nodeStroke : d3.color(fill)?.darker(0.7)?.toString() || "#2c2c2c";
+      const opBase = nodeOpacity(d);
+      const op = isSelected ? 1 : shouldFade ? opBase * 0.45 : opBase;
 
       gN.select("circle.core-circle").attr("display", "none");
-      gN.select("rect").attr("display", "block").attr("x", -w / 2).attr("y", -h / 2).attr("width", w).attr("height", h).attr("fill", fill).attr("stroke", stroke).attr("opacity", op);
+      gN
+        .select("rect")
+        .attr("display", "block")
+        .attr("x", -w / 2)
+        .attr("y", -h / 2)
+        .attr("width", w)
+        .attr("height", h)
+        .attr("fill", fill)
+        .attr("stroke", stroke)
+        .attr("opacity", op);
 
       const txt = gN.select("text"); txt.selectAll("tspan").remove();
-      txt.attr("font-family", d.type === "mixed" ? "'Roboto Mono', ui-monospace" : "'Montserrat', ui-sans-serif").attr("font-weight", d.type === "mixed" ? 700 : 600).attr("font-size", f).attr("fill", colorOn ? "#00302a" : COLORS.gray.text);
+      txt
+        .attr("font-family", "'Montserrat', ui-sans-serif")
+        .attr("font-weight", d.type === "mixed" ? 700 : 600)
+        .attr("font-size", f)
+        .attr(
+          "fill",
+          isSelected
+            ? COLORS.brand.deep
+            : !colorOn || shouldFade
+            ? COLORS.gray.text
+            : "#00302a",
+        );
       lines.forEach((ln, i) => txt.append("tspan").attr("x", 0).attr("dy", i === 0 ? -((lines.length - 1) * lineH) / 2 : lineH).text(ln));
 
       gN.attr("transform", `translate(${p.x},${p.y})`);
+      gN.attr("filter", isSelected ? "url(#nodeShadow)" : null);
     });
 
     if (!zoomRef.current) {
@@ -499,7 +712,7 @@ export default function DreamOpportunitiesMapV4() {
       });
       d3.select(svgRef.current).call(zoomRef.current as any);
     }
-  }, [positions, visibleNodeIds, visibleEdges, colorOn, dims]);
+  }, [positions, visibleNodeIds, visibleEdges, colorOn, dims, selectedId, allNodes, nodeById]);
 
   /** ====== RESIZE ====== */
   useEffect(() => {
@@ -643,4 +856,30 @@ export default function DreamOpportunitiesMapV4() {
       </div>
     </div>
   );
+}
+
+function mountDreamOpportunitiesMap() {
+  const mount = document.getElementById("dream-map-root");
+  if (mount && !mount.dataset.dreamMapMounted) {
+    mount.dataset.dreamMapMounted = "true";
+    const root = ReactDOM.createRoot(mount);
+    root.render(<DreamOpportunitiesMapV4 />);
+  }
+}
+
+if (typeof window !== "undefined") {
+  // @ts-ignore expose for debugging when loaded via script tag
+  window.DreamOpportunitiesMapV4 = DreamOpportunitiesMapV4;
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+      mountDreamOpportunitiesMap();
+    },
+    { once: true },
+  );
+} else {
+  mountDreamOpportunitiesMap();
 }
