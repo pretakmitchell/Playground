@@ -213,6 +213,15 @@ function DreamOpportunitiesMapV4() {
   const [colorOn, setColorOn] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const linkLine = useMemo(
+    () =>
+      d3
+        .line<{ x: number; y: number }>()
+        .x((d) => d.x)
+        .y((d) => d.y)
+        .curve(d3.curveCatmullRom.alpha(0.7)),
+    []
+  );
 
   const allNodes: GraphNode[] = useMemo(() => [core, ...mixed, des, ...desComponents, ...largeIdeas, ...microNodes], []);
 
@@ -583,13 +592,47 @@ function DreamOpportunitiesMapV4() {
     }
 
     function linkPath(s: { x: number; y: number }, t: { x: number; y: number }) {
-      const dx = t.x - s.x, dy = t.y - s.y;
+      const dx = t.x - s.x;
+      const dy = t.y - s.y;
       const dist = Math.hypot(dx, dy);
-      const nx = -dy / (dist || 1), ny = dx / (dist || 1);
-      const curv = Math.min(80, dist * 0.25);
-      const c1 = { x: s.x + dx * 0.33 + nx * curv, y: s.y + dy * 0.33 + ny * curv };
-      const c2 = { x: s.x + dx * 0.66 - nx * curv, y: s.y + dy * 0.66 - ny * curv };
-      return `M ${s.x},${s.y} C ${c1.x},${c1.y} ${c2.x},${c2.y} ${t.x},${t.y}`;
+      const nx = -dy / (dist || 1);
+      const ny = dx / (dist || 1);
+      const radialMeta = (positions as any).__R as
+        | { cx: number; cy: number }
+        | undefined;
+      const cx = radialMeta?.cx ?? dims.w / 2;
+      const cy = radialMeta?.cy ?? dims.h / 2;
+      const mid = { x: (s.x + t.x) / 2, y: (s.y + t.y) / 2 };
+      const fromCenter = { x: mid.x - cx, y: mid.y - cy };
+      let outward = { x: fromCenter.x, y: fromCenter.y };
+      const centerDist = Math.hypot(outward.x, outward.y);
+      if (centerDist < 1) {
+        outward = { x: t.x - cx, y: t.y - cy };
+      }
+      const outwardLen = Math.hypot(outward.x, outward.y) || 1;
+      const outwardUnit = { x: outward.x / outwardLen, y: outward.y / outwardLen };
+      const baseCurv = Math.min(220, 48 + dist * 0.35);
+      const sweep = Math.min(260, Math.max(dist * 0.55, 80));
+      const midBend = {
+        x: mid.x + outwardUnit.x * sweep,
+        y: mid.y + outwardUnit.y * sweep,
+      };
+      const startBend = {
+        x: s.x + dx * 0.18 + nx * baseCurv,
+        y: s.y + dy * 0.18 + ny * baseCurv,
+      };
+      const endBend = {
+        x: s.x + dx * 0.82 - nx * baseCurv,
+        y: s.y + dy * 0.82 - ny * baseCurv,
+      };
+      const midPull = {
+        x: midBend.x + nx * baseCurv * 0.45,
+        y: midBend.y + ny * baseCurv * 0.45,
+      };
+      return (
+        linkLine([s, startBend, midPull, midBend, endBend, t]) ??
+        `M ${s.x},${s.y} L ${t.x},${t.y}`
+      );
     }
 
     // LINKS (behind)
