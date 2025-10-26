@@ -65,19 +65,23 @@
       </div>
     </div>
 
-    <!-- Left panel -->
-    <div class="panel">
-      <h3>Filters</h3>
-      <div id="trendChips"></div>
-      <form id="searchForm" style="display:flex;gap:8px;align-items:center">
-        <input id="searchInput" type="text" placeholder="Search ideas, microtrends…" list="suggestions" />
-        <button class="btn primary" type="submit">Go</button>
-      </form>
-      <datalist id="suggestions"></datalist>
-      <div style="margin-top:8px;color:var(--muted);font-size:11px;line-height:1.4">
-        Tip: In greyscale, selecting a node highlights its entire connection tree in color.
-      </div>
-    </div>
+<style>
+  /* …everything above unchanged… */
+  .panel{
+    position:absolute;
+    left:16px;
+    bottom:16px;      /* ⟵ moved from top to bottom */
+    z-index:11;
+    width:320px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    padding:12px
+  }
+  /* …rest unchanged… */
+</style>
+
 
     <!-- SVG canvas -->
     <svg id="svg" aria-label="Opportunities map"><g id="gRoot"></g></svg>
