@@ -1,12 +1,12 @@
-// Color system & helpers (kept small and global)
+// Color system & helpers
 window.COLORS = {
   brand: { primary:"#5cce93", deep:"#014621", mint:"#b9f6d8" },
-  trends: {                // mixed-trend solids
-    SSC:"#84e4db",         // Self-Sustaining Communities (teal)
-    RA:"#b9f6d8",          // Regenerative Agriculture (mint)
-    RL:d3.interpolateRgb("#8fb3f0","#2871dc")(0.25) // Resource Looping (soft blue)
+  trends: {
+    SSC:"#84e4db",
+    RA:"#b9f6d8",
+    RL:d3.interpolateRgb("#8fb3f0","#2871dc")(0.25)
   },
-  micro: {                 // microtrend tints
+  micro: {
     "Microgrids":"#68d0f0","15-Minute Cities":"#a1eecb","VPPs":"#6ec8f5","DERMS":"#6edcd2",
     "District Energy":"#74dcd2","Resilience Hubs":"#88dfd0","EV V2G":"#5fc4e0","Smart-City Infrastructure":"#9fd4d8",
     "Precision Agriculture":"#bdf4c8","Carbon Farming":"#c8f5d8","Soil Regeneration":"#baf3d1","MRV":"#c4f2df",
@@ -29,17 +29,24 @@ window.baseColor = function(n){
 
 window.nodeOpacity = function(n){
   if(n.type==="core"||n.type==="mixed") return 1;
-  if(n.type==="microtrend") return 0.10;                      // micro = ~10%
-  if(n.type==="component" || (n.type==="idea" && (n.size||0)<90)) return 0.10;
-  const s = Math.max(60, Math.min(120, n.size || 100));       // larger ideas up to 35%
+  if(n.type==="microtrend") return 0.10; // micro ~10%
+  if(n.type==="component" || (n.type==="idea" && (n.tier||3)===3)) return 0.10; // tier 3 light
+  // tier 1–2 darker (cap at 35%)
+  const s = (n.tier===1? 110 : n.tier===2? 95 : 80);
   return Math.min(0.35, 0.2 + ((s-60)/60)*0.15);
 };
 
+// Unified sizes by tier for ideas; keep other types sensible
 window.fontSizeFor = function(n){
   if(n.type==="core"||n.type==="mixed") return 14;
   if(n.type==="microtrend") return 12;
-  if(n.type==="component" || (n.type==="idea" && (n.size||0)<90)) return 10.5;
-  return 12.5;
+  if(n.type==="idea"){
+    if(n.tier===1) return 13.5;
+    if(n.tier===2) return 12;
+    return 10.5;
+  }
+  if(n.type==="component") return 10.5; // treat like tier 3
+  return 12;
 };
 
 window.wrapLines = function(label, maxChars){
@@ -56,7 +63,7 @@ window.wrapLines = function(label, maxChars){
 
 window.pillDims = function(n){
   const f=fontSizeFor(n), charW=f*0.62;
-  const targetW = n.type==="mixed"? 320 : n.type==="microtrend"? 220 : n.type==="idea"? ((n.size||0)<90? 190:260) : 220;
+  const targetW = n.type==="mixed"? 320 : n.type==="microtrend"? 220 : n.type==="idea"? (n.tier===1? 280 : n.tier===2? 240 : 200) : 220;
   const maxChars = Math.max(8, Math.floor((targetW-24)/charW));
   const lines = wrapLines(n.label, maxChars);
   const longest = Math.max(...lines.map(l=>l.length),1);
