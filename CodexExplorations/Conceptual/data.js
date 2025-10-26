@@ -1,4 +1,3 @@
-// Full dataset (center + mixed + DES + components + ideas + microtrends)
 window.NODES = [
   // Center (solid circle)
   { id:"core", label:"Dream — Opportunities\nin Regenerative\nEconomies", type:"core", size:200, tags:["Center","Vision"],
@@ -13,8 +12,8 @@ window.NODES = [
   { id:"rl",  label:"Resource Looping /\nCircular Systems", type:"mixed", trend:"RL", size:120, tags:["Mixed Trend"],
     desc:"Circular economy, reverse logistics, waste-heat upcycling, chemical/enzymatic recycling, circular materials & construction." },
 
-  // Original A2 concept — DES + components (ideas/components with translucent fills)
-  { id:"des", label:"Dream Energy System\n(DES)", type:"idea", trend:"SSC", size:120, tags:["Original","Platform"],
+  // Original A2 concept — DES + components
+  { id:"des", label:"Dream Energy System\n(DES)", type:"idea", trend:"SSC", size:120, tier:1, tags:["Original","Platform"],
     desc:"Community energy platform integrating storage, mobility, heat recovery, and a digital operating layer." },
   { id:"des_storage", label:"Critical-Load\nEnergy Storage", type:"component", trend:"SSC", size:64, tags:["Original","Storage"],
     desc:"Resilience-first batteries sized for essential loads and grid services revenue." },
@@ -27,27 +26,27 @@ window.NODES = [
   { id:"des_dashboard", label:"Digital Energy\nSystems Dashboard", type:"component", trend:"SSC", size:60, tags:["Original","Digital"],
     desc:"Portfolio-level command, DERMS control, carbon & comfort KPIs, and resident apps." },
 
-  // Ideas (big and small; 10–35% opacity via visuals.js)
-  { id:"district_thermal", label:"District Thermal\nMicrogrid", type:"idea", trend:"SSC", size:96, tags:["Heat","Grid"], desc:"Ambient loops + geoexchange pods stitched into DES load management." },
-  { id:"vpp_derms", label:"VPP + DERMS\nOrchestration", type:"idea", trend:"SSC", size:92, tags:["Flexibility","Revenue"], desc:"Portfolio-level aggregation for market participation and peak shaving." },
-  { id:"resilience_hubs", label:"Community\nResilience Hubs", type:"idea", trend:"SSC", size:86, tags:["Resilience","Community"], desc:"Multi-use spaces with critical power, comms, cooling/heat, supplies, and Wi-Fi." },
-  { id:"smart_home_kits", label:"Smart Home\nEnergy Kit Program", type:"idea", trend:"SSC", size:82, tags:["Demand-side","Engagement"], desc:"Resident kits (sub-metering, TOU nudges, smart plugs) linked to the DES app." },
-  { id:"ev_v2g", label:"EV V2G Fleet\nContracting", type:"idea", trend:"SSC", size:88, tags:["Mobility","Flexibility"], desc:"Leased EV fleets provide grid services; credits returned to subscribers." },
+  // Ideas — add tier
+  { id:"district_thermal", label:"District Thermal\nMicrogrid", type:"idea", trend:"SSC", size:96, tier:1, tags:["Heat","Grid"], desc:"Ambient loops + geoexchange pods stitched into DES load management." },
+  { id:"vpp_derms", label:"VPP + DERMS\nOrchestration", type:"idea", trend:"SSC", size:92, tier:1, tags:["Flexibility","Revenue"], desc:"Portfolio-level aggregation for market participation and peak shaving." },
+  { id:"resilience_hubs", label:"Community\nResilience Hubs", type:"idea", trend:"SSC", size:86, tier:2, tags:["Resilience","Community"], desc:"Multi-use spaces with critical power, comms, cooling/heat, supplies, and Wi-Fi." },
+  { id:"smart_home_kits", label:"Smart Home\nEnergy Kit Program", type:"idea", trend:"SSC", size:82, tier:2, tags:["Demand-side","Engagement"], desc:"Resident kits (sub-metering, TOU nudges, smart plugs) linked to the DES app." },
+  { id:"ev_v2g", label:"EV V2G Fleet\nContracting", type:"idea", trend:"SSC", size:88, tier:2, tags:["Mobility","Flexibility"], desc:"Leased EV fleets provide grid services; credits returned to subscribers." },
 
-  { id:"agrovoltaics", label:"Agrovoltaics at\nEdges of Sites", type:"idea", trend:"RA", size:92, tags:["Food","Energy"], desc:"Dual-use PV with shade-tolerant crops on parking canopies and berms." },
-  { id:"soil_mrv", label:"Soil Health\nMRV Platform", type:"idea", trend:"RA", size:98, tags:["MRV","Data"], desc:"Open MRV for urban farms & partners; unlocks nature credits and co-benefits." },
-  { id:"biofertilizer_coop", label:"Biofertilizer /\nMicrobial Inputs Co-op", type:"idea", trend:"RA", size:86, tags:["Inputs","Co-op"], desc:"Member purchasing + trials with local growers; links to compost digestate." },
+  { id:"agrovoltaics", label:"Agrovoltaics at\nEdges of Sites", type:"idea", trend:"RA", size:92, tier:2, tags:["Food","Energy"], desc:"Dual-use PV with shade-tolerant crops on parking canopies and berms." },
+  { id:"soil_mrv", label:"Soil Health\nMRV Platform", type:"idea", trend:"RA", size:98, tier:1, tags:["MRV","Data"], desc:"Open MRV for urban farms & partners; unlocks nature credits and co-benefits." },
+  { id:"biofertilizer_coop", label:"Biofertilizer /\nMicrobial Inputs Co-op", type:"idea", trend:"RA", size:86, tier:2, tags:["Inputs","Co-op"], desc:"Member purchasing + trials with local growers; links to compost digestate." },
 
-  { id:"synbio_food", label:"SynBio Upcycled\nIngredients Lab", type:"idea", trends:["RA","RL"], microtrend:"Synthetic Biology", size:92, tags:["Pilot","R&D"], desc:"Fermentation + precision enzymes to valorize local side streams into food." },
-  { id:"food_waste_biogas", label:"Food-Waste →\nBiogas + Heat", type:"idea", trends:["RL","SSC"], size:96, tags:["Waste","Heat"], desc:"Anaerobic digestion tied to district thermal; credits looped to residents." },
-  { id:"reverse_logistics", label:"Reverse Logistics\n& Materials Recovery", type:"idea", trend:"RL", size:94, tags:["Logistics","Jobs"], desc:"Parcel lockers + returns → sorting micro-hub; feed local reuse markets." },
-  { id:"circular_construction", label:"Circular Construction\nMaterials Exchange", type:"idea", trends:["RL","SSC"], size:90, tags:["Construction","Marketplace"], desc:"Deconstruction marketplace for lumber, fixtures, facade elements, fill." },
-  { id:"water_circularity", label:"Community Water\nCircularity Hub", type:"idea", trends:["RL","SSC"], size:86, tags:["Water","Resilience"], desc:"Greywater capture, rain gardens, storm retention + IoT leak analytics." },
-  { id:"repair_reuse", label:"Repair & Reuse\nCommons", type:"idea", trend:"RL", size:90, tags:["Community","Jobs"], desc:"Makerspace + tool library; appliance, bike, textile repair events." },
-  { id:"plastics_recycling", label:"Enzymatic / Chemical\nPlastics Recycling", type:"idea", trend:"RL", size:86, tags:["Pilot","R&D"], desc:"Small-footprint pilot converting PET/PLA streams into new feedstock." },
-  { id:"urban_farm_network", label:"Urban Farm &\nCompost Network", type:"idea", trends:["RA","RL"], size:92, tags:["Food","Soil"], desc:"Neighbourhood plots + compost collection; soil loops back to plantings." },
+  { id:"synbio_food", label:"SynBio Upcycled\nIngredients Lab", type:"idea", trends:["RA","RL"], microtrend:"Synthetic Biology", size:92, tier:1, tags:["Pilot","R&D"], desc:"Fermentation + precision enzymes to valorize local side streams into food." },
+  { id:"food_waste_biogas", label:"Food-Waste →\nBiogas + Heat", type:"idea", trends:["RL","SSC"], size:96, tier:1, tags:["Waste","Heat"], desc:"Anaerobic digestion tied to district thermal; credits looped to residents." },
+  { id:"reverse_logistics", label:"Reverse Logistics\n& Materials Recovery", type:"idea", trend:"RL", size:94, tier:1, tags:["Logistics","Jobs"], desc:"Parcel lockers + returns → sorting micro-hub; feed local reuse markets." },
+  { id:"circular_construction", label:"Circular Construction\nMaterials Exchange", type:"idea", trends:["RL","SSC"], size:90, tier:2, tags:["Construction","Marketplace"], desc:"Deconstruction marketplace for lumber, fixtures, facade elements, fill." },
+  { id:"water_circularity", label:"Community Water\nCircularity Hub", type:"idea", trends:["RL","SSC"], size:86, tier:2, tags:["Water","Resilience"], desc:"Greywater capture, rain gardens, storm retention + IoT leak analytics." },
+  { id:"repair_reuse", label:"Repair & Reuse\nCommons", type:"idea", trend:"RL", size:90, tier:2, tags:["Community","Jobs"], desc:"Makerspace + tool library; appliance, bike, textile repair events." },
+  { id:"plastics_recycling", label:"Enzymatic / Chemical\nPlastics Recycling", type:"idea", trend:"RL", size:86, tier:3, tags:["Pilot","R&D"], desc:"Small-footprint pilot converting PET/PLA streams into new feedstock." },
+  { id:"urban_farm_network", label:"Urban Farm &\nCompost Network", type:"idea", trends:["RA","RL"], size:92, tier:2, tags:["Food","Soil"], desc:"Neighbourhood plots + compost collection; soil loops back to plantings." },
 
-  // Microtrends (≈10% opacity)
+  // Microtrends
   { id:"micro_microgrids", label:"Microgrids", type:"microtrend", trend:"SSC", microtrend:"Microgrids", size:56 },
   { id:"micro_15min", label:"15-Minute Cities", type:"microtrend", trend:"SSC", microtrend:"15-Minute Cities", size:56 },
   { id:"micro_vpps", label:"VPPs", type:"microtrend", trend:"SSC", microtrend:"VPPs", size:52 },
