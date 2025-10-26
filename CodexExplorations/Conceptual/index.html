@@ -4,25 +4,97 @@
   <meta charset="utf-8" />
   <title>Dream — Opportunities in Regenerative Economies</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Roboto+Mono:wght@600&display=swap" rel="stylesheet">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Roboto+Mono:wght@600&display=swap" rel="stylesheet">
   <style>
-    html,body {margin:0; height:100%; background:#fff; font-family:"Montserrat",sans-serif;}
-    #map {width:100%; height:100vh;}
-    .node text {font-family:"Montserrat",sans-serif;}
-    .panel {position:absolute;left:1rem;top:1rem;padding:0.5rem 1rem;border-radius:1rem;
-      background:#fff;border:1px solid #ddd;box-shadow:0 2px 6px rgba(0,0,0,.08);}
-    button{border:none;background:#5cce93;color:#fff;padding:6px 10px;border-radius:10px;cursor:pointer;}
+    :root{
+      --brand-primary:#5cce93;
+      --brand-deep:#014621;
+      --brand-mint:#b9f6d8;
+      --panel:#ffffff;
+      --border:#e5e7eb;
+      --shadow:0 12px 30px rgba(0,0,0,.08);
+      --text:#0f172a;
+      --muted:#64748b;
+      --chip:#f1f5f9;
+    }
+    html,body{height:100%}
+    body{margin:0;background:#fff;color:var(--text);font-family:"Montserrat",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    #stage{position:relative;width:100%;height:100vh;overflow:hidden}
+    svg{user-select:none}
+    /* Header */
+    .header{position:absolute;left:0;right:0;top:0;z-index:10;pointer-events:none}
+    .header .inner{max-width:1200px;margin:0 auto;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+    .header h1{margin:0;font-weight:700;color:var(--brand-deep);font-size:clamp(20px,3vw,28px)}
+    .header .sub{margin-top:4px;color:var(--muted);font:600 12px/1 "Roboto Mono",ui-monospace}
+    .header .controls{pointer-events:auto;display:flex;gap:10px;align-items:center}
+    .header label{font-size:12px;display:flex;gap:6px;align-items:center}
+    /* Left panel */
+    .panel{position:absolute;left:16px;top:88px;z-index:11;width:320px;background:var(--panel);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:12px}
+    .panel h3{margin:0 0 8px 0;font:600 12px/1 "Roboto Mono",ui-monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+    .chip{display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:600;border:1px solid rgba(0,0,0,.08);margin:0 8px 8px 0;background:var(--chip)}
+    .btn{appearance:none;border:1px solid #cbd5e1;background:var(--panel);color:var(--text);padding:6px 10px;border-radius:12px;font-size:12px;cursor:pointer}
+    .btn.primary{background:var(--brand-primary);color:#fff;border-color:#32b773}
+    input[type="text"]{border:1px solid #cbd5e1;border-radius:12px;padding:8px 10px;font-size:12px;width:100%}
+    /* Sidebar */
+    #sidebar{position:absolute;right:16px;top:84px;width:360px;z-index:12;transition:all 280ms ease;background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:16px}
+    #sidebar.hidden{transform:translateX(380px);opacity:0;pointer-events:none}
+    #sidebar h2{margin:0;font-size:18px;font-weight:700;color:var(--brand-deep)}
+    #sidebar .tags{margin-top:8px;display:flex;flex-wrap:wrap;gap:8px}
+    #sidebar .tag{background:#f8fafc;border:1px solid #e2e8f0;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:600}
+    #sidebar p{margin-top:12px;font-size:14px;line-height:1.5}
+    /* Node text (all Montserrat, per your request) */
+    .node-label{font-family:"Montserrat",ui-sans-serif,system-ui}
   </style>
 </head>
 <body>
-  <div id="map"></div>
-  <div class="panel">
-    <button onclick="toggleColor()">Toggle Color</button>
+  <div id="stage">
+    <!-- Header -->
+    <div class="header">
+      <div class="inner">
+        <div style="pointer-events:auto">
+          <h1>Dream — Opportunities in Regenerative Economies</h1>
+          <div class="sub">Interactive radial map • Zoom, filter, click nodes for details. Toggle color for greyscale view.</div>
+        </div>
+        <div class="controls">
+          <label><input id="chkColor" type="checkbox" checked> Color</label>
+          <label><input id="chkOriginal" type="checkbox" checked> Original (A2)</label>
+          <label><input id="chkIdeas" type="checkbox" checked> Ideas</label>
+          <label><input id="chkMicro" type="checkbox" checked> Microtrends</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Left panel -->
+    <div class="panel">
+      <h3>Filters</h3>
+      <div id="trendChips"></div>
+      <form id="searchForm" style="display:flex;gap:8px;align-items:center">
+        <input id="searchInput" type="text" placeholder="Search ideas, microtrends…" list="suggestions" />
+        <button class="btn primary" type="submit">Go</button>
+      </form>
+      <datalist id="suggestions"></datalist>
+      <div style="margin-top:8px;color:var(--muted);font-size:11px;line-height:1.4">
+        Tip: In greyscale, selecting a node highlights its entire connection tree in color.
+      </div>
+    </div>
+
+    <!-- SVG canvas -->
+    <svg id="svg" aria-label="Opportunities map"><g id="gRoot"></g></svg>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="hidden">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <h2 id="sbTitle"></h2>
+        <button class="btn" id="btnClose">✕</button>
+      </div>
+      <div id="sbChips" class="tags"></div>
+      <p id="sbDesc"></p>
+    </div>
   </div>
 
-  <!-- D3 (browser-ready build) -->
+  <!-- D3 (browser build) -->
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-
   <!-- Your modules -->
   <script src="visuals.js"></script>
   <script src="data.js"></script>
