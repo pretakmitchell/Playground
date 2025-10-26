@@ -2,6 +2,7 @@
   // ===== State =====
   let activeTrends = new Set(["SSC","RA","RL"]);
   let showOriginal = true, showIdeas = true, showMicro = true;
+  let tierVisible = {1:true, 2:true, 3:true};
   let colorOn = true;
   let selectedId = null;
 
@@ -20,6 +21,9 @@
   const chkOriginal = document.getElementById("chkOriginal");
   const chkIdeas = document.getElementById("chkIdeas");
   const chkMicro = document.getElementById("chkMicro");
+  const tier1 = document.getElementById("tier1");
+  const tier2 = document.getElementById("tier2");
+  const tier3 = document.getElementById("tier3");
   const trendChips = document.getElementById("trendChips");
   const searchForm = document.getElementById("searchForm");
   const searchInput = document.getElementById("searchInput");
@@ -35,19 +39,27 @@
   svg.call(zoom);
 
   function updateLabelDensity(k){
-    // Hide tiny labels when zoomed way out (only show mixed/core)
+    // Tier-aware fading:
+    // - Always show core & mixed
+    // - Microtrends hide below ~1.05
+    // - Tier3 hide below ~1.15, Tier2 below ~0.95, Tier1 below ~0.75
     gRoot.selectAll("text.node-label")
       .attr("display", function(d){
         if(!d) return null;
         if(d.type==="core"||d.type==="mixed") return null;
-        if(k >= 0.85) return null;
-        if(d.type==="microtrend") return "none";
-        if(d.type==="component" || (d.type==="idea" && (d.size||0)<90)) return "none";
+        if(d.type==="microtrend") return (k<1.05) ? "none" : null;
+        if(d.type==="component") return (k<1.10) ? "none" : null; // treat like tier 3
+        if(d.type==="idea"){
+          const t = d.tier||3;
+          if(t===3 && k<1.15) return "none";
+          if(t===2 && k<0.95) return "none";
+          if(t===1 && k<0.75) return "none";
+        }
         return null;
       });
   }
 
-  // Build trend chips + search suggestions
+  // Trend chips + search suggestions
   ["SSC","RA","RL"].forEach(t=>{
     const btn = document.createElement("button");
     btn.className = "chip";
@@ -71,6 +83,9 @@
   chkOriginal.onchange = ()=> { showOriginal = chkOriginal.checked; render(); };
   chkIdeas.onchange = ()=> { showIdeas = chkIdeas.checked; render(); };
   chkMicro.onchange = ()=> { showMicro = chkMicro.checked; render(); };
+  tier1.onchange = ()=> { tierVisible[1] = tier1.checked; render(); };
+  tier2.onchange = ()=> { tierVisible[2] = tier2.checked; render(); };
+  tier3.onchange = ()=> { tierVisible[3] = tier3.checked; render(); };
   btnClose.onclick = ()=> selectNode(null);
   searchForm.onsubmit = (e)=>{
     e.preventDefault();
@@ -86,6 +101,8 @@
       (n.trends ? n.trends.some(t=> activeTrends.has(t)) : true);
     if(!inTrend) return false;
 
+    if(n.type==="idea" && n.tier && !tierVisible[n.tier]) return false;
+
     const isOriginal = (n.tags||[]).includes("Original");
     const isMicro = n.type==="microtrend";
     const isIdeaLike = (n.type==="idea"||n.type==="component");
@@ -95,15 +112,13 @@
     return true;
   }
 
-  // ===== Geometry helpers (for links that do NOT cross through nodes) =====
+  // ===== Geometry helpers =====
   function rectEdgePoint(cx, cy, w, h, tx, ty){
-    // Ray from (cx,cy) to (tx,ty); intersect with axis-aligned rect half-sizes (w/2,h/2)
     const dx = tx - cx, dy = ty - cy;
     if (dx === 0 && dy === 0) return {x:cx, y:cy};
     const hw = w/2, hh = h/2;
-    const absDx = Math.abs(dx), absDy = Math.abs(dy);
-    const sx = absDx > 1e-6 ? hw/absDx : Infinity;
-    const sy = absDy > 1e-6 ? hh/absDy : Infinity;
+    const sx = hw / (Math.abs(dx) || 1e-6);
+    const sy = hh / (Math.abs(dy) || 1e-6);
     const t = Math.min(sx, sy);
     return { x: cx + dx*t, y: cy + dy*t };
   }
@@ -111,22 +126,25 @@
     const dx=tx-cx, dy=ty-cy, L=Math.hypot(dx,dy)||1;
     return { x: cx + dx*(r/L), y: cy + dy*(r/L) };
   }
+  function rectsOverlap(a, b){
+    return !(a.x2 < b.x1 || a.x1 > b.x2 || a.y2 < b.y1 || a.y1 > b.y2);
+  }
 
   // ===== Layout =====
   function computePositions(){
     const W = stage.clientWidth, H = stage.clientHeight;
     const cx = W/2, cy = H/2, M = Math.min(W,H);
 
-    // Core circle radius (from text) so we can keep a healthy gap
+    // Core circle radius (from text) so we keep a healthy gap
     const coreNode = NODES.find(n=> n.id==="core");
     const cd = coreDims(coreNode);
     const coreRadius = cd.r;
 
-    // Spread mixed trends further out; enforce min gap from core
-    const R1 = Math.max(M*0.30, coreRadius + 120); // mixed (further; not touching)
-    const R2 = M*0.48;                               // micro + DES
-    const R3 = M*0.66;                               // big ideas
-    const R4 = M*0.84;                               // small ideas (furthest)
+    // Keep mixed trends well away from core
+    const R1 = Math.max(M*0.32, coreRadius + 140); // mixed (further)
+    const R2 = M*0.50;                               // micro + DES
+    const R3 = M*0.68;                               // big ideas
+    const R4 = M*0.86;                               // small ideas
 
     const pos = new Map();
     pos.set("core",{x:cx,y:cy, r:coreRadius});
@@ -135,7 +153,7 @@
     ["SSC","RA","RL"].forEach(t=>{
       const a = sectorAngles(t).center;
       const p = polar(cx,cy,R1,a);
-      pos.set(t.toLowerCase(), {x:p.x,y:p.y,a, ring:"mixed"});
+      pos.set(t.toLowerCase(), {x:p.x,y:p.y,a, ring:"mixed", sector:t});
     });
 
     // micro by trend along R2 with width-aware spacing
@@ -149,7 +167,7 @@
     // DES on micro ring, SSC sector
     const aDes = sectorAngles("SSC").center + 18*Math.PI/180;
     const pDes = polar(cx,cy,R2,aDes);
-    if(visibleNode({id:"des",type:"idea",trend:"SSC"})) pos.set("des",{x:pDes.x,y:pDes.y,a:aDes, ring:"micro"});
+    if(visibleNode({id:"des",type:"idea",trend:"SSC"})) pos.set("des",{x:pDes.x,y:pDes.y,a:aDes, ring:"micro", sector:"SSC"});
 
     // DES components orbit, width-aware around DES
     const comps = NODES.filter(n=> n.type==="component" && visibleNode(n));
@@ -159,10 +177,13 @@
 
     // ideas
     const ideas = NODES.filter(n=> n.type==="idea" && n.id!=="des" && visibleNode(n));
-    const big = ideas.filter(n=> (n.size||0)>=90);
-    const small = ideas.filter(n=> (n.size||0)<90);
-    ["SSC","RA","RL"].forEach(t=> placeRingWidthAware(big.filter(n=> (n.trends||[]).length<2), t, R3, pos));
-    ["SSC","RA","RL"].forEach(t=> placeRingWidthAware(small.filter(n=> (n.trends||[]).length<2), t, R4, pos));
+    const big = ideas.filter(n=> (n.tier||2)===1);
+    const med = ideas.filter(n=> (n.tier||2)===2);
+    const sml = ideas.filter(n=> (n.tier||2)===3); // rarely used but supported
+
+    ["SSC","RA","RL"].forEach(t=> placeRingWidthAware(big.filter(n=> (n.trends||[]).length<2 && (n.trend||t)===t), t, R3, pos));
+    ["SSC","RA","RL"].forEach(t=> placeRingWidthAware(med.filter(n=> (n.trends||[]).length<2 && (n.trend||t)===t), t, R4, pos));
+    ["SSC","RA","RL"].forEach(t=> placeRingWidthAware(sml.filter(n=> (n.trends||[]).length<2 && (n.trend||t)===t), t, R4+24, pos));
 
     // Multi-trend ideas: average sector centers, mid between R3 and R4 (stagger)
     ideas.filter(n=> (n.trends||[]).length>1).forEach((n,idx)=>{
@@ -172,6 +193,9 @@
       pos.set(n.id,{x:p.x,y:p.y,a, ring:"bridge"});
     });
 
+    // ---- Collision resolution pass (prevents any stacking/overlap)
+    resolveOverlaps(pos);
+
     pos.__rings = {R1,R2,R3,R4,cx,cy};
     return pos;
 
@@ -180,44 +204,107 @@
       if(!arr.length) return;
       const {start,end} = sectorAngles(trendKey);
       const pad = 18*Math.PI/180;
-      // initial uniform angles
       const raw = d3.range(arr.length).map(i=> d3.interpolateNumber(start+pad, end-pad)(arr.length===1?0.5: i/(arr.length-1)));
-      // min angular spacing from pill widths
       const minA = arr.map(n=> {
         const {w} = pillDims(n);
-        return (w + 18) / R; // radians needed (node width + padding)
+        return (w + 20) / R; // radians needed + padding
       });
       const A = [];
       let cur = raw[0];
       for(let i=0;i<arr.length;i++){
         const a = i===0 ? raw[0] : Math.max(raw[i], cur + minA[i-1]);
-        A[i] = Math.min(a, end - minA[i]*0.5);
+        A[i] = Math.min(a, end - minA[i]*0.6);
         cur = A[i];
       }
       arr.forEach((n,i)=> {
         const a = A[i];
         const p = polar(cx,cy,R,a);
-        outMap.set(n.id, {x:p.x, y:p.y, a, ring:"ring"});
+        outMap.set(n.id, {x:p.x, y:p.y, a, ring:"ring", sector:trendKey});
       });
     }
 
     function placeLocalOrbit(nodes, centerP, radius, outMap){
       if(!nodes.length) return;
-      // sort for consistency
       const sorted = [...nodes].sort((a,b)=> (a.size||0)-(b.size||0));
-      // compute per-node angular width from pill width
       const widths = sorted.map(n=> pillDims(n).w);
-      const totalArcNeeded = widths.reduce((s,w)=> s + (w+16)/radius, 0);
-      const arc = Math.max(Math.PI*0.9, totalArcNeeded); // ensure enough room
+      const totalArcNeeded = widths.reduce((s,w)=> s + (w+18)/radius, 0);
+      const arc = Math.max(Math.PI*1.0, totalArcNeeded);
       const start = (centerP.a||0) - arc/2;
       let theta = start;
       sorted.forEach((n,i)=>{
-        const need = (widths[i]+16)/radius;
+        const need = (widths[i]+18)/radius;
         const a = theta + need/2;
         const p = { x: centerP.x + radius*Math.cos(a), y: centerP.y + radius*Math.sin(a) };
-        outMap.set(n.id, {x:p.x,y:p.y,a, ring:"orbit"});
+        outMap.set(n.id, {x:p.x, y:p.y, a, ring:"orbit", sector:"SSC"});
         theta += need;
       });
+    }
+
+    function resolveOverlaps(map){
+      // Build list with dims
+      const nodes = NODES.filter(visibleNode);
+      const dims = new Map(nodes.map(n=>{
+        if(n.id==="core"){
+          const d = coreDims(n); return [n.id, {type:"circle", r:d.r, lines:d.lines, lh:d.lh, f:d.f}];
+        }
+        const p = pillDims(n);
+        return [n.id, {type:"pill", w:p.w, h:p.h, lines:p.lines, lh:p.lh, f:p.f}];
+      }));
+
+      // Sort by radius (inner → outer), then adjust each outward/around if overlapping previously placed
+      const placed = [];
+      const order = nodes.slice().sort((a,b)=>{
+        const pa = map.get(a.id), pb = map.get(b.id);
+        const ra = Math.hypot(pa.x-cx, pa.y-cy), rb = Math.hypot(pb.x-cx, pb.y-cy);
+        return ra - rb;
+      });
+
+      const maxIter = 80;
+      for(const n of order){
+        const P = map.get(n.id); if(!P) continue;
+        const D = dims.get(n.id);
+        let iter = 0;
+        function bbox(pt,d){
+          if(d.type==="circle"){
+            return {x1:pt.x-d.r, y1:pt.y-d.r, x2:pt.x+d.r, y2:pt.y+d.r};
+          }
+          return {x1:pt.x-d.w/2, y1:pt.y-d.h/2, x2:pt.x+d.w/2, y2:pt.y+d.h/2};
+        }
+        let B = bbox(P,D);
+
+        let moved = false;
+        // Compare with already placed
+        for(;;){
+          let collided = null;
+          for(const other of placed){
+            const Do = dims.get(other.id);
+            const Bo = bbox(map.get(other.id), Do);
+            if(rectsOverlap(B, Bo)){ collided = other; break; }
+          }
+          if(!collided || iter>maxIter) break;
+
+          // Nudge angularly (stay in sector), then slightly radial if still needed
+          const ringR = Math.hypot(P.x-cx, P.y-cy);
+          const dA = ((D.w||60)+16)/Math.max(ringR,1); // radians minimal bump
+          const sign = (iter%2===0)? 1 : -1;
+          let a = Math.atan2(P.y-cy, P.x-cx) + sign*dA;
+          // clamp within sector if has one
+          if(P.sector){
+            const {start,end} = sectorAngles(P.sector);
+            const pad = 16*Math.PI/180;
+            a = Math.max(start+pad, Math.min(end-pad, a));
+          }
+          const rOut = ringR + (iter%3===0 ? 4 : 0); // every few steps, push a bit outward
+          const np = { x: cx + rOut*Math.cos(a), y: cy + rOut*Math.sin(a), a, ring:P.ring, sector:P.sector };
+          map.set(n.id, np);
+          P.x=np.x; P.y=np.y; P.a=np.a;
+          B = bbox(P,D);
+          iter++;
+          moved = true;
+        }
+        placed.push(n);
+        if(moved) continue;
+      }
     }
   }
 
@@ -255,8 +342,8 @@
     const gLinks = gRoot.selectAll("g.edge-layer").data([0]).join("g").attr("class","edge-layer");
     const gNodes = gRoot.selectAll("g.node-layer").data([0]).join("g").attr("class","node-layer");
 
-    // Node dims cache (for routing & non-overlap)
-    const dims = new Map(nodes.map(n=>{
+    // Node dims cache (for routing & text layout)
+    const dimsMap = new Map(nodes.map(n=>{
       if(n.id==="core"){
         const d = coreDims(n); return [n.id, {type:"circle", r:d.r, f:d.f, lines:d.lines, lh:d.lh}];
       }
@@ -264,10 +351,10 @@
       return [n.id, {type:"pill", w:p.w, h:p.h, f:p.f, lines:p.lines, lh:p.lh}];
     }));
 
-    // Route links from the EDGE of nodes (not the centers) to avoid crossing through nodes
+    // Route links from node edges
     function linkEndpoints(srcId, tgtId){
       const sP = positions.get(srcId), tP = positions.get(tgtId);
-      const sD = dims.get(srcId), tD = dims.get(tgtId);
+      const sD = dimsMap.get(srcId), tD = dimsMap.get(tgtId);
       let s = {x:sP.x, y:sP.y}, t = {x:tP.x, y:tP.y};
       if(sD.type==="circle") s = circleEdgePoint(sP.x, sP.y, sD.r, tP.x, tP.y);
       else s = rectEdgePoint(sP.x, sP.y, sD.w, sD.h, tP.x, tP.y);
@@ -276,7 +363,7 @@
       return {s,t};
     }
 
-    // path helper (curvy; control points orthogonal to the line)
+    // Curvy/bezier link
     function linkPath(s,t){
       const dx=t.x-s.x, dy=t.y-s.y, L=Math.hypot(dx,dy);
       const nx=-dy/(L||1), ny=dx/(L||1), c=Math.min(80, L*0.25);
@@ -284,7 +371,7 @@
       return `M ${s.x},${s.y} C ${c1.x},${c1.y} ${c2.x},${c2.y} ${t.x},${t.y}`;
     }
 
-    // LINKS (behind nodes)
+    // LINKS
     const linkSel = gLinks.selectAll("path.link")
       .data(edges, d=> `${d.source}-${d.target}`)
       .join(enter=> enter.append("path").attr("class","link").attr("fill","none").attr("stroke-width",2.2).attr("stroke-linecap","round"));
@@ -322,9 +409,8 @@
     nodeSel.each(function(d){
       const g = d3.select(this);
       const P = positions.get(d.id);
-      const D = dims.get(d.id);
-
-      const inFocus = !selectedId || selectedId===d.id || focus.has(d.id);
+      const D = dimsMap.get(d.id);
+      const inFocus = !selectedId || selectedId===d.id || (positions.has(selectedId) && positions.has(d.id) && true); // focus logic refined by edges opacity
 
       if(d.type==="core"){
         const {r,f,lines,lh} = D;
@@ -332,17 +418,15 @@
         g.select("circle.core").attr("display","block").attr("r",r).attr("fill",COLORS.brand.deep).attr("stroke", d3.color(COLORS.brand.deep).darker(0.6));
         const txt=g.select("text"); txt.selectAll("tspan").remove();
         txt.attr("font-weight",700).attr("font-size",f).attr("fill","#fff");
-        lines.forEach((ln,i)=> txt.append("tspan").attr("x",0).attr("dy", i===0? -((lines.length-1)*lh)/2 : lh).text(ln));
+        lines.forEach((ln,i)=> txt.append("tspan").attr("x",0).attr("dy", i===0? -((lines.length-1)*D.lh)/2 : D.lh).text(ln));
         g.attr("transform",`translate(${P.x},${P.y})`).attr("filter", selectedId==="core" ? "url(#selShadow)" : null);
         return;
       }
 
       const {w,h,f,lines,lh} = D;
-      // Taller nodes automatically for long labels: height already derives from lines
-      // fill color logic (greyscale unless in-focus OR colorOn)
       let fill = baseColor(d), stroke = d3.color(fill).darker(0.7);
-      if(!colorOn && !inFocus){ fill = COLORS.gray.nodeFill; stroke = COLORS.gray.nodeStroke; }
-      const op = inFocus ? nodeOpacity(d) : Math.min(0.18, nodeOpacity(d)*0.6);
+      if(!colorOn && (!selectedId || d.id!==selectedId)){ fill = COLORS.gray.nodeFill; stroke = COLORS.gray.nodeStroke; }
+      const op = (!selectedId || d.id===selectedId) ? nodeOpacity(d) : Math.min(0.18, nodeOpacity(d)*0.6);
 
       g.select("circle.core").attr("display","none");
       g.select("rect")
@@ -352,7 +436,7 @@
         .attr("filter", selectedId===d.id ? "url(#selShadow)" : null);
 
       const txt=g.select("text"); txt.selectAll("tspan").remove();
-      txt.attr("font-weight", d.type==="mixed" ? 700 : 600).attr("font-size",f).attr("fill", inFocus? "#00302a" : COLORS.gray.text);
+      txt.attr("font-weight", d.type==="mixed" ? 700 : 600).attr("font-size",f).attr("fill", "#00302a");
       lines.forEach((ln,i)=> txt.append("tspan").attr("x",0).attr("dy", i===0? -((lines.length-1)*lh)/2 : lh).text(ln));
 
       g.attr("transform",`translate(${P.x},${P.y})`);
@@ -404,5 +488,10 @@
   }
 
   // Kickoff
+  // Build trend chips
+  (function initTrendChips(){
+    // already built above — noop
+  })();
+
   render();
 })();
