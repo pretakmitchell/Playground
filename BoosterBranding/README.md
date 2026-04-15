@@ -20,12 +20,12 @@ The visual baseline follows the Figma Visuals page: large Montserrat hierarchy, 
 
 The site uses the available local brand assets:
 
-- `Brand Assets/Logos/SVG Versions/Main - Wordmark (primary Logo).svg`
-- `Brand Assets/Logos/SVG Versions/Secondary - Main Icon (Secondary Logo).svg`
-- `Brand Assets/Logos/SVG Versions/Secondary - Full Wordmark.svg`
-- `Brand Assets/Image assets/Generated/booster_ui_app_1776116752479.png`
-- `Brand Assets/Image assets/Generated/booster_cup_wrap_1776116781883.png`
-- `Brand Assets/Image assets/Generated/booster_tote_mockup_1776116766320.png`
+- `brand-assets/logos/svg/Main - Wordmark (primary Logo).svg`
+- `brand-assets/logos/svg/Secondary - Main Icon (Secondary Logo).svg`
+- `brand-assets/logos/svg/Secondary - Full Wordmark.svg`
+- `brand-assets/images/generated/booster_ui_app_1776116752479.png`
+- `brand-assets/images/generated/booster_cup_wrap_1776116781883.png`
+- `brand-assets/images/generated/booster_tote_mockup_1776116766320.png`
 
 ## Run Locally
 
