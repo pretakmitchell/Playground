@@ -183,6 +183,7 @@ class ProgressNav {
   bind() {
     this.buttons.forEach((button) => {
       button.addEventListener("click", (event) => {
+        event.stopPropagation();
         const index = Number(button.dataset.progressIndex);
         if (index !== this.activeIndex) {
           this.scrollToSection(index);
@@ -190,8 +191,11 @@ class ProgressNav {
           return;
         }
         this.setOpen(!this.open);
-        event.stopPropagation();
       });
+    });
+
+    this.nav.addEventListener("click", () => {
+      this.setOpen(!this.open);
     });
 
     this.wrap.querySelectorAll("[data-jump-section]").forEach((button) => {
@@ -268,6 +272,7 @@ class ProgressNav {
   setOpen(open) {
     this.open = open;
     this.wrap.classList.toggle("open", open);
+    if (open) this.wrap.classList.add("hint-hidden");
     this.menu?.setAttribute("aria-hidden", String(!open));
   }
 }
