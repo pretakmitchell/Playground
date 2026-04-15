@@ -110,7 +110,7 @@ class TopNav extends HTMLElement {
               <a class="nav-link ${activePath === href ? "active" : ""}" href="${href}">${label}</a>
             `).join("")}
           </div>
-          <a class="nav-action" href="mailto:hello@boosterjuice.example">Get in Touch</a>
+          <a class="nav-action" href="attributions.html">Process & Attributions</a>
           <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav-links"><span></span></button>
         </nav>
       </header>
@@ -263,6 +263,11 @@ class ProgressNav {
   }
 
   update() {
+    // Visibility logic: only show progress bar once scrolled more than 50px
+    const isVisible = window.scrollY > 50;
+    this.wrap.classList.toggle("visible", isVisible);
+    this.blurWrap.classList.toggle("visible", isVisible);
+
     const viewportAnchor = window.innerHeight * 0.38;
     let nextIndex = 0;
 

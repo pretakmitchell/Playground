@@ -1593,6 +1593,14 @@ type-tester {
   z-index: 910;
   height: 108px;
   pointer-events: none;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 600ms var(--ease), opacity 600ms var(--ease);
+}
+
+.progress-blur-wrap.visible {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .progress-wrap {
@@ -1607,9 +1615,15 @@ type-tester {
   gap: 10px;
   justify-content: flex-start;
   padding: 0 25px;
-  /* transform: translateX(-50%) removed — creates backdrop root in Chrome, blocks blur */
-  /* isolation: isolate removed — blocks backdrop-filter in Chrome */
   pointer-events: none;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 600ms var(--ease), opacity 600ms var(--ease);
+}
+
+.progress-wrap.visible {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .progressive-blur-progress {
