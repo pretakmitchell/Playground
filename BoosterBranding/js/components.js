@@ -148,13 +148,27 @@ class ProgressNav {
   }
 
   render() {
+    this.blurWrap = document.createElement("div");
+    this.blurWrap.className = "progress-blur-wrap";
+    this.blurWrap.innerHTML = `
+      <div class="progressive-blur progressive-blur-progress" aria-hidden="true">
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="gradient"></div>
+      </div>
+    `;
+
     this.wrap = document.createElement("div");
     this.wrap.className = "progress-wrap";
     this.wrap.innerHTML = `
-      <div class="progress-glass" aria-hidden="true">
-        <div class="progress-glass-blur"></div>
-        <div class="progress-glass-tint"></div>
-      </div>
       <p class="progress-hint">Click To expand</p>
       <nav class="progress-navigator" aria-label="Section progress">
         ${this.sections.map((section, index) => this.sectionButton(section, index)).join("")}
@@ -164,6 +178,7 @@ class ProgressNav {
       </div>
     `;
 
+    document.body.appendChild(this.blurWrap);
     document.body.appendChild(this.wrap);
     this.nav = this.wrap.querySelector(".progress-navigator");
     this.menu = this.wrap.querySelector(".progress-menu");
