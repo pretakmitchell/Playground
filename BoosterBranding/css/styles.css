@@ -486,6 +486,24 @@ main {
   max-height: 210px;
 }
 
+.corner-radius-rule {
+  display: flex;
+  flex-direction: column;
+  gap: 23px;
+}
+
+.corner-radius-diagram {
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--bj-grey);
+}
+
+.corner-radius-diagram img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .full-bleed-media {
   min-height: 520px;
 }
@@ -748,6 +766,50 @@ main {
   background: var(--bj-neon);
   border-color: var(--bj-neon);
   opacity: 0.55;
+}
+
+.visual-asset-card {
+  display: flex;
+  min-height: 360px;
+  flex-direction: column;
+}
+
+.visual-asset-art {
+  display: flex;
+  min-height: 150px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: auto;
+}
+
+.visual-asset-art img {
+  display: block;
+  max-width: 100%;
+  max-height: 150px;
+  object-fit: contain;
+}
+
+.visual-asset-art-exclamation img,
+.visual-asset-art-boo img {
+  max-width: 78%;
+  max-height: 125px;
+}
+
+.visual-asset-art-fruits img {
+  max-width: 116%;
+  max-height: 182px;
+}
+
+.visual-asset-copy {
+  display: flex;
+  min-height: 118px;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.visual-asset-placeholders[hidden] {
+  display: none;
 }
 
 .boo-face {

@@ -577,7 +577,7 @@ class LogoColourSwitcher extends HTMLElement {
   }
 
   accentKey() {
-    if (!this.accentOn) return this.logo;
+    if (this.accentOn) return this.logo;
 
     if (this.bg === "lilac") {
       if (this.logo === "deep" || this.logo === "purple") return "white";
