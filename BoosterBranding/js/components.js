@@ -41,15 +41,32 @@ const BoosterConfig = {
     generatedApp: "brand-assets/images/generated/booster_ui_app_1776116752479.png"
   },
   validLogoCombos: {
-    deep: ["white", "lilac", "neon"],
-    purple: ["white", "lilac"],
-    lilac: ["deep", "purple", "black"],
-    neon: ["deep", "white", "black"],
-    emphasis: ["deep", "purple", "neon", "black"],
-    grey: ["deep", "purple", "neon", "black"],
-    white: ["deep", "purple", "neon", "black"],
-    black: ["white", "lilac", "neon"]
-  }
+    black: ["white", "lilac", "neon", "purple", "emphasis", "grey"],
+    deep: ["white", "lilac", "neon", "purple"],
+    purple: ["deep", "lilac", "neon", "emphasis", "grey", "white", "black"],
+    lilac: ["deep", "purple", "emphasis", "grey", "white", "black"],
+    neon: ["deep", "purple", "emphasis", "grey", "white", "black"],
+    emphasis: ["deep", "purple", "lilac", "neon", "black"],
+    grey: ["deep", "purple", "lilac", "neon", "black"],
+    white: ["deep", "purple", "lilac", "neon", "black"]
+  },
+  cautionCombos: [
+    {
+      bg: "black",
+      logo: "purple",
+      message: "Booster Purple is permitted on black, but it has less snap than white, lilac, or neon. Keep it for controlled applications where the mark is large."
+    },
+    {
+      bg: "deep",
+      logo: "purple",
+      message: "Booster Purple over Deep Purple is permitted only when the mark is oversized or supported by strong lighting/contrast around it."
+    },
+    {
+      bg: "purple",
+      logo: "neon",
+      message: "Neon on Booster Purple is high-energy but visually loud. Use it sparingly for campaign moments rather than core identity applications."
+    }
+  ]
 };
 
 class TopNav extends HTMLElement {
@@ -322,52 +339,81 @@ class LogoColourSwitcher extends HTMLElement {
 
   render() {
     const bgKeys = ["deep", "purple", "lilac", "neon", "emphasis", "grey", "white", "black"];
-    const logoKeys = ["deep", "purple", "lilac", "neon", "white", "black"];
+    const logoKeys = ["deep", "purple", "lilac", "neon", "emphasis", "grey", "white", "black"];
 
     this.innerHTML = `
-      <div class="switcher">
-        <div class="switch-lockups" role="group" aria-label="Logo lockup">
-          ${Object.entries(this.lockups).map(([key, item]) => `
-            <button class="lockup-thumb ${this.lockup === key ? "active" : ""}" type="button" data-lockup="${key}">
-              <span class="thumb-art">
-                <img src="${item.fallback}" alt="">
-              </span>
-              <span class="label small">${item.label}</span>
-            </button>
-          `).join("")}
+      <div class="sw-dropdowns">
+        <div class="sw-dropdown" data-dropdown="lockup">
+          <p class="label small">Lockup</p>
+          <button class="sw-trigger" type="button" aria-expanded="false">
+            <span class="val-img" data-trigger="lockup-img"><img src="${this.lockups[this.lockup].fallback}" alt=""></span>
+            <span class="val-text" data-trigger="lockup-label">${this.lockups[this.lockup].label}</span>
+            <svg class="chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z" fill="currentColor"/></svg>
+          </button>
+          <div class="sw-menu">
+            ${Object.entries(this.lockups).map(([key, item]) => `
+              <button class="lockup-thumb ${this.lockup === key ? "active" : ""}" type="button" data-lockup="${key}">
+                <span class="thumb-art"><img src="${item.fallback}" alt=""></span>
+                <span class="label small">${item.label}</span>
+              </button>
+            `).join("")}
+          </div>
         </div>
 
-        <div class="switch-controls">
-          <div class="switch-group">
+        <div class="sw-dropdown" data-dropdown="bg">
+          <p class="label small">Background Colour</p>
+          <button class="sw-trigger" type="button" aria-expanded="false">
+            <span class="val-swatch" data-trigger="bg-swatch" style="background:${BoosterConfig.colours[this.bg]}"></span>
+            <span class="val-text" data-trigger="bg-label">${BoosterConfig.colourNames[this.bg]}</span>
+            <svg class="chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z" fill="currentColor"/></svg>
+          </button>
+          <div class="sw-menu">
             <div class="switch-row" data-bg-options>
               ${bgKeys.map((key) => this.swatchButton("bg", key)).join("")}
             </div>
-            <p class="label">Background Colour</p>
           </div>
-          <div class="switch-group">
+        </div>
+
+        <div class="sw-dropdown" data-dropdown="logo">
+          <p class="label small">Logo / Emphasis</p>
+          <button class="sw-trigger" type="button" aria-expanded="false">
+            <span class="val-swatch" data-trigger="logo-swatch" style="background:${BoosterConfig.colours[this.logo]}"></span>
+            <span class="val-text" data-trigger="logo-label">${BoosterConfig.colourNames[this.logo]}</span>
+            <svg class="chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z" fill="currentColor"/></svg>
+          </button>
+          <div class="sw-menu" style="min-width:280px;">
+            <p class="label small" style="margin-bottom:14px;">Primary Logo Colour</p>
             <div class="switch-row" data-logo-options>
               ${logoKeys.map((key) => this.swatchButton("logo", key)).join("")}
             </div>
-            <p class="label">Logo Colour</p>
-          </div>
-          <div class="switch-group">
-            <div class="accent-toggle">
-              <button type="button" data-accent="on">On</button>
-              <button type="button" data-accent="off">Off</button>
+            <hr class="sw-divider">
+            <div class="sw-emphasis-row">
+              <p class="label small">Emphasis (Two-Tone)</p>
+              <div class="accent-toggle" style="width:110px; height:42px;">
+                <button type="button" data-accent="on" style="height:100%; border-radius:10px;">On</button>
+                <button type="button" data-accent="off" style="height:100%; border-radius:10px;">Off</button>
+              </div>
             </div>
-            <p class="label">Emphasis</p>
           </div>
         </div>
+      </div>
 
-        <div class="switcher-note">
-          <p class="label small">Rule</p>
-          <p class="body-copy">Invalid contrast pairs are disabled. When emphasis is on, the exclamation blocks can use a separate accent colour instead of matching the wordmark.</p>
-        </div>
+      <div class="switcher-note">
+        <p class="body-copy">The interface automatically restricts invalid colour combinations to maintain brand accessibility and contrast.</p>
+      </div>
 
-        <div class="switcher-preview" data-preview>
-          <div class="switch-svg" data-svg-stage aria-label="Live logo preview"></div>
-          <a class="download-combo" href="${this.lockups[this.lockup].source}" download>Download this Combo</a>
+      <div class="switcher-preview" data-preview>
+        <div class="caution-banner" aria-hidden="true" style="display:none;">
+          <div class="caution-trigger">
+            <span class="caution-icon">⚠️</span> <span class="caution-text">Combo Not Recommended</span>
+          </div>
+          <div class="caution-tooltip">
+            <p data-caution-copy>This specific combination is generally not recommended for optimal contrast or brand expression.</p>
+            <p class="small-disclaimer" style="margin-top:8px; opacity:0.8; font-size:12px;">While not recommended, it is permitted for specialized applications. Only strictly forbidden combinations are disabled.</p>
+          </div>
         </div>
+        <div class="switch-svg" data-svg-stage aria-label="Live logo preview"></div>
+        <a class="download-combo" href="${this.lockups[this.lockup].source}" download>Download this Combo</a>
       </div>
     `;
   }
@@ -380,6 +426,23 @@ class LogoColourSwitcher extends HTMLElement {
   }
 
   bind() {
+    document.addEventListener("click", (e) => {
+      if (!this.contains(e.target)) {
+        this.closeAllDropdowns();
+        return;
+      }
+      const trigger = e.target.closest('.sw-trigger');
+      if (trigger) {
+        const dropdown = trigger.closest('.sw-dropdown');
+        const expanding = !dropdown.classList.contains("open");
+        this.closeAllDropdowns();
+        if (expanding) {
+          dropdown.classList.add("open");
+          trigger.setAttribute("aria-expanded", "true");
+        }
+      }
+    });
+
     this.querySelectorAll("[data-lockup]").forEach((button) => {
       button.addEventListener("click", () => {
         this.lockup = button.dataset.lockup;
@@ -390,8 +453,7 @@ class LogoColourSwitcher extends HTMLElement {
     this.querySelectorAll("[data-bg]").forEach((button) => {
       button.addEventListener("click", () => {
         this.bg = button.dataset.bg;
-        const valid = BoosterConfig.validLogoCombos[this.bg] || [];
-        if (!valid.includes(this.logo)) this.logo = valid[0] || "white";
+        this.resetAccentOnNextUpdate = true;
         this.update();
       });
     });
@@ -400,6 +462,7 @@ class LogoColourSwitcher extends HTMLElement {
       button.addEventListener("click", () => {
         if (button.disabled) return;
         this.logo = button.dataset.logo;
+        this.resetAccentOnNextUpdate = true;
         this.update();
       });
     });
@@ -412,14 +475,82 @@ class LogoColourSwitcher extends HTMLElement {
     });
   }
 
+  closeAllDropdowns() {
+    this.querySelectorAll('.sw-dropdown.open').forEach(d => {
+      d.classList.remove('open');
+      d.querySelector('.sw-trigger')?.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  validLogosFor(bg = this.bg) {
+    return BoosterConfig.validLogoCombos[bg] || [];
+  }
+
+  preferredLogoFor(bg = this.bg) {
+    const valid = this.validLogosFor(bg);
+    if (valid.includes("white")) return "white";
+    if (valid.includes("deep")) return "deep";
+    return valid[0] || "white";
+  }
+
+  normalizeSelection(resetAccent = false) {
+    const valid = this.validLogosFor();
+    if (!valid.includes(this.logo)) {
+      this.logo = this.preferredLogoFor();
+      resetAccent = true;
+    }
+
+    if (resetAccent) {
+      this.accentOn = true;
+    }
+  }
+
+  cautionForPair() {
+    return BoosterConfig.cautionCombos.find((combo) => combo.bg === this.bg && combo.logo === this.logo);
+  }
+
   async update() {
     const preview = this.querySelector("[data-preview]");
     const stage = this.querySelector("[data-svg-stage]");
     const download = this.querySelector(".download-combo");
     if (!preview || !stage) return;
 
+    this.normalizeSelection(this.resetAccentOnNextUpdate);
+    this.resetAccentOnNextUpdate = false;
+
     preview.style.background = BoosterConfig.colours[this.bg];
     download?.setAttribute("href", this.lockups[this.lockup].source);
+    
+    // Caution logic
+    const caution = this.cautionForPair();
+    const cautionBanner = this.querySelector(".caution-banner");
+    if (cautionBanner) {
+      cautionBanner.style.display = caution ? "flex" : "none";
+      cautionBanner.setAttribute("aria-hidden", String(!caution));
+      const cautionCopy = cautionBanner.querySelector("[data-caution-copy]");
+      if (cautionCopy && caution) cautionCopy.textContent = caution.message;
+    }
+
+    const lockupImg = this.querySelector("[data-trigger='lockup-img'] img");
+    const lockupLabel = this.querySelector("[data-trigger='lockup-label']");
+    if (lockupImg) lockupImg.src = this.lockups[this.lockup].fallback;
+    if (lockupLabel) lockupLabel.textContent = this.lockups[this.lockup].label;
+
+    const bgSwatch = this.querySelector("[data-trigger='bg-swatch']");
+    const bgLabel = this.querySelector("[data-trigger='bg-label']");
+    if (bgSwatch) {
+      bgSwatch.style.background = BoosterConfig.colours[this.bg];
+      bgSwatch.className = `val-swatch ${["white", "grey", "emphasis"].includes(this.bg) ? "light" : ""}`;
+    }
+    if (bgLabel) bgLabel.textContent = BoosterConfig.colourNames[this.bg];
+
+    const logoSwatch = this.querySelector("[data-trigger='logo-swatch']");
+    const logoLabel = this.querySelector("[data-trigger='logo-label']");
+    if (logoSwatch) {
+      logoSwatch.style.background = BoosterConfig.colours[this.logo];
+      logoSwatch.className = `val-swatch ${["white", "grey", "emphasis"].includes(this.logo) ? "light" : ""}`;
+    }
+    if (logoLabel) logoLabel.textContent = BoosterConfig.colourNames[this.logo];
 
     this.querySelectorAll("[data-lockup]").forEach((button) => {
       button.classList.toggle("active", button.dataset.lockup === this.lockup);
@@ -437,18 +568,52 @@ class LogoColourSwitcher extends HTMLElement {
     });
 
     this.querySelectorAll("[data-accent]").forEach((button) => {
-      button.classList.toggle("active", (button.dataset.accent === "on") === this.accentOn);
+      const isOnButton = button.dataset.accent === "on";
+      button.disabled = false;
+      button.classList.toggle("active", isOnButton === this.accentOn);
     });
 
     await this.renderSvg(stage);
   }
 
+  accentKey() {
+    if (!this.accentOn) return this.logo;
+
+    if (this.bg === "lilac") {
+      if (this.logo === "deep" || this.logo === "purple") return "white";
+      if (this.logo === "white") return "purple";
+      if (this.logo === "black") return "white";
+      if (this.logo === "emphasis" || this.logo === "grey") return "purple";
+      return this.logo;
+    }
+
+    if (this.bg === "neon") {
+      if (this.logo === "white") return "deep";
+      if (this.logo === "deep" || this.logo === "purple") return "white";
+      if (this.logo === "black" || this.logo === "emphasis" || this.logo === "grey") return "deep";
+      return "deep";
+    }
+
+    if (["emphasis", "grey", "white"].includes(this.bg)) {
+      if (this.logo === "neon") return "purple";
+      return "neon";
+    }
+
+    if (this.bg === "black") {
+      if (this.logo === "neon") return "white";
+      return "neon";
+    }
+
+    if (this.bg === "deep" || this.bg === "purple") {
+      if (this.logo === "neon") return "white";
+      return "neon";
+    }
+
+    return "neon";
+  }
+
   accentColour() {
-    if (!this.accentOn) return BoosterConfig.colours[this.logo];
-    if (this.bg === "neon") return BoosterConfig.colours.white;
-    if (this.bg === "lilac") return BoosterConfig.colours.deep;
-    if (this.logo === "neon") return BoosterConfig.colours.lilac;
-    return BoosterConfig.colours.neon;
+    return BoosterConfig.colours[this.accentKey()] || BoosterConfig.colours[this.logo];
   }
 
   async renderSvg(stage) {
@@ -470,10 +635,19 @@ class LogoColourSwitcher extends HTMLElement {
       if (!svg) throw new Error("SVG parse failed");
 
       const style = svg.querySelector("style") || parsed.createElementNS("http://www.w3.org/2000/svg", "style");
-      style.textContent = `.cls-1{fill:${accentColour};}.cls-2{fill:${textColour};}`;
+      style.textContent = `.cls-1{fill:${accentColour} !important;}.cls-2{fill:${textColour} !important;}`;
       if (!style.parentElement) svg.prepend(style);
+      svg.querySelectorAll(".cls-1").forEach((node) => {
+        node.setAttribute("fill", accentColour);
+        node.style.setProperty("fill", accentColour, "important");
+      });
+      svg.querySelectorAll(".cls-2").forEach((node) => {
+        node.setAttribute("fill", textColour);
+        node.style.setProperty("fill", textColour, "important");
+      });
       svg.removeAttribute("width");
       svg.removeAttribute("height");
+      svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
       svg.setAttribute("aria-hidden", "true");
       stage.innerHTML = "";
       stage.appendChild(document.importNode(svg, true));
