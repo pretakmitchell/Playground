@@ -297,7 +297,7 @@ class ProgressNav {
 class LogoColourSwitcher extends HTMLElement {
   constructor() {
     super();
-    this.bg = "black";
+    this.bg = "purple";
     this.logo = "white";
     this.accentOn = true;
     this.lockup = "wordmark";
@@ -577,7 +577,7 @@ class LogoColourSwitcher extends HTMLElement {
   }
 
   accentKey() {
-    if (this.accentOn) return this.logo;
+    if (!this.accentOn) return this.logo;
 
     if (this.bg === "lilac") {
       if (this.logo === "deep" || this.logo === "purple") return "white";
@@ -739,6 +739,78 @@ function initReveal() {
   }, { threshold: 0.08 });
   items.forEach((item) => observer.observe(item));
 }
+
+class ColorSwatch extends HTMLElement {
+  connectedCallback() {
+    const name = this.getAttribute("name") || "";
+    const hex = this.getAttribute("hex") || "";
+    const rgb = this.getAttribute("rgb") || "";
+    const cmyk = this.getAttribute("cmyk") || "";
+    const mini = this.getAttribute("mini") === "true";
+    const border = this.getAttribute("border") === "true";
+
+    const copyIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>`;
+
+    this.innerHTML = `
+      <article class="color-swatch-card ${mini ? 'mini' : ''}" tabindex="0">
+        <div class="swatch-fill" style="background:${hex};${border ? 'border:8px solid #F2F2F2;' : ''}">
+          <span class="copy-toast">Copied!</span>
+          <div class="copy-hint" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            Click to copy HEX
+          </div>
+        </div>
+        <div class="swatch-info">
+          <p class="label dark">${name}</p>
+          <div class="code-details">
+            <div class="code-row hex" data-copy="${hex}">
+              <span class="code-label">HEX</span>
+              <span class="code-val">${hex}</span>
+              <button class="row-copy-btn" aria-label="Copy HEX">${copyIcon}</button>
+            </div>
+            <div class="code-row sub-code" data-copy="${rgb}">
+              <span class="code-label">RGB</span>
+              <span class="code-val">${rgb}</span>
+              <button class="row-copy-btn" aria-label="Copy RGB">${copyIcon}</button>
+            </div>
+            <div class="code-row sub-code" data-copy="${cmyk}">
+              <span class="code-label">CMYK</span>
+              <span class="code-val">${cmyk}</span>
+              <button class="row-copy-btn" aria-label="Copy CMYK">${copyIcon}</button>
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+
+    const copyToClipboard = (val, message) => {
+      navigator.clipboard.writeText(val).then(() => {
+        const toast = this.querySelector(".copy-toast");
+        if (toast) {
+          toast.textContent = message;
+          toast.classList.add("show");
+          setTimeout(() => toast.classList.remove("show"), 1500);
+        }
+      });
+    };
+
+    this.addEventListener("click", (e) => {
+      const btn = e.target.closest(".row-copy-btn");
+      if (btn) {
+        const row = btn.closest(".code-row");
+        const val = row?.dataset.copy;
+        if (val) {
+          copyToClipboard(val, `Copied ${row.querySelector(".code-label").textContent}!`);
+        }
+        return;
+      }
+      
+      // Default behavior for clicking the card color area
+      copyToClipboard(hex, "Copied HEX!");
+    });
+  }
+}
+customElements.define("color-swatch", ColorSwatch);
 
 document.addEventListener("DOMContentLoaded", () => {
   new ProgressNav();

@@ -17,6 +17,40 @@
   <link rel="icon" type="image/png" href="brand-assets/logos/icon-main.png">
   <link rel="apple-touch-icon" href="brand-assets/logos/icon-main.png">
   <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .ecosystem-container {
+      width: 100%;
+      background: var(--bj-grey);
+      position: relative;
+      overflow: hidden;
+      margin-top: 40px;
+      border-radius: var(--radius-card);
+      display: flex;
+      justify-content: center;
+      padding: 40px 0 0 0;
+    }
+    
+    .ecosystem-container svg {
+      width: 100%;
+      height: auto;
+      max-width: 1300px;
+      display: block;
+    }
+    
+    .map-title { fill: var(--bj-purple); font-weight: 700; font-family: var(--font-label); font-size: 20px; letter-spacing: 0.5px; }
+    .map-subtitle { fill: var(--bj-purple); font-weight: 500; font-family: var(--font-label); font-size: 14px; opacity: 0.6; }
+    .map-wedge-text { fill: rgba(47, 23, 66, 0.9); font-weight: 500; font-family: var(--font-headline); font-size: 24px; letter-spacing: -0.01em; }
+    .map-point-text { fill: rgba(47, 23, 66, 0.5); font-weight: 600; font-family: var(--font-body); font-size: 13px; }
+    
+    .wedge-path {
+      cursor: pointer;
+      transition: fill 400ms var(--ease);
+    }
+    .map-point-text { cursor: default; transition: opacity 200ms ease; }
+    .wedge-path:hover {
+      filter: brightness(0.95);
+    }
+  </style>
 </head>
 <body>
   <top-nav></top-nav>
@@ -25,16 +59,7 @@
     <section class="hero-frame" aria-label="Strategy hero">
       <img src="brand-assets/images/cheers.png" alt="Two Booster drinks held together in a bright everyday moment">
       <div class="hero-blur progressive-blur progressive-blur-hero" aria-hidden="true">
-        <div class="blur-filter"></div>
-        <div class="blur-filter"></div>
-        <div class="blur-filter"></div>
-        <div class="blur-filter"></div>
-        <div class="blur-filter"></div>
-        <div class="blur-filter"></div>
-        <div class="blur-filter"></div>
-        <div class="blur-filter"></div>
-        <div class="blur-filter"></div>
-        <div class="blur-filter"></div>
+        <div class="blur-filter"></div><div class="blur-filter"></div><div class="blur-filter"></div><div class="blur-filter"></div><div class="blur-filter"></div><div class="blur-filter"></div><div class="blur-filter"></div><div class="blur-filter"></div><div class="blur-filter"></div><div class="blur-filter"></div>
         <div class="gradient"></div>
       </div>
       <div class="hero-copy">
@@ -50,7 +75,7 @@
     </section>
 
     <section class="section" id="mission" data-section-title="Mission">
-      <h2 class="section-heading">1. Mission, Vision &amp; Purpose</h2>
+      <h2 class="section-heading">1. Mission, Vision &amp; Values</h2>
 
       <div class="subsection">
         <h3 class="subsection-heading">Strategic Foundation</h3>
@@ -103,7 +128,7 @@
     </section>
 
     <section class="section" id="positioning" data-section-title="Positioning">
-      <h2 class="section-heading">2. Market Positioning &amp; Audience</h2>
+      <h2 class="section-heading">2. Market Positioning</h2>
 
       <div class="subsection">
         <h3 class="subsection-heading">Opportunity Space</h3>
@@ -119,24 +144,6 @@
           <span class="map-dot" style="left:65%;top:63%;">Starbucks</span>
           <span class="map-dot" style="left:76%;top:49%;">Fairlife Shakes</span>
           <span class="map-dot primary" style="left:58%;top:30%;">Booster Source</span>
-        </div>
-      </div>
-
-      <div class="subsection">
-        <h3 class="subsection-heading">Audience Logic</h3>
-        <div class="grid three">
-          <article class="card pad-lg">
-            <p class="label">Routine Pragmatists</p>
-            <p class="body-copy">People who want better daily food decisions without decoding wellness jargon. They need reliable benefit cues, fast ordering, and repeatable routines.</p>
-          </article>
-          <article class="card emphasis pad-lg">
-            <p class="label">Active Daily Users</p>
-            <p class="body-copy">Customers moving between morning, midday, post-workout, and reset moments. They respond to need states, visible nutrition, and clear add-in logic.</p>
-          </article>
-          <article class="card pad-lg">
-            <p class="label">Trust Seekers</p>
-            <p class="body-copy">Customers who are willing to pay more when the brand makes sourcing, materials, nutrition, and responsibility easier to verify.</p>
-          </article>
         </div>
       </div>
 
@@ -158,70 +165,231 @@
       </div>
     </section>
 
-    <section class="section" id="sustainability" data-section-title="Sustainability">
-      <h2 class="section-heading">3. Sustainability</h2>
-
+    <!-- 3. Pillars Overview Ecosystem Map -->
+    <section class="section" id="ecosystem" data-section-title="Ecosystem">
+      <h2 class="section-heading">3. Pillars Overview</h2>
       <div class="subsection">
-        <h3 class="subsection-heading">Responsible Systems, Not Green Claims</h3>
-        <p class="intro-copy">Sustainability is treated as operational proof: clearer packaging, visible material choices, disposal behavior, sourcing transparency, and public progress reporting.</p>
+        <p class="intro-copy">Booster Source is built upon four interconnected pillars that anchor the brand’s promise of useful wellness and absolute transparency.</p>
+        <div class="ecosystem-container">
+          <!-- Transparency label -->
+          <div style="position:absolute; top:24px; right:24px; text-align:right; pointer-events:none; z-index:10; font-family:'Titillium Web', sans-serif; font-size:26px; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; line-height:1.0;">
+            <div style="color:#DCC9EA;">OVERALL THEME OF</div>
+            <div style="color:var(--bj-purple); font-weight:800;">TRANSPARENCY</div>
+            <div style="color:#DCC9EA;">ACROSS ALL</div>
+            <div style="color:#DCC9EA;">PILLARS</div>
+          </div>
+          <div id="eco-tooltip" style="position:absolute; top: -100px; left: -100px; background:white; opacity:0; pointer-events:none; padding:12px 16px; border-radius:12px; font-family:var(--font-body); font-size:13px; color:rgba(47, 23, 66, 0.9); box-shadow: 0 10px 24px rgba(47, 23, 66, 0.1); width:200px; transition: opacity 0.2s var(--ease); z-index:100; font-weight: 500;"></div>
+          <svg viewBox="0 0 1200 650" id="ecosystem-canvas">
+            <defs>
+              <filter id="core-shadow" x="-50%" y="-50%" width="200%" height="200%">
+                <feDropShadow dx="0" dy="12" stdDeviation="15" flood-opacity="0.12" flood-color="var(--bj-purple)"/>
+              </filter>
+            </defs>
+            <g id="wedges"></g>
+            <g id="points"></g>
+            
+            <!-- Outer Dashed Arc -->
+            
+            
+            
+            <!-- Core Center Elements -->
+            <path d="M 450 650 A 150 150 0 0 1 750 650" fill="none" stroke="var(--bj-purple)" stroke-width="12" filter="url(#core-shadow)"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Pillar Sections -->
+    <section class="section" id="daily-nourishment" data-section-title="1. Nourishment">
+      <h2 class="section-heading">4. Daily Nourishment</h2>
+      <div class="subsection">
+        <h3 class="subsection-heading">Identity Implication</h3>
+        <p class="intro-copy">Daily Nourishment shifts Booster from an occasional smoothie stop toward a repeatable everyday routine built around clearer need states, faster decisions, and stronger daily relevance.</p>
+        <p class="body-copy">This pillar pushes the brand toward modular menu hierarchy, benefit-led navigation, and a more routine-oriented verbal and visual system.</p>
+        
+        <div class="grid three" style="margin-top: 30px;">
+          <article class="card pad">
+            <p class="label small">Customer</p>
+            <p class="body-copy">Clearer choices, faster decision-making, and easier comparison across needs.</p>
+          </article>
+          <article class="card pad">
+            <p class="label small">Store Teams</p>
+            <p class="body-copy">Simpler recommendation logic and stronger repeat-use mechanisms.</p>
+          </article>
+          <article class="card pad">
+            <p class="label small">Digital Strategy</p>
+            <p class="body-copy">More routine-based ordering, bundling, and frequency growth.</p>
+          </article>
+        </div>
+      </div>
+      <div class="subsection">
+        <h3 class="subsection-heading">Priority Moves & Metrics</h3>
         <div class="grid two">
-          <article class="quote-panel">
-            <p class="label">Supply &amp; Sourcing</p>
-            <p class="body-copy">Make ingredients, origins, and sourcing logic more visible. Use QR-led source journeys, grower stories, ingredient standards, and plain-language nutrition explanations.</p>
-          </article>
-          <article class="quote-panel">
-            <p class="label">Responsible Operations</p>
-            <p class="body-copy">Align the wellness promise with clearer packaging, disposal, logistics, and materials systems so responsibility feels visible and credible.</p>
-          </article>
-          <article class="quote-panel">
-            <p class="label">Social Stewardship</p>
-            <p class="body-copy">Connect the brand to specific local contribution, youth wellness, community programs, and proof-based storytelling.</p>
-          </article>
           <article class="quote-panel dark">
-            <p class="label white">Transparency</p>
-            <p class="body-copy">Publish what is known, what is improving, and what is still in progress. Avoid vague eco language unless it can be tied to a real system or measurable behavior.</p>
+            <p class="label white">Priority Moves</p>
+            <ul class="body-copy" style="color:white; padding-left: 20px;">
+              <li>Organize menu by need states: Energy, Protein, Recovery, Focus, Balance, Breakfast.</li>
+              <li>Simplify add-ins, boosts, and decision pathways.</li>
+              <li>Build guided bundles and saved routine ordering.</li>
+              <li>Deploy an improved online ordering system.</li>
+            </ul>
+          </article>
+          <article class="quote-panel">
+            <p class="label">Success Metrics</p>
+            <ul class="body-copy" style="padding-left: 20px;">
+              <li>Repeat purchase rate.</li>
+              <li>Breakfast and afternoon occasion growth.</li>
+              <li>App reorder frequency.</li>
+            </ul>
           </article>
         </div>
       </div>
+    </section>
 
+    <section class="section" id="supply" data-section-title="2. Sourcing">
+      <h2 class="section-heading">5. Supply & Sourcing</h2>
       <div class="subsection">
-        <h3 class="subsection-heading">Priority Moves</h3>
-        <div class="grid four">
-          <article class="card flex-end pad">
-            <p class="label">Need States</p>
-            <p class="body-copy">Organize menu choices around energy, protein, recovery, focus, balance, hydration, and breakfast.</p>
+        <h3 class="subsection-heading">Identity Implication</h3>
+        <p class="intro-copy">Supply & Sourcing makes ingredients, origins, and sourcing logic more visible, giving Booster a clearer and more credible product story.</p>
+        <p class="body-copy">Suggests provenance graphics, ingredient-forward information design, and a more human, traceable storytelling system.</p>
+        
+        <div class="grid three" style="margin-top: 30px;">
+          <article class="card pad">
+            <p class="label small">Customer</p>
+            <p class="body-copy">Clearer ingredient understanding and stronger trust in product quality.</p>
           </article>
-          <article class="card flex-end pad">
-            <p class="label">Source Visibility</p>
-            <p class="body-copy">Show ingredient origins, proteins, boosters, sweeteners, and simplified source journeys.</p>
+          <article class="card pad">
+            <p class="label small">Growers & Suppliers</p>
+            <p class="body-copy">Greater visibility and accountability within the brand story.</p>
           </article>
-          <article class="card flex-end pad">
-            <p class="label">Material Guidance</p>
-            <p class="body-copy">Make cup, lid, sleeve, bag, straw, and disposal instructions clearer at point of use.</p>
-          </article>
-          <article class="card flex-end pad">
-            <p class="label">Public Progress</p>
-            <p class="body-copy">Report packaging, waste, sourcing, and initiative progress with specific language and regular updates.</p>
+          <article class="card pad">
+            <p class="label small">Leadership</p>
+            <p class="body-copy">Better tools for explanation/storytelling, and more defensible transparency claims.</p>
           </article>
         </div>
       </div>
-
       <div class="subsection">
+        <h3 class="subsection-heading">Priority Moves & Metrics</h3>
+        <div class="grid two">
+          <article class="quote-panel dark">
+            <p class="label white">Priority Moves</p>
+            <ul class="body-copy" style="color:white; padding-left: 20px;">
+              <li>Show ingredient origins and simplified source Journeys.</li>
+              <li>Explain proteins, boosters, and sweeteners in plain, understandable language.</li>
+              <li>Establish clearer sourcing standards and partner storytelling.</li>
+            </ul>
+          </article>
+          <article class="quote-panel">
+            <p class="label">Success Metrics</p>
+            <ul class="body-copy" style="padding-left: 20px;">
+              <li>Trust and transparency perception.</li>
+              <li>QR and sourcing content engagement rates.</li>
+              <li>Reduced customer confusion around ingredients and boosts.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="operations" data-section-title="3. Operations">
+      <h2 class="section-heading">6. Responsible Operations</h2>
+      <div class="subsection">
+        <h3 class="subsection-heading">Identity Implication</h3>
+        <p class="intro-copy">Responsible Operations aligns Booster's wellness promise with clearer packaging, disposal, and operational systems so responsibility feels visible and credible.</p>
+        <p class="body-copy">Requires restrained responsibility cues, honest material labeling, and clearer instructional graphics across packaging and store systems.</p>
+        
+        <div class="grid three" style="margin-top: 30px;">
+          <article class="card pad">
+            <p class="label small">Customer</p>
+            <p class="body-copy">Clearer disposal behavior and more believable responsibility claims.</p>
+          </article>
+          <article class="card pad">
+            <p class="label small">Store Teams</p>
+            <p class="body-copy">Simpler material systems and easier operational standards to maintain.</p>
+          </article>
+          <article class="card pad">
+            <p class="label small">Disposal Partners</p>
+            <p class="body-copy">Better sorting, lower contamination, and clearer packaging logic.</p>
+          </article>
+        </div>
+      </div>
+      <div class="subsection">
+        <h3 class="subsection-heading">Priority Moves & Metrics</h3>
+        <div class="grid two">
+          <article class="quote-panel dark">
+            <p class="label white">Priority Moves</p>
+            <ul class="body-copy" style="color:white; padding-left: 20px;">
+              <li>Simplify cup, lid, sleeve, and straw systems.</li>
+              <li>Improve disposal guidance at point of use.</li>
+              <li>Test reusable or return-based incentives.</li>
+              <li>Communicate measurable packaging and waste progress.</li>
+            </ul>
+          </article>
+          <article class="quote-panel">
+            <p class="label">Success Metrics</p>
+            <ul class="body-copy" style="padding-left: 20px;">
+              <li>Packaging weight reduction.</li>
+              <li>Reusable container participation rate.</li>
+              <li>Contamination reduction in disposal streams.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="stewardship" data-section-title="4. Stewardship">
+      <h2 class="section-heading">7. Social & Environmental Stewardship</h2>
+      <div class="subsection">
+        <h3 class="subsection-heading">Identity Implication</h3>
+        <p class="intro-copy">Social & Environmental Stewardship makes Booster's public role more visible by connecting the brand to communities, wellness access, and specific local contribution.</p>
+        <p class="body-copy">Points toward localized storytelling, clearer proof-based stewardship language, and a warmer but disciplined community-facing expression.</p>
+        
+        <div class="grid three" style="margin-top: 30px;">
+          <article class="card pad">
+            <p class="label small">Communities</p>
+            <p class="body-copy">More visible local relevance and useful wellness participation.</p>
+          </article>
+          <article class="card pad">
+            <p class="label small">Youth Partners</p>
+            <p class="body-copy">Clearer program alignment around nourishment and activity.</p>
+          </article>
+          <article class="card pad">
+            <p class="label small">Franchises</p>
+            <p class="body-copy">Stronger public trust and more meaningful local activation tools.</p>
+          </article>
+        </div>
+      </div>
+      <div class="subsection">
+        <h3 class="subsection-heading">Priority Moves & Metrics</h3>
+        <div class="grid two">
+          <article class="quote-panel dark">
+            <p class="label white">Priority Moves</p>
+            <ul class="body-copy" style="color:white; padding-left: 20px;">
+              <li>Build a clearer stewardship platform instead of scattered charity activity.</li>
+              <li>Support local youth wellness or nourishment initiatives.</li>
+              <li>Communicate where support goes with more specificity.</li>
+              <li>Localize community partnerships by region or store.</li>
+            </ul>
+          </article>
+          <article class="quote-panel">
+            <p class="label">Success Metrics</p>
+            <ul class="body-copy" style="padding-left: 20px;">
+              <li>Number and visibility of community partnerships.</li>
+              <li>Participation in local activations.</li>
+              <li>Trust, warmth, and brand relevance metrics.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+      
+      <div class="subsection" style="margin-top: 60px;">
         <h3 class="subsection-heading">Reference Artifacts</h3>
         <div class="grid two">
           <article class="media-card">
             <img src="./pdf_exports/MPretakA3/page_03.png" alt="Daily nourishment strategic artifact page">
-            <div class="media-caption">
-              <p class="label">Daily Nourishment</p>
-              <p class="body-copy">Need-state bundles, product architecture, visible nutrition, and routine rewards.</p>
-            </div>
           </article>
           <article class="media-card">
             <img src="./pdf_exports/MPretakA3/page_05.png" alt="Responsible operations strategic artifact page">
-            <div class="media-caption">
-              <p class="label">Responsible Operations</p>
-              <p class="body-copy">Packaging materials, disposal instructions, shipping logic, and progress reporting.</p>
-            </div>
           </article>
         </div>
       </div>
@@ -235,6 +403,7 @@
     </footer>
   </main>
 
-  <script src="js/components.js?v=20260415-switcher2"></script>
+  <script src="js/ecosystem.js"></script>
+  <script src="js/components.js?v=20260415-switcher3"></script>
 </body>
 </html>

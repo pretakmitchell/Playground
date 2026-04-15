@@ -144,7 +144,7 @@ main {
   overflow: hidden;
   border-radius: var(--radius-card);
   background: var(--bj-emphasis);
-  isolation: isolate;
+  /* isolation: isolate removed — creates backdrop root in Chrome, blocks backdrop-filter */
 }
 
 .hero-frame.hero-tall {
@@ -504,6 +504,29 @@ main {
   height: auto;
 }
 
+.scale-small-assets {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.scale-wordmark-smallest {
+  width: 120px;
+  max-width: 28%;
+}
+
+.scale-small-assets img {
+  max-width: 40px;
+  max-height: 40px;
+  object-fit: contain;
+}
+
+.scale-small-assets img.scale-boo-small {
+  max-width: 30px;
+  max-height: 30px;
+}
+
 .full-bleed-media {
   min-height: 520px;
 }
@@ -699,34 +722,238 @@ main {
   outline: 4px solid var(--bj-neon);
 }
 
-.swatch-card {
-  display: flex;
-  min-height: 300px;
-  flex-direction: column;
-  gap: 25px;
+color-swatch {
+  display: block;
+}
+
+.color-swatch-card {
+  position: relative;
+  display: flex !important;
+  height: 340px !important;
+  flex-direction: column !important;
+  border-radius: var(--radius-card) !important;
+  background: var(--bj-grey) !important;
+  overflow: hidden !important;
+  cursor: default !important;
+  transition: transform 200ms var(--ease), box-shadow 200ms var(--ease) !important;
+  text-align: left !important;
+}
+
+.color-swatch-card.mini {
+  height: 280px !important;
+}
+
+.color-swatch-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(47, 23, 66, 0.08);
+}
+
+.color-swatch-card .swatch-fill {
+  position: relative;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  display: flex !important;
+  align-items: center;
   justify-content: center;
-  border: 4px solid #e5e5e5;
-  border-radius: var(--radius-card);
-  padding: 20px;
-  background: var(--bj-grey);
+  transition: filter 250ms var(--ease);
+  border-radius: var(--radius-card) var(--radius-card) 0 0 !important;
+  cursor: pointer;
+  z-index: 1;
 }
 
-.swatch-fill {
-  min-height: 160px;
-  flex: 1;
-  border-radius: var(--radius-inner);
+.color-swatch-card:hover .swatch-fill {
+  filter: brightness(0.96); /* Slightly more darkening for better contrast */
 }
 
-.mini-swatch {
+.copy-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
   display: flex;
-  min-height: 220px;
-  flex-direction: column;
-  gap: 25px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.98); /* More opaque */
+  color: var(--bj-purple);
+  font-family: var(--font-label);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0;
+  transition: all 250ms var(--ease);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15); /* More pronounced shadow */
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  z-index: 20; /* Ensure it stays on top */
 }
 
-.mini-swatch .swatch-fill {
-  min-height: 149px;
-  border-radius: var(--radius-card);
+.color-swatch-card:hover .copy-hint {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.copy-hint svg {
+  width: 14px;
+  height: 14px;
+}
+
+.copy-toast {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--bj-neon);
+  color: var(--bj-white);
+  font-family: var(--font-label);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 200ms var(--ease);
+  pointer-events: none;
+  z-index: 30; /* Toast stays above the hint */
+}
+
+.copy-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.color-swatch-card .swatch-info {
+  padding: 24px 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 0 0 auto !important;
+  background: var(--bj-grey) !important;
+  gap: 0 !important;
+  transition: all 300ms var(--ease);
+  border-top: 1px solid transparent;
+  z-index: 5;
+}
+
+.color-swatch-card:hover .swatch-info {
+  /* Use a more pronounced inner-shadow/border since overflow:hidden clips outer shadows */
+  border-top: 1.5px solid rgba(47, 23, 66, 0.12);
+}
+
+.color-swatch-card.mini .swatch-info {
+  padding: 18px 15px !important;
+}
+
+.color-swatch-card .label {
+  margin: 0 0 14px 0 !important;
+  text-align: left !important;
+}
+
+.code-details {
+  display: flex !important;
+  flex-direction: column !important;
+  padding-top: 14px !important;
+  border-top: 1px solid rgba(47, 23, 66, 0.1) !important;
+  font-family: monospace !important;
+}
+
+.code-row {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  height: 30px !important;
+  min-height: 0 !important;
+  gap: 12px !important;
+  text-align: left !important;
+}
+
+.code-label {
+  flex: 0 0 55px !important;
+  color: var(--bj-purple);
+  opacity: 0.5;
+  font-family: var(--font-label);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.code-val {
+  color: var(--bj-purple) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+}
+
+.color-swatch-card.mini .code-val {
+  font-size: 11px !important;
+}
+
+.code-row.sub-code {
+  height: 0 !important;
+  max-height: 0 !important;
+  opacity: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  transition: height 300ms var(--ease), opacity 200ms var(--ease), margin 300ms var(--ease) !important;
+}
+
+.color-swatch-card:hover .code-row.sub-code {
+  height: 30px !important;
+  max-height: 30px !important;
+  opacity: 1 !important;
+  margin-top: 4px !important;
+  pointer-events: auto !important;
+}
+
+.row-copy-btn {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--bj-purple);
+  opacity: 0;
+  cursor: pointer;
+  transition: all 180ms var(--ease);
+  margin-left: auto !important;
+}
+
+.code-row:hover .row-copy-btn {
+  opacity: 0.4;
+}
+
+.row-copy-btn:hover {
+  opacity: 1 !important;
+  background: rgba(47, 23, 66, 0.08) !important;
+  color: var(--bj-neon) !important;
+}
+
+.row-copy-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.code-label {
+  color: var(--bj-purple);
+  opacity: 0.5;
+  font-family: var(--font-label);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.code-val {
+  color: var(--bj-purple);
+  font-weight: 600;
 }
 
 .artifact-card {
@@ -770,7 +997,7 @@ main {
 
 .visual-asset-card {
   display: flex;
-  min-height: 360px;
+  min-height: 385px;
   flex-direction: column;
 }
 
@@ -795,9 +1022,24 @@ main {
   max-height: 125px;
 }
 
+.visual-asset-art-exclamation img {
+  max-width: 58%;
+  max-height: 92px;
+}
+
+.visual-asset-art-fruits {
+  position: relative;
+}
+
 .visual-asset-art-fruits img {
-  max-width: 116%;
-  max-height: 182px;
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 80%;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  transform: translateX(-50%);
 }
 
 .visual-asset-copy {
@@ -1130,7 +1372,7 @@ type-tester {
   position: fixed;
   inset: 0 0 auto;
   z-index: 1000;
-  isolation: isolate;
+  /* isolation: isolate removed — blocks backdrop-filter in Chrome */
   height: 92px;
   padding: 18px 25px 10px;
   pointer-events: none;
@@ -1259,6 +1501,8 @@ type-tester {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.56) 36%, rgba(255, 255, 255, 0.34) 62%, rgba(255, 255, 255, 0.14) 82%, rgba(255, 255, 255, 0) 100%);
 }
 
+
+
 .top-nav {
   position: relative;
   display: flex;
@@ -1345,8 +1589,7 @@ type-tester {
 
 .progress-wrap {
   position: fixed;
-  left: 50%;
-  bottom: 0;
+  inset: auto 0 0 0;
   z-index: 920;
   display: flex;
   width: 100%;
@@ -1356,8 +1599,8 @@ type-tester {
   gap: 10px;
   justify-content: flex-start;
   padding: 0 25px;
-  transform: translateX(-50%);
-  isolation: isolate;
+  /* transform: translateX(-50%) removed — creates backdrop root in Chrome, blocks blur */
+  /* isolation: isolate removed — blocks backdrop-filter in Chrome */
   pointer-events: none;
 }
 
@@ -1365,7 +1608,7 @@ type-tester {
   position: absolute;
   inset: 0;
   z-index: 0;
-  overflow: hidden;
+  /* overflow: hidden removed — creates backdrop root in Chrome, blocks blur */
   pointer-events: none;
 }
 

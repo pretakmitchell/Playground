@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Progressive Blur Test</title>
+<style>
+* { margin:0; box-sizing:border-box; }
+body { font-family: system-ui; background: #fff; }
+
+.test-row {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.test-box {
+  flex: 1;
+  position: relative;
+  height: 200px;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.test-label {
+  position: absolute; top: 8px; left: 12px; z-index: 50;
+  font-size: 11px; font-weight: 700; color: #fff;
+  background: rgba(0,0,0,0.7); padding: 4px 10px; border-radius: 6px;
+  pointer-events: none;
+}
+
+.blur-area {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+.blur-area > .bf {
+  position: absolute;
+  inset: 0;
+}
+
+/* TEST A: mask: shorthand */
+.test-a > .bf:nth-child(1) { backdrop-filter: blur(1px);  mask: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1) 10%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 40%); }
+.test-a > .bf:nth-child(2) { backdrop-filter: blur(2px);  mask: linear-gradient(rgba(0,0,0,0) 10%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 50%); }
+.test-a > .bf:nth-child(3) { backdrop-filter: blur(4px);  mask: linear-gradient(rgba(0,0,0,0) 15%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 60%); }
+.test-a > .bf:nth-child(4) { backdrop-filter: blur(8px);  mask: linear-gradient(rgba(0,0,0,0) 20%, rgba(0,0,0,1) 40%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 70%); }
+.test-a > .bf:nth-child(5) { backdrop-filter: blur(16px); mask: linear-gradient(rgba(0,0,0,0) 40%, rgba(0,0,0,1) 60%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 90%); }
+.test-a > .bf:nth-child(6) { backdrop-filter: blur(32px); mask: linear-gradient(rgba(0,0,0,0) 60%, rgba(0,0,0,1) 80%); }
+.test-a > .bf:nth-child(7) { backdrop-filter: blur(64px); mask: linear-gradient(rgba(0,0,0,0) 70%, rgba(0,0,0,1) 100%); }
+
+/* TEST B: mask-image + -webkit-mask-image */
+.test-b > .bf:nth-child(1) { backdrop-filter: blur(1px);  -webkit-backdrop-filter: blur(1px);  mask-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1) 10%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 40%); -webkit-mask-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1) 10%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 40%); }
+.test-b > .bf:nth-child(2) { backdrop-filter: blur(2px);  -webkit-backdrop-filter: blur(2px);  mask-image: linear-gradient(rgba(0,0,0,0) 10%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 50%); -webkit-mask-image: linear-gradient(rgba(0,0,0,0) 10%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 50%); }
+.test-b > .bf:nth-child(3) { backdrop-filter: blur(4px);  -webkit-backdrop-filter: blur(4px);  mask-image: linear-gradient(rgba(0,0,0,0) 15%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 60%); -webkit-mask-image: linear-gradient(rgba(0,0,0,0) 15%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 60%); }
+.test-b > .bf:nth-child(4) { backdrop-filter: blur(8px);  -webkit-backdrop-filter: blur(8px);  mask-image: linear-gradient(rgba(0,0,0,0) 20%, rgba(0,0,0,1) 40%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 70%); -webkit-mask-image: linear-gradient(rgba(0,0,0,0) 20%, rgba(0,0,0,1) 40%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 70%); }
+.test-b > .bf:nth-child(5) { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); mask-image: linear-gradient(rgba(0,0,0,0) 40%, rgba(0,0,0,1) 60%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 90%); -webkit-mask-image: linear-gradient(rgba(0,0,0,0) 40%, rgba(0,0,0,1) 60%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 90%); }
+.test-b > .bf:nth-child(6) { backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); mask-image: linear-gradient(rgba(0,0,0,0) 60%, rgba(0,0,0,1) 80%); -webkit-mask-image: linear-gradient(rgba(0,0,0,0) 60%, rgba(0,0,0,1) 80%); }
+.test-b > .bf:nth-child(7) { backdrop-filter: blur(64px); -webkit-backdrop-filter: blur(64px); mask-image: linear-gradient(rgba(0,0,0,0) 70%, rgba(0,0,0,1) 100%); -webkit-mask-image: linear-gradient(rgba(0,0,0,0) 70%, rgba(0,0,0,1) 100%); }
+
+/* TEST C: Just uniform backdrop-filter, no mask */
+.test-c > .bf { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+
+/* Scrollable page content — these badges scroll behind the fixed blur panels */
+.page-content {
+  position: relative;
+  z-index: 1;
+  padding: 20px 20px 280px;
+  line-height: 2.2;
+}
+.page-content span {
+  display: inline-block;
+  padding: 6px 14px;
+  margin: 4px;
+  background: linear-gradient(135deg, #D089FF 0%, #53286E 100%);
+  color: white;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+
+<div class="page-content">
+  <p style="font-size:14px; color:#666; margin-bottom:12px;">↓ Scroll down — watch how text blurs (or doesn't) behind the three panels at the bottom ↓</p>
+  <span>BOOSTER</span> <span>SOURCE</span> <span>NOURISHMENT</span> <span>SUPPLY</span> <span>SOURCING</span> <span>OPERATIONS</span> <span>STEWARDSHIP</span> <span>TRANSPARENCY</span>
+  <span>DAILY</span> <span>WELLNESS</span> <span>FUNCTIONAL</span> <span>ROUTINE</span> <span>ENERGY</span> <span>RECOVERY</span> <span>PROTEIN</span> <span>HYDRATION</span>
+  <span>BOOSTER</span> <span>SOURCE</span> <span>NOURISHMENT</span> <span>SUPPLY</span> <span>SOURCING</span> <span>OPERATIONS</span> <span>STEWARDSHIP</span> <span>TRANSPARENCY</span>
+  <span>DAILY</span> <span>WELLNESS</span> <span>FUNCTIONAL</span> <span>ROUTINE</span> <span>ENERGY</span> <span>RECOVERY</span> <span>PROTEIN</span> <span>HYDRATION</span>
+  <span>BOOSTER</span> <span>SOURCE</span> <span>NOURISHMENT</span> <span>SUPPLY</span> <span>SOURCING</span> <span>OPERATIONS</span> <span>STEWARDSHIP</span> <span>TRANSPARENCY</span>
+  <span>DAILY</span> <span>WELLNESS</span> <span>FUNCTIONAL</span> <span>ROUTINE</span> <span>ENERGY</span> <span>RECOVERY</span> <span>PROTEIN</span> <span>HYDRATION</span>
+  <span>BOOSTER</span> <span>SOURCE</span> <span>NOURISHMENT</span> <span>SUPPLY</span> <span>SOURCING</span> <span>OPERATIONS</span> <span>STEWARDSHIP</span> <span>TRANSPARENCY</span>
+  <span>DAILY</span> <span>WELLNESS</span> <span>FUNCTIONAL</span> <span>ROUTINE</span> <span>ENERGY</span> <span>RECOVERY</span> <span>PROTEIN</span> <span>HYDRATION</span>
+  <span>BOOSTER</span> <span>SOURCE</span> <span>NOURISHMENT</span> <span>SUPPLY</span> <span>SOURCING</span> <span>OPERATIONS</span> <span>STEWARDSHIP</span> <span>TRANSPARENCY</span>
+  <span>DAILY</span> <span>WELLNESS</span> <span>FUNCTIONAL</span> <span>ROUTINE</span> <span>ENERGY</span> <span>RECOVERY</span> <span>PROTEIN</span> <span>HYDRATION</span>
+  <span>BOOSTER</span> <span>SOURCE</span> <span>NOURISHMENT</span> <span>SUPPLY</span> <span>SOURCING</span> <span>OPERATIONS</span> <span>STEWARDSHIP</span> <span>TRANSPARENCY</span>
+  <span>DAILY</span> <span>WELLNESS</span> <span>FUNCTIONAL</span> <span>ROUTINE</span> <span>ENERGY</span> <span>RECOVERY</span> <span>PROTEIN</span> <span>HYDRATION</span>
+</div>
+
+<div class="test-row">
+  <div class="test-box">
+    <div class="test-label">A: mask: shorthand</div>
+    <div class="blur-area test-a">
+      <div class="bf"></div><div class="bf"></div><div class="bf"></div><div class="bf"></div><div class="bf"></div><div class="bf"></div><div class="bf"></div>
+    </div>
+  </div>
+  <div class="test-box">
+    <div class="test-label">B: mask-image (current)</div>
+    <div class="blur-area test-b">
+      <div class="bf"></div><div class="bf"></div><div class="bf"></div><div class="bf"></div><div class="bf"></div><div class="bf"></div><div class="bf"></div>
+    </div>
+  </div>
+  <div class="test-box">
+    <div class="test-label">C: uniform blur (control)</div>
+    <div class="blur-area test-c">
+      <div class="bf"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
