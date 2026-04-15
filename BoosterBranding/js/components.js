@@ -22,23 +22,23 @@ const BoosterConfig = {
     black: "Black"
   },
   assets: {
-    wordmarkSvg: "./Brand Assets/Logos/SVG Versions/Main - Wordmark (primary Logo).svg",
-    wordmarkPng: "./Brand Assets/Logos/Main - Wordmark (primary Logo).png",
-    iconSvg: "./Brand Assets/Logos/SVG Versions/Secondary - Main Icon (Secondary Logo).svg",
-    iconPng: "./Brand Assets/Logos/Secondary - Main Icon (Secondary Logo).png",
-    fullWordmarkSvg: "./Brand Assets/Logos/SVG Versions/Secondary - Full Wordmark.svg",
-    fullWordmarkPng: "./Brand Assets/Logos/Secondary - Full Wordmark.png",
-    comboSvg: "./Brand Assets/Logos/Lockups/Secondary - Wordmark + Logo.svg",
-    legalSvg: "./Brand Assets/Logos/Lockups/Tetritary - Full Wordmark + Logo (company documents only).svg",
-    heroTwoCups: "./Brand Assets/Image assets/TwoCups.png",
-    cheers: "./Brand Assets/Image assets/Cheers.png",
-    cup: "./Brand Assets/Image assets/Cup.jpeg",
-    holdingCup: "./Brand Assets/Image assets/Holding Cup.jpeg",
-    bagCup: "./Brand Assets/Image assets/Bag + Cup.jpeg",
-    bagsWrap: "./Brand Assets/Image assets/TwoBagsAndWrap.jpeg",
-    generatedCup: "./Brand Assets/Image assets/Generated/booster_cup_wrap_1776116781883.png",
-    generatedTote: "./Brand Assets/Image assets/Generated/booster_tote_mockup_1776116766320.png",
-    generatedApp: "./Brand Assets/Image assets/Generated/booster_ui_app_1776116752479.png"
+    wordmarkSvg: "brand-assets/logos/svg/wordmark-main.svg",
+    wordmarkPng: "brand-assets/logos/wordmark-main.png",
+    iconSvg: "brand-assets/logos/svg/icon-main.svg",
+    iconPng: "brand-assets/logos/icon-main.png",
+    fullWordmarkSvg: "brand-assets/logos/svg/wordmark-full.svg",
+    fullWordmarkPng: "brand-assets/logos/wordmark-full.png",
+    comboSvg: "brand-assets/logos/lockups/wordmark-icon.svg",
+    legalSvg: "brand-assets/logos/lockups/legal.svg",
+    heroTwoCups: "brand-assets/images/two-cups.png",
+    cheers: "brand-assets/images/cheers.png",
+    cup: "brand-assets/images/cup.jpg",
+    holdingCup: "brand-assets/images/holding-cup.jpg",
+    bagCup: "brand-assets/images/bag-cup.jpg",
+    bagsWrap: "brand-assets/images/two-bags-wrap.jpg",
+    generatedCup: "brand-assets/images/generated/booster_cup_wrap_1776116781883.png",
+    generatedTote: "brand-assets/images/generated/booster_tote_mockup_1776116766320.png",
+    generatedApp: "brand-assets/images/generated/booster_ui_app_1776116752479.png"
   },
   validLogoCombos: {
     deep: ["white", "lilac", "neon"],
@@ -54,7 +54,7 @@ const BoosterConfig = {
 
 class TopNav extends HTMLElement {
   connectedCallback() {
-    const activePath = window.location.pathname.split("/").pop() || "index.html";
+    const activePath = window.location.pathname.split("/").filter(Boolean).pop() || "index.html";
     const links = [
       ["index.html", "Brand"],
       ["strategy.html", "Strategy"],
