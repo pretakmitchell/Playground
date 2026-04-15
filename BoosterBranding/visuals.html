@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visuals | Booster Brand Guidelines</title>
+  <meta name="description" content="Logo, colour, typography, packaging, photography, icons, advertising, and interface standards for Booster.">
+  <link rel="icon" href="./Brand Assets/Logos/SVG Versions/Secondary - Main Icon (Secondary Logo).svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <top-nav></top-nav>
+
+  <main class="site-shell">
+    <section class="hero-frame" aria-label="Visuals hero">
+      <img src="./Brand Assets/Image assets/Cheers.png" alt="Two Booster drinks held together in a bright everyday moment">
+      <div class="hero-blur progressive-blur progressive-blur-hero" aria-hidden="true">
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="blur-filter"></div>
+        <div class="gradient"></div>
+      </div>
+      <div class="hero-copy">
+        <h1>Booster Juice</h1>
+        <p>Guidelines V2.0</p>
+      </div>
+    </section>
+
+    <section class="page-title">
+      <h1>Visuals</h1>
+      <p>All visual guides and assets for the new brand.</p>
+    </section>
+
+    <section class="section" id="v-logo" data-section-title="1. Logos">
+      <h2 class="section-heading">1. Logos</h2>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Core Elements</h3>
+        <div class="grid two">
+          <article class="card emphasis flex-end pad">
+            <div class="logo-stage">
+              <img src="./Brand Assets/Logos/Main - Wordmark (primary Logo).png" alt="Booster primary wordmark">
+            </div>
+            <p class="label">Wordmark - The Primary Logo</p>
+          </article>
+          <article class="card emphasis flex-end pad">
+            <div class="logo-stage icon">
+              <img src="./Brand Assets/Logos/Secondary - Main Icon (Secondary Logo).png" alt="Booster strawberry icon">
+            </div>
+            <p class="label">Icon - Secondary Logo</p>
+          </article>
+          <article class="card emphasis flex-end pad" style="grid-column:1/-1;">
+            <div class="logo-stage">
+              <img src="./Brand Assets/Logos/Secondary - Full Wordmark.png" alt="Booster Juice full wordmark" style="max-height:210px;">
+            </div>
+            <p class="label">Full Wordmark - Secondary Logo</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Lockups</h3>
+        <div class="grid two">
+          <article class="card flex-end pad">
+            <div class="logo-stage">
+              <img src="./Brand Assets/Logos/Lockups/Secondary - Wordmark + Logo.svg" alt="Wordmark and icon lockup">
+            </div>
+            <p class="label">Wordmark + Logo</p>
+            <p class="body-copy">Used as a secondary logo, primarily for company assets such as posters, advertising, and branded communications.</p>
+          </article>
+          <article class="card flex-end pad">
+            <div class="logo-stage">
+              <img src="./Brand Assets/Logos/Lockups/Tetritary - Full Wordmark + Logo (company documents only).svg" alt="Full wordmark and icon lockup">
+            </div>
+            <p class="label">Full Wordmark + Logo</p>
+            <p class="body-copy">Used as a tertiary logo for internal documents, formal company materials, and rare private-facing contexts.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Safe Zones &amp; Spacing</h3>
+        <div class="grid two">
+          <article class="card flex-end pad">
+            <div class="logo-stage">
+              <img src="./Brand Assets/Logos/Safe Zones & Spacing/Main Wordmark - Safezones.svg" alt="Main wordmark safe zone guide">
+            </div>
+            <p class="label">The T Guide</p>
+            <p class="body-copy">Use the T from the main Booster wordmark as the safe-zone unit. No other graphic, type, image, or interface element should enter this area.</p>
+          </article>
+          <article class="card flex-end pad">
+            <div class="logo-stage">
+              <img src="./Brand Assets/Logos/Safe Zones & Spacing/Secondary Wordmark + Icon - Spacing.svg" alt="Lockup spacing guide">
+            </div>
+            <p class="label">Spacing Method</p>
+            <p class="body-copy">Use the same T unit for lockup spacing, partner marks, QR-code pairings, and special-use logo combinations.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Corner Radius</h3>
+        <div class="grid two">
+          <article class="card emphasis pad-lg">
+            <div class="logo-stage">
+              <img src="./Brand Assets/Logos/Main - Wordmark (primary Logo).png" alt="Booster wordmark radius reference">
+            </div>
+            <p class="label">S Vertex Limit</p>
+            <p class="body-copy">The smallest corner in the bottom of the S sets the maximum rounding logic for brand geometry. Larger modules can be rounder, but visual assets should still feel related to this soft geometric constraint.</p>
+          </article>
+          <article class="card pad-lg">
+            <p class="label">System Translation</p>
+            <p class="body-copy">Website cards, packaging windows, UI panels, icon containers, and promotional blocks use soft rounded shapes that echo the wordmark without copying it literally.</p>
+            <div class="grid two" style="margin-top:24px;">
+              <div class="card emphasis" style="height:120px;"></div>
+              <div class="card dark" style="height:120px;"></div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Colour &amp; Our Logos</h3>
+        <div class="text-stack wide">
+          <p class="label">Core Logo Colours</p>
+          <p class="body-copy">The logo should appear only in core colours or greyscale. Use the interface below to preview approved background, logo, and emphasis states. Invalid low-contrast combinations are disabled by configuration.</p>
+        </div>
+        <logo-colour-switcher></logo-colour-switcher>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Scales</h3>
+        <article class="card flex-end pad">
+          <div class="logo-stage" style="flex-direction:column;gap:28px;">
+            <img src="./Brand Assets/Logos/Main - Wordmark (primary Logo).png" alt="Large wordmark scale" style="max-width:78%;">
+            <img src="./Brand Assets/Logos/Main - Wordmark (primary Logo).png" alt="Medium wordmark scale" style="max-width:42%;">
+            <img src="./Brand Assets/Logos/Main - Wordmark (primary Logo).png" alt="Small wordmark scale" style="max-width:18%;">
+          </div>
+          <p class="label">Minimum Reproduction Sizes</p>
+          <p class="body-copy">Wordmark minimum: 120px digital / 1.5 in print. Icon minimum: 32px digital / 0.5 in print. Below these sizes, the accent blocks and letterforms risk filling in.</p>
+        </article>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Other Visual Assets</h3>
+        <div class="grid three">
+          <article class="card pad-lg">
+            <div class="exclaim-blocks" aria-hidden="true"><span></span><span></span><span></span></div>
+            <p class="label" style="margin-top:30px;">The Exclamation Mark</p>
+            <p class="body-copy">The three little blocks from the O accent and strawberry stem represent boost, energy, and excitement. They can appear in icons, Boo moments, fruit graphics, and micro-interactions, but should remain disciplined.</p>
+          </article>
+          <article class="card pad-lg">
+            <div class="boo-face" aria-hidden="true">oo</div>
+            <p class="label">Boo</p>
+            <p class="body-copy">Boo is the eyes-and-expression system. It supports assistance, checkout states, empty states, pillar storytelling, and service moments without becoming a random mascot.</p>
+          </article>
+          <article class="card pad-lg">
+            <div class="fruit-sketch" aria-hidden="true"></div>
+            <p class="label">Fruits</p>
+            <p class="body-copy">The strawberry is primary. Supporting fruits can use the exclamation blocks as stems, leaves, or sparse seeds, but never as decoration for its own sake.</p>
+          </article>
+        </div>
+        <div class="grid two">
+          <article class="artifact-card">
+            <span class="artifact-mark" aria-hidden="true"></span>
+            <p class="label">Boo Expression Sheet Needed</p>
+            <p class="body-copy">Approved happy, helpful, empty, loading, error, and recovery expressions for digital assistance.</p>
+          </article>
+          <article class="artifact-card">
+            <span class="artifact-mark" aria-hidden="true"></span>
+            <p class="label">Expanded Fruit Library Needed</p>
+            <p class="body-copy">Geometric fruit assets with restrained exclamation integration for packaging, icons, and campaigns.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Additional Logos &amp; Downloads</h3>
+        <div class="grid three">
+          <a class="download-card" href="./Brand Assets/Logos/SVG Versions/Main - Wordmark (primary Logo).svg" download>
+            <span class="label">Wordmark SVG</span>
+            <span class="body-copy">Primary scalable logo file.</span>
+            <span class="button small">Download</span>
+          </a>
+          <a class="download-card" href="./Brand Assets/Logos/SVG Versions/Secondary - Main Icon (Secondary Logo).svg" download>
+            <span class="label">Icon SVG</span>
+            <span class="body-copy">Secondary strawberry mark.</span>
+            <span class="button small">Download</span>
+          </a>
+          <a class="download-card" href="./Brand Assets/Logos/SVG Versions/Secondary - Full Wordmark.svg" download>
+            <span class="label">Full Wordmark SVG</span>
+            <span class="body-copy">Extended Booster Juice mark.</span>
+            <span class="button small">Download</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Negative Logo Use</h3>
+        <p class="body-copy">Do not alter proportions, colour, contrast, spacing, orientation, effects, or asset relationships. These examples should become approved visual misuse exports later.</p>
+        <div class="negative-grid">
+          <article class="negative-card">
+            <div class="negative-demo"><img src="./Brand Assets/Logos/Main - Wordmark (primary Logo).png" alt="" style="transform:scaleY(1.45);"></div>
+            <div class="negative-label">Do not stretch</div>
+          </article>
+          <article class="negative-card">
+            <div class="negative-demo" style="background:#d089ff;"><img src="./Brand Assets/Logos/Main - Wordmark (primary Logo).png" alt="" style="opacity:.25;"></div>
+            <div class="negative-label">Do not use low contrast</div>
+          </article>
+          <article class="negative-card">
+            <div class="negative-demo"><img src="./Brand Assets/Logos/Main - Wordmark (primary Logo).png" alt="" style="transform:rotate(-15deg);"></div>
+            <div class="negative-label">Do not rotate</div>
+          </article>
+          <article class="negative-card">
+            <div class="negative-demo"><img src="./Brand Assets/Logos/Main - Wordmark (primary Logo).png" alt="" style="filter:hue-rotate(110deg);"></div>
+            <div class="negative-label">Do not recolour</div>
+          </article>
+          <article class="negative-card">
+            <div class="negative-demo"><img src="./Brand Assets/Logos/Main - Wordmark (primary Logo).png" alt="" style="filter:drop-shadow(6px 6px 0 rgba(0,0,0,.45));"></div>
+            <div class="negative-label">Do not add effects</div>
+          </article>
+          <article class="negative-card">
+            <div class="negative-demo" style="background:url('./Brand Assets/Image assets/Cup.jpeg') center/cover;"><img src="./Brand Assets/Logos/Main - Wordmark (primary Logo).png" alt="" style="opacity:.55;"></div>
+            <div class="negative-label">Do not bury on images</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="v-colour" data-section-title="2. Colour">
+      <h2 class="section-heading">2. Colour</h2>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Overview</h3>
+        <div class="text-stack wide">
+          <p class="label">Colour At Booster</p>
+          <p class="body-copy">The palette is deliberately tight. Purple carries the brand system while photography and real product colour provide richness.</p>
+        </div>
+        <div class="text-stack wide">
+          <p class="label">Screen Vs Print</p>
+          <p class="body-copy">Neon and lilac perform best on screen. In print, use them as controlled accents or replace large applications with Booster Purple, Deep Purple, white, or greyscale surfaces.</p>
+        </div>
+        <div class="text-stack wide">
+          <p class="label">Photography As Colour</p>
+          <p class="body-copy">When non-purple colour enters the system, it should primarily come from smoothies, ingredients, people, and real environments. Brand graphics should stay restrained so natural product colour can lead.</p>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Core Colours</h3>
+        <div class="grid swatches">
+          <article class="swatch-card"><div class="swatch-fill" style="background:#2F1742;"></div><p class="label dark">Deep Purple</p><p class="body-copy dark">#2F1742</p></article>
+          <article class="swatch-card"><div class="swatch-fill" style="background:#53286E;"></div><p class="label dark">Booster Purple</p><p class="body-copy dark">#53286E</p></article>
+          <article class="swatch-card"><div class="swatch-fill" style="background:#D089FF;"></div><p class="label dark">Lilac</p><p class="body-copy dark">#D089FF</p></article>
+          <article class="swatch-card"><div class="swatch-fill" style="background:#E11FFA;"></div><p class="label dark">Neon</p><p class="body-copy dark">#E11FFA</p></article>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Secondary Colours &amp; Shades</h3>
+        <div class="grid swatches">
+          <article class="mini-swatch"><div class="swatch-fill" style="background:#F2F2F2;"></div><p class="label dark">Grey 2</p><p class="body-copy dark">#F2F2F2</p></article>
+          <article class="mini-swatch"><div class="swatch-fill" style="background:#DFDFDF;"></div><p class="label dark">Grey 5</p><p class="body-copy dark">#DFDFDF</p></article>
+          <article class="mini-swatch"><div class="swatch-fill" style="background:#EEEAF4;"></div><p class="label dark">Subtle Lilac</p><p class="body-copy dark">#EEEAF4</p></article>
+          <article class="mini-swatch"><div class="swatch-fill" style="background:#fff;border:8px solid #F2F2F2;"></div><p class="label dark">White</p><p class="body-copy dark">#FFFFFF</p></article>
+          <article class="mini-swatch"><div class="swatch-fill" style="background:#000;"></div><p class="label dark">Black</p><p class="body-copy dark">#000000</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="v-typography" data-section-title="3. Typography">
+      <h2 class="section-heading">3. Typography</h2>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Type System</h3>
+        <p class="intro-copy">Montserrat is the primary functional and display typeface. Titillium Web Bold is the structural label voice used across cards, controls, captions, and section identifiers.</p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Weight Lineups</h3>
+        <div class="grid two">
+          <article class="card">
+            <div class="type-lineup" style="font-family:'Montserrat',sans-serif;">
+              <p class="label">Montserrat</p>
+              <div style="font-weight:200;">ExtraLight 200</div>
+              <div style="font-weight:300;">Light 300</div>
+              <div style="font-weight:400;">Regular 400</div>
+              <div style="font-weight:500;">Medium 500</div>
+              <div style="font-weight:600;">SemiBold 600</div>
+              <div style="font-weight:700;">Bold 700</div>
+              <div style="font-weight:800;">ExtraBold 800</div>
+              <div style="font-weight:900;">Black 900</div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="type-lineup" style="font-family:'Titillium Web',sans-serif;">
+              <p class="label">Titillium Web</p>
+              <div style="font-weight:400;">Regular 400</div>
+              <div style="font-weight:600;">SemiBold 600</div>
+              <div style="font-weight:700;text-transform:uppercase;">Bold 700 - Labels</div>
+              <div style="font-weight:700;font-style:italic;">Bold Italic 700</div>
+              <p class="body-copy">Use Titillium Web for structural clarity, not long reading passages.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Live Type Testers</h3>
+        <div class="grid two">
+          <type-tester label="Montserrat Tester" family="Montserrat" start="300" sample="Transparent daily nourishment." weights="200,300,400,500,600,700,800,900"></type-tester>
+          <type-tester label="Titillium Web Tester" family="Titillium Web" start="700" sample="CARD LABEL SYSTEM" weights="400,600,700"></type-tester>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Hierarchy Guidance</h3>
+        <article class="card pad-lg">
+          <div class="text-stack">
+            <p class="label">Display Lettering</p>
+            <p class="body-copy">The custom Booster wordmark is locked artwork. Do not recreate it by typing the word in Montserrat. Use exported logo assets for all marks.</p>
+            <h3 class="section-heading" style="margin-top:22px;">Large moments use Montserrat.</h3>
+            <p class="body-copy">Body copy stays light, concise, and transparent. Labels use Titillium Web Bold Uppercase.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="v-packaging" data-section-title="4. Packaging">
+      <h2 class="section-heading">4. Packaging &amp; Products</h2>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Overview</h3>
+        <p class="intro-copy">Packaging is the most visible everyday brand touchpoint. It must support product colour, routine use, material clarity, disposal behavior, and recognition across cups, wrappers, bags, napkins, merch, and delivery moments.</p>
+        <div class="grid three">
+          <article class="media-card"><img src="./Brand Assets/Image assets/Cup.jpeg" alt="Booster cup"><div class="media-caption"><p class="label">Cups</p><p class="body-copy">Transparent or frosted bodies let smoothie colour become the hero.</p></div></article>
+          <article class="media-card"><img src="./Brand Assets/Image assets/TwoBagsAndWrap.jpeg" alt="Booster bags and wrap"><div class="media-caption"><p class="label">Wrappers</p><p class="body-copy">Use high-contrast lockups, clear ingredients, and material guidance.</p></div></article>
+          <article class="media-card"><img src="./Brand Assets/Image assets/Generated/booster_tote_mockup_1776116766320.png" alt="Booster tote mockup"><div class="media-caption"><p class="label">Merch</p><p class="body-copy">Reusable goods should feel durable, simple, and genuinely useful.</p></div></article>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Touchpoints</h3>
+        <div class="grid four">
+          <article class="card flex-end pad"><p class="label">Cups</p><p class="body-copy">Prioritize transparent product visibility, compact marks, disposal instructions, and QR-led source information.</p></article>
+          <article class="card flex-end pad"><p class="label">Wrappers</p><p class="body-copy">Keep hierarchy simple: product name, need state, ingredients, material cue, and mark.</p></article>
+          <article class="card flex-end pad"><p class="label">Takeaway</p><p class="body-copy">Cutlery, paper bags, napkins, and straw packaging should use restrained purple, grey, and icon logic.</p></article>
+          <article class="card flex-end pad"><p class="label">Merch</p><p class="body-copy">Reusable cups, totes, cooler bags, and apparel should use standalone marks and durable materials.</p></article>
+        </div>
+        <div class="grid three">
+          <article class="artifact-card"><span class="artifact-mark"></span><p class="label">Napkin System Needed</p><p class="body-copy">Napkin, straw, and cutlery graphic rules.</p></article>
+          <article class="artifact-card"><span class="artifact-mark"></span><p class="label">Reusable Cup Specs Needed</p><p class="body-copy">Loyalty, material, and cleaning guidance.</p></article>
+          <article class="artifact-card"><span class="artifact-mark"></span><p class="label">Disposal Icons Needed</p><p class="body-copy">Clear recycle, compost, rinse, and landfill instructions.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="v-photo" data-section-title="5. Photography">
+      <h2 class="section-heading">5. Photography</h2>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Overview &amp; Styles</h3>
+        <p class="intro-copy">Photography should feel real, warm, naturally lit, and useful. It should show daily routines, visible product colour, hands, packaging, and people interacting with the brand without heavy artificial staging.</p>
+        <article class="media-card full-bleed-media">
+          <img src="./Brand Assets/Image assets/Cheers.png" alt="Cheers moment with Booster cups">
+        </article>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Examples</h3>
+        <div class="grid three">
+          <article class="media-card"><img src="./Brand Assets/Image assets/Holding Cup.jpeg" alt="Hand holding Booster cup"><div class="media-caption"><p class="label">Product In Hand</p><p class="body-copy">Simple, human, tactile, and routine-based.</p></div></article>
+          <article class="media-card"><img src="./Brand Assets/Image assets/Bag + Cup.jpeg" alt="Booster packaging in environment"><div class="media-caption"><p class="label">Packaging Context</p><p class="body-copy">Show actual touchpoints instead of isolated renders only.</p></div></article>
+          <article class="media-card"><img src="./Brand Assets/Image assets/TwoCups.png" alt="Two Booster cups"><div class="media-caption"><p class="label">Colour Through Product</p><p class="body-copy">Let smoothie colour provide richness against restrained brand surfaces.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="v-icons" data-section-title="6. Icons">
+      <h2 class="section-heading">6. Icon Set</h2>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">System Overview</h3>
+        <p class="intro-copy">Icons inherit the brand's heavy geometry, rounded confidence, and exclamation-block logic. They should work for app navigation, packaging labels, sourcing content, signage, and utility instructions.</p>
+        <div class="card pad-lg">
+          <div class="icon-system">
+            <div class="system-icon round"><svg viewBox="0 0 64 64"><path d="M20 40V25a12 12 0 0 1 24 0v15"/><path d="M16 40h32"/><path d="M27 48h10"/></svg></div>
+            <div class="system-icon"><svg viewBox="0 0 64 64"><path d="M18 24h28l-3 26H21z"/><path d="M24 24a8 8 0 0 1 16 0"/></svg></div>
+            <div class="system-icon round"><svg viewBox="0 0 64 64"><path d="M32 12v18"/><path d="M22 30h20"/><path d="M18 42h28"/></svg></div>
+            <div class="system-icon"><svg viewBox="0 0 64 64"><path d="M20 46l24-28"/><path d="M21 20h16v16"/><path d="M28 46h16V30"/></svg></div>
+            <div class="system-icon round"><svg viewBox="0 0 64 64"><circle cx="28" cy="28" r="14"/><path d="M39 39l9 9"/></svg></div>
+            <div class="system-icon"><svg viewBox="0 0 64 64"><path d="M32 12l6 14 15 2-11 10 3 15-13-8-13 8 3-15-11-10 15-2z"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Artifact Needs</h3>
+        <div class="grid two">
+          <article class="artifact-card"><span class="artifact-mark"></span><p class="label">Complete App Icon Library</p><p class="body-copy">Navigation, search, account, rewards, cart, order states, alerts, and nutrition labels.</p></article>
+          <article class="artifact-card"><span class="artifact-mark"></span><p class="label">Packaging &amp; Signage Symbols</p><p class="body-copy">Material sorting, sourcing, pickup, freshness, and allergen instruction icons.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="v-advertising" data-section-title="7. Advertising">
+      <h2 class="section-heading">7. Advertising</h2>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Layout Principles</h3>
+        <p class="intro-copy">Advertising should feel direct, benefit-led, visually rich, and controlled. Photography carries appetite and energy; typography carries the claim; the brand system holds the layout together.</p>
+        <div class="grid three">
+          <article class="card flex-end pad"><p class="label">Poster Design</p><p class="body-copy">Use one dominant image, one headline, one proof point, one CTA, and a clear lockup.</p></article>
+          <article class="card flex-end pad"><p class="label">Email Design</p><p class="body-copy">Lead with the need state, show product colour quickly, keep CTAs specific, and avoid stacked promotional noise.</p></article>
+          <article class="card flex-end pad"><p class="label">Flyers</p><p class="body-copy">Prioritize local relevance, offer clarity, and practical details like location, time, and product category.</p></article>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Campaign Rules</h3>
+        <div class="grid two">
+          <article class="guideline-panel"><p class="label">Do</p><p class="body-copy">Use clear hierarchy, generous negative space, disciplined colour, one hero image, one campaign accent, and proof-based copy.</p></article>
+          <article class="guideline-panel"><p class="label">Avoid</p><p class="body-copy">Avoid multiple accent colours, overloaded fruit graphics, decorative Boo use, crowded offers, low-contrast CTAs, and generic wellness headlines.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="v-interface" data-section-title="8. Interface">
+      <h2 class="section-heading">8. Interface Design</h2>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Overall Principles</h3>
+        <p class="intro-copy">Interface design should make decisions faster. The digital system should support clearer need-state browsing, transparent ingredient detail, faster reordering, material/sourcing education, and consistent brand behavior across web and app.</p>
+        <div class="grid four">
+          <article class="card flex-end pad"><p class="label">Colour</p><p class="body-copy">Use deep surfaces for focus moments and white/grey surfaces for reading-heavy flows.</p></article>
+          <article class="card flex-end pad"><p class="label">Typography</p><p class="body-copy">Use Montserrat for screen hierarchy and Titillium labels for controls and metadata.</p></article>
+          <article class="card flex-end pad"><p class="label">Components</p><p class="body-copy">Keep controls rounded, direct, high-contrast, and layout-stable.</p></article>
+          <article class="card flex-end pad"><p class="label">Motion</p><p class="body-copy">Use quick reveals, state transitions, and progress feedback. Avoid playful bounce effects.</p></article>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Websites &amp; App Design</h3>
+        <div class="grid two">
+          <article class="media-card">
+            <img src="./Brand Assets/Image assets/Generated/booster_ui_app_1776116752479.png" alt="Booster app interface mockup">
+            <div class="media-caption">
+              <p class="label">App Design</p>
+              <p class="body-copy">Need-state navigation, product cards, clear order paths, rewards, and source/nutrition detail.</p>
+            </div>
+          </article>
+          <article class="card dark pad-lg">
+            <p class="label white">Website Standards</p>
+            <p class="body-copy" style="color:white;">Use the same modular rhythm as this guideline site: bold section headers, soft cards, restrained colour, clear captions, and direct paths into deeper content.</p>
+            <div class="token-row" style="margin-top:25px;">
+              <span class="chip">Need-state menus</span>
+              <span class="chip">Ingredient detail</span>
+              <span class="chip">Source pages</span>
+              <span class="chip">Reusable ordering</span>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Artifacts Needed</h3>
+        <div class="grid three">
+          <article class="artifact-card"><span class="artifact-mark"></span><p class="label">Website Templates</p><p class="body-copy">Homepage, menu, sourcing, product detail, and sustainability page patterns.</p></article>
+          <article class="artifact-card"><span class="artifact-mark"></span><p class="label">Component Library</p><p class="body-copy">Buttons, toggles, cards, forms, drawers, alerts, and navigation states.</p></article>
+          <article class="artifact-card"><span class="artifact-mark"></span><p class="label">App Icon Exports</p><p class="body-copy">Home screen, favicon, PWA, and notification icon files.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="footer-panel">
+        <img src="./Brand Assets/Logos/SVG Versions/Main - Wordmark (primary Logo).svg" alt="Booster">
+        <p class="body-copy" style="color:white;">Visual standards should stay editable, but not arbitrary.</p>
+      </div>
+    </footer>
+  </main>
+
+  <script src="js/components.js"></script>
+</body>
+</html>
