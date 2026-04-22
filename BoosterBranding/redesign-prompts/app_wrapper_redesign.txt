@@ -1,0 +1,20 @@
+### Asset Redesign: App UI - Quesadilla Wrapper (Ref: fe0b4891...png)
+
+**Upload Strategy**:
+- **Reference 1 (Structure)**: `fe0b489141a85f6a070be93290b1d9a2133c4b4d.png` (The current App UI screenshot)
+- **Reference 2 (Brand)**: `icon-main.svg` (The new icon)
+- **Reference 3 (Style)**: `cup.jpg` (For the new packaging finish)
+
+---
+
+#### Prompt 1: The Product Hero (Focus: Ingredient Transparency)
+"Redesign the product photography for the Chicken Quesadilla within this mobile UI (Ref 1). Replace the legacy strawberry logo on the wrapper with the new Booster Icon (Ref 2) in a disciplined, repeat pattern. The wrapper material should look like sustainable, textured kraft paper. Use natural, high-key lighting to highlight the fresh ingredients (chicken, peppers, greens). Remove any legacy branding 'Smoothie Details' text and replace with cleaned Montserrat typography."
+
+#### Prompt 2: Lifestyle Narrative (Focus: Morning Energy)
+"A high-fidelity redesign of the App UI food shot (Ref 1). The Chicken Quesadilla should be presented on our new sustainable packaging wrap. Replace the old script logo with the clean, modern Wordmark. The wrap should have the new brand pattern in a subtle, tone-on-tone purple. Lighting should suggest a bright morning kitchen or store environment. The typography on the UI buttons should be updated to our single-hierarchy Montserrat system."
+
+#### Prompt 3: Macro Detail (Focus: Premium Appetite Appeal)
+"A macro-photography shot of the Chicken Quesadilla wrapper, intended for the App UI (Ref 1). Focus on the detail of the new wrapper design—white parchment with the new Booster Icon (Ref 2) printed in a sharp, professional grid. The food should look vibrant and high-quality. No legacy logos or old strawberry marks. The overall aesthetic should match the premium, grounded feel of our new cup system (Ref 3)."
+
+#### Prompt 4: Brand Architecture (Focus: System Consistency)
+"Redesign the wrapper element in this UI (Ref 1) to match our 'Responsible Operations' pillar. Use the new icon (Ref 2) and clear, instructional graphics about sustainable disposal on the wrapper itself. The wrap should look like high-quality matte paper. The typography 'Chicken Quesadilla' should be in our new Montserrat Bold hierarchy. Ensure the color palette is strictly disciplined—purple, white, and natural food tones only."

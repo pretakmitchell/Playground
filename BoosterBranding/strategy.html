@@ -17,7 +17,33 @@
   <link rel="icon" type="image/png" href="brand-assets/logos/icon-main.png">
   <link rel="apple-touch-icon" href="brand-assets/logos/icon-main.png">
   <link rel="stylesheet" href="css/styles.css">
+</head>
   <style>
+    .download-card {
+      display: flex;
+      min-height: 250px;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 16px;
+      border-radius: var(--radius-card);
+      padding: 30px;
+      background: var(--bj-grey);
+      transition: transform 200ms var(--ease), box-shadow 200ms var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .download-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-soft);
+      background: var(--bj-emphasis);
+    }
+
+    .download-card .button,
+    .download-card .label + .body-copy + .button {
+      margin-top: auto;
+    }
+
     .ecosystem-container {
       width: 100%;
       background: var(--bj-grey);
@@ -50,6 +76,159 @@
     .wedge-path:hover {
       filter: brightness(0.95);
     }
+
+    /* Layout and Full-Bleed Fixes */
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    #document.section {
+      overflow: visible;
+    }
+
+    /* Enhanced Strategy Viewer Styles */
+    .strategy-carousel-wrap {
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bj-grey); /* Standard card grey as requested */
+      padding: 80px 0 120px; /* Adjusted padding */
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 34px;
+    }
+
+    .strategy-carousel {
+      display: flex;
+      gap: calc(var(--section-pad-x) * 0.4);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-behavior: smooth;
+      width: 100%;
+      padding: 0 var(--section-pad-x);
+      --page-scale: 1;
+    }
+
+    .strategy-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .strategy-page {
+      flex: 0 0 auto;
+      width: calc(clamp(300px, 85vw, 1200px) * var(--page-scale));
+      scroll-snap-align: center;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      background: transparent; /* Remove background to eliminate edge leaks */
+      box-shadow: var(--shadow-soft);
+      transition: width 0.4s var(--ease);
+      border: 1px solid rgba(83, 40, 110, 0.1);
+    }
+
+    .strategy-page img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Controls Bar */
+    .strat-viewer-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bj-purple); /* Switched to solid brand purple for contrast on light grey */
+      padding: 14px 28px;
+      border-radius: 999px;
+      color: var(--bj-white);
+      box-shadow: var(--shadow-soft);
+      z-index: 10;
+    }
+
+    .strat-control-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--bj-white);
+      border: 0;
+      transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+      padding: 0;
+    }
+
+    .strat-control-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+
+    .strat-control-btn:active {
+      transform: scale(0.95);
+    }
+
+    .strat-control-btn svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .strat-control-divider {
+      width: 1px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 0 4px;
+    }
+
+    .strat-download-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 24px;
+      height: 46px;
+      border-radius: 999px;
+      background: var(--bj-neon);
+      color: var(--bj-white);
+      font-family: var(--font-label);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+    }
+
+    .strat-download-btn:hover {
+      background: #f033ff;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 840px) {
+      .strategy-carousel-wrap {
+        padding: 60px 0 100px;
+      }
+      .strategy-carousel {
+        padding: 0 20px;
+      }
+      .strategy-page {
+        flex: 0 0 85vw;
+      }
+      .strat-viewer-controls {
+        padding: 10px 18px;
+        gap: 10px;
+      }
+      .strat-control-btn {
+        width: 38px;
+        height: 38px;
+      }
+      .strat-download-btn {
+        padding: 0 16px;
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -73,95 +252,27 @@
 
       <div class="subsection">
         <h3 class="subsection-heading">Strategic Foundation</h3>
-        <p class="intro-copy">Booster Source is a long-term strategy to reposition Booster Juice as a transparent daily nourishment brand. It organizes wellness around visible nutritional value, clearer sourcing, and more responsible systems.</p>
-        <div class="grid three">
-          <article class="card pad-lg">
-            <p class="label">Mission</p>
-            <p class="body-copy">Move Booster from a legacy smoothie identity into a daily-use nourishment system that helps people choose faster and understand more.</p>
+        <article class="quote-panel dark" style="margin-bottom: 30px;">
+          <p class="label white">Strategy Disclaimer</p>
+          <p class="body-copy">Booster Source is a long-term strategy to reposition Booster Juice as a transparent daily nourishment brand; to essentially explain that Booster Source is a strategy for essentially a new Booster Juice; Booster Source is NOT the new brand, but the essence of it.</p>
+        </article>
+        <p class="intro-copy">Booster Source organizes wellness around visible nutritional value, clearer sourcing, and more responsible systems.</p>
+        <div class="grid two">
+          <article class="quote-panel">
+            <p class="label">The Foundation</p>
+            <p class="body-copy">Booster Source is not just a brand pivot; it is an operational commitment to transparency. By making ingredients, sourcing, and material responsibility visible at every touchpoint, we transform from a generic wellness provider into a trusted daily partner.</p>
           </article>
-          <article class="card pad-lg">
-            <p class="label">Vision</p>
-            <p class="body-copy">Become Canada's most trusted and transparent daily nourishment brand.</p>
-          </article>
-          <article class="card pad-lg">
-            <p class="label">Purpose</p>
-            <p class="body-copy">Help people make better daily food choices by showing what nourishes them, where it comes from, and how it is made more responsibly.</p>
-          </article>
-        </div>
-      </div>
-
-      <div class="subsection">
-        <h3 class="subsection-heading">Values</h3>
-        <div class="grid three">
-          <article class="card flex-end pad">
-            <p class="label">Clarity</p>
-            <p class="body-copy">Make choices easier to understand and easier to navigate.</p>
-          </article>
-          <article class="card flex-end pad">
-            <p class="label">Responsibility</p>
-            <p class="body-copy">Align claims with better materials, operations, and measurable systems.</p>
-          </article>
-          <article class="card flex-end pad">
-            <p class="label">Nourishment</p>
-            <p class="body-copy">Focus on real daily needs: energy, protein, recovery, hydration, balance, and breakfast.</p>
-          </article>
-          <article class="card flex-end pad">
-            <p class="label">Transparency</p>
-            <p class="body-copy">Show what is inside each product and what sits behind it.</p>
-          </article>
-          <article class="card flex-end pad">
-            <p class="label">Community</p>
-            <p class="body-copy">Support the people and places connected to the Booster ecosystem.</p>
-          </article>
-          <article class="card flex-end pad">
-            <p class="label">Momentum</p>
-            <p class="body-copy">Fit active routines with speed, ease, and repeat relevance.</p>
+          <article class="quote-panel">
+            <p class="label">Strategic Rationale</p>
+            <p class="body-copy">As guests prioritize real nutritional value over vague health claims, Booster Source provides a logical, grounded framework for decision-making. We eliminate the 'magic' and replace it with repeatable, functional benefit.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="positioning" data-section-title="Positioning">
-      <h2 class="section-heading">2. Market Positioning</h2>
-
-      <div class="subsection">
-        <h3 class="subsection-heading">Opportunity Space</h3>
-        <p class="intro-copy">The opportunity is between smoothie brands, convenience players, and credible daily nourishment. Booster can keep access and speed while becoming more functional, transparent, and routine-based.</p>
-        <div class="position-map" aria-label="Positioning map">
-          <span class="map-label top">Functional Nutrition</span>
-          <span class="map-label bottom">Generic Wellness</span>
-          <span class="map-label left">Occasional Treat</span>
-          <span class="map-label right">Daily Routine</span>
-          <span class="map-dot" style="left:18%;top:56%;">Current Booster</span>
-          <span class="map-dot" style="left:21%;top:42%;">Jugo Juice</span>
-          <span class="map-dot" style="left:38%;top:33%;">Local Smoothie Bar</span>
-          <span class="map-dot" style="left:65%;top:63%;">Starbucks</span>
-          <span class="map-dot" style="left:76%;top:49%;">Fairlife Shakes</span>
-          <span class="map-dot primary" style="left:58%;top:30%;">Booster Source</span>
-        </div>
-      </div>
-
-      <div class="subsection">
-        <h3 class="subsection-heading">Competitive Signals</h3>
-        <div class="matrix" role="table" aria-label="Positioning comparison">
-          <div class="head">Brand</div>
-          <div class="head">Price</div>
-          <div class="head">Daily Routine</div>
-          <div class="head">Convenience</div>
-          <div class="head">Functional</div>
-          <div class="head">Transparency</div>
-          <div class="axis">Booster Now</div><div class="mark">3</div><div class="mark">2</div><div class="mark">4</div><div class="mark">2</div><div class="mark">1</div>
-          <div class="axis">Booster Source</div><div class="mark">4</div><div class="mark">5</div><div class="mark">5</div><div class="mark">5</div><div class="mark">5</div>
-          <div class="axis">Jugo Juice</div><div class="mark">3</div><div class="mark">2</div><div class="mark">3</div><div class="mark">2</div><div class="mark">1</div>
-          <div class="axis">Starbucks</div><div class="mark">4</div><div class="mark">4</div><div class="mark">5</div><div class="mark">2</div><div class="mark">1</div>
-          <div class="axis">Fairlife</div><div class="mark">3</div><div class="mark">5</div><div class="mark">3</div><div class="mark">5</div><div class="mark">2</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. Pillars Overview Ecosystem Map -->
-    <section class="section" id="ecosystem" data-section-title="Ecosystem">
-      <h2 class="section-heading">3. Pillars Overview</h2>
+    <!-- 2. Pillars Overview -->
+    <section class="section" id="pillars" data-section-title="Pillars">
+      <h2 class="section-heading">2. Strategic Pillars</h2>
       <div class="subsection">
         <p class="intro-copy">Booster Source is built upon four interconnected pillars that anchor the brand’s promise of useful wellness and absolute transparency.</p>
         <div class="ecosystem-container">
@@ -181,223 +292,150 @@
             </defs>
             <g id="wedges"></g>
             <g id="points"></g>
-            
-            <!-- Outer Dashed Arc -->
-            
-            
-            
-            <!-- Core Center Elements -->
             <path d="M 450 650 A 150 150 0 0 1 750 650" fill="none" stroke="var(--bj-purple)" stroke-width="12" filter="url(#core-shadow)"/>
           </svg>
         </div>
       </div>
     </section>
 
-    <!-- 4. Pillar Sections -->
-    <section class="section" id="daily-nourishment" data-section-title="1. Nourishment">
-      <h2 class="section-heading">4. Daily Nourishment</h2>
+    <!-- 3. Primary Strategy Document -->
+    <section class="section" id="document" data-section-title="Strategy Doc">
+      <h2 class="section-heading">3. Core Strategy Document</h2>
       <div class="subsection">
-        <h3 class="subsection-heading">Identity Implication</h3>
-        <p class="intro-copy">Daily Nourishment shifts Booster from an occasional smoothie stop toward a repeatable everyday routine built around clearer need states, faster decisions, and stronger daily relevance.</p>
-        <p class="body-copy">This pillar pushes the brand toward modular menu hierarchy, benefit-led navigation, and a more routine-oriented verbal and visual system.</p>
+        <p class="intro-copy">The definitive reference for the Booster Source repositioning. This document contains the full competitive analysis, strategic rationale, and implementation benchmarks.</p>
         
-        <div class="grid three" style="margin-top: 30px;">
-          <article class="card pad">
-            <p class="label small">Customer</p>
-            <p class="body-copy">Clearer choices, faster decision-making, and easier comparison across needs.</p>
-          </article>
-          <article class="card pad">
-            <p class="label small">Store Teams</p>
-            <p class="body-copy">Simpler recommendation logic and stronger repeat-use mechanisms.</p>
-          </article>
-          <article class="card pad">
-            <p class="label small">Digital Strategy</p>
-            <p class="body-copy">More routine-based ordering, bundling, and frequency growth.</p>
-          </article>
+        <div class="strategy-carousel-wrap">
+          <div class="strategy-carousel" id="strat-carousel">
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-1.jpg" alt="Booster Source Strategy Page 1"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-2.jpg" alt="Booster Source Strategy Page 2"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-3.jpg" alt="Booster Source Strategy Page 3"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-4.jpg" alt="Booster Source Strategy Page 4"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-5.jpg" alt="Booster Source Strategy Page 5"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-6.jpg" alt="Booster Source Strategy Page 6"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-7.jpg" alt="Booster Source Strategy Page 7"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-8.jpg" alt="Booster Source Strategy Page 8"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-9.jpg" alt="Booster Source Strategy Page 9"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-10.jpg" alt="Booster Source Strategy Page 10"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-11.jpg" alt="Booster Source Strategy Page 11"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-12.jpg" alt="Booster Source Strategy Page 12"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-13.jpg" alt="Booster Source Strategy Page 13"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-14.jpg" alt="Booster Source Strategy Page 14"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-15.jpg" alt="Booster Source Strategy Page 15"></article>
+            <article class="strategy-page"><img src="brand-assets/images/strategy-doc/page-16.jpg" alt="Booster Source Strategy Page 16"></article>
+          </div>
+
+          <div class="strat-viewer-controls">
+            <button class="strat-control-btn" id="prev-page" title="Previous Page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="strat-control-btn" id="next-page" title="Next Page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+            
+            <div class="strat-control-divider"></div>
+            
+            <button class="strat-control-btn" id="zoom-out" title="Zoom Out">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <button class="strat-control-btn" id="zoom-in" title="Zoom In">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+
+            <div class="strat-control-divider"></div>
+
+            <a href="MPretakA3 [BoosterSource].pdf" class="strat-download-btn" download>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px; height:20px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              PDF
+            </a>
+          </div>
         </div>
       </div>
+    </section>
+
+    <section class="section" id="implementation" data-section-title="Implementation">
+      <h2 class="section-heading">4. Operationalizing Strategy</h2>
       <div class="subsection">
-        <h3 class="subsection-heading">Priority Moves & Metrics</h3>
+        <h3 class="subsection-heading">Team-Based Guidance</h3>
+        <p class="body-copy">The Booster Source strategy is executed across four key functional areas. Each team is responsible for specific outcomes that build toward our overall transparency goals.</p>
         <div class="grid two">
           <article class="quote-panel">
-            <p class="label">Priority Moves</p>
-            <ul class="body-copy" style="padding-left: 20px;">
-              <li>Organize menu by need states: Energy, Protein, Recovery, Focus, Balance, Breakfast.</li>
-              <li>Simplify add-ins, boosts, and decision pathways.</li>
-              <li>Build guided bundles and saved routine ordering.</li>
-              <li>Deploy an improved online ordering system.</li>
-            </ul>
+            <p class="label">Design & Creative</p>
+            <p class="body-copy">Maintain the "Grounded & Premium" aesthetic. Prioritize clarity over decoration. Use modular systems that allow ingredient stories to lead.</p>
           </article>
           <article class="quote-panel">
-            <p class="label">Success Metrics</p>
-            <ul class="body-copy" style="padding-left: 20px;">
-              <li>Repeat purchase rate.</li>
-              <li>Breakfast and afternoon occasion growth.</li>
-              <li>App reorder frequency.</li>
-            </ul>
+            <p class="label">Marketing & Voice</p>
+            <p class="body-copy">Adopt the "Useful & Transparent" tone. Reduce hype-based claims and replace them with specific, source-based benefits.</p>
+          </article>
+          <article class="quote-panel">
+            <p class="label">Operations & Ops</p>
+            <p class="body-copy">Streamline material systems. Ensure disposal pathways are consistent across store footprints to back up responsibility claims.</p>
+          </article>
+          <article class="quote-panel">
+            <p class="label">Franchise & Training</p>
+            <p class="body-copy">Empower store teams with ingredient knowledge. Simplify recommendation logic to help guests find their "daily gap" solution.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="supply" data-section-title="2. Sourcing">
-      <h2 class="section-heading">5. Supply & Sourcing</h2>
-      <div class="subsection">
-        <h3 class="subsection-heading">Identity Implication</h3>
-        <p class="intro-copy">Supply & Sourcing makes ingredients, origins, and sourcing logic more visible, giving Booster a clearer and more credible product story.</p>
-        <p class="body-copy">Suggests provenance graphics, ingredient-forward information design, and a more human, traceable storytelling system.</p>
-        
-        <div class="grid three" style="margin-top: 30px;">
-          <article class="card pad">
-            <p class="label small">Customer</p>
-            <p class="body-copy">Clearer ingredient understanding and stronger trust in product quality.</p>
-          </article>
-          <article class="card pad">
-            <p class="label small">Growers & Suppliers</p>
-            <p class="body-copy">Greater visibility and accountability within the brand story.</p>
-          </article>
-          <article class="card pad">
-            <p class="label small">Leadership</p>
-            <p class="body-copy">Better tools for explanation/storytelling, and more defensible transparency claims.</p>
-          </article>
-        </div>
-      </div>
-      <div class="subsection">
-        <h3 class="subsection-heading">Priority Moves & Metrics</h3>
-        <div class="grid two">
-          <article class="quote-panel">
-            <p class="label">Priority Moves</p>
-            <ul class="body-copy" style="padding-left: 20px;">
-              <li>Show ingredient origins and simplified source Journeys.</li>
-              <li>Explain proteins, boosters, and sweeteners in plain, understandable language.</li>
-              <li>Establish clearer sourcing standards and partner storytelling.</li>
-            </ul>
-          </article>
-          <article class="quote-panel">
-            <p class="label">Success Metrics</p>
-            <ul class="body-copy" style="padding-left: 20px;">
-              <li>Trust and transparency perception.</li>
-              <li>QR and sourcing content engagement rates.</li>
-              <li>Reduced customer confusion around ingredients and boosts.</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="operations" data-section-title="3. Operations">
-      <h2 class="section-heading">6. Responsible Operations</h2>
-      <div class="subsection">
-        <h3 class="subsection-heading">Identity Implication</h3>
-        <p class="intro-copy">Responsible Operations aligns Booster's wellness promise with clearer packaging, disposal, and operational systems so responsibility feels visible and credible.</p>
-        <p class="body-copy">Requires restrained responsibility cues, honest material labeling, and clearer instructional graphics across packaging and store systems.</p>
-        
-        <div class="grid three" style="margin-top: 30px;">
-          <article class="card pad">
-            <p class="label small">Customer</p>
-            <p class="body-copy">Clearer disposal behavior and more believable responsibility claims.</p>
-          </article>
-          <article class="card pad">
-            <p class="label small">Store Teams</p>
-            <p class="body-copy">Simpler material systems and easier operational standards to maintain.</p>
-          </article>
-          <article class="card pad">
-            <p class="label small">Disposal Partners</p>
-            <p class="body-copy">Better sorting, lower contamination, and clearer packaging logic.</p>
-          </article>
-        </div>
-      </div>
-      <div class="subsection">
-        <h3 class="subsection-heading">Priority Moves & Metrics</h3>
-        <div class="grid two">
-          <article class="quote-panel">
-            <p class="label">Priority Moves</p>
-            <ul class="body-copy" style="padding-left: 20px;">
-              <li>Simplify cup, lid, sleeve, and straw systems.</li>
-              <li>Improve disposal guidance at point of use.</li>
-              <li>Test reusable or return-based incentives.</li>
-              <li>Communicate measurable packaging and waste progress.</li>
-            </ul>
-          </article>
-          <article class="quote-panel">
-            <p class="label">Success Metrics</p>
-            <ul class="body-copy" style="padding-left: 20px;">
-              <li>Packaging weight reduction.</li>
-              <li>Reusable container participation rate.</li>
-              <li>Contamination reduction in disposal streams.</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="stewardship" data-section-title="4. Stewardship">
-      <h2 class="section-heading">7. Social & Environmental Stewardship</h2>
-      <div class="subsection">
-        <h3 class="subsection-heading">Identity Implication</h3>
-        <p class="intro-copy">Social & Environmental Stewardship makes Booster's public role more visible by connecting the brand to communities, wellness access, and specific local contribution.</p>
-        <p class="body-copy">Points toward localized storytelling, clearer proof-based stewardship language, and a warmer but disciplined community-facing expression.</p>
-        
-        <div class="grid three" style="margin-top: 30px;">
-          <article class="card pad">
-            <p class="label small">Communities</p>
-            <p class="body-copy">More visible local relevance and useful wellness participation.</p>
-          </article>
-          <article class="card pad">
-            <p class="label small">Youth Partners</p>
-            <p class="body-copy">Clearer program alignment around nourishment and activity.</p>
-          </article>
-          <article class="card pad">
-            <p class="label small">Franchises</p>
-            <p class="body-copy">Stronger public trust and more meaningful local activation tools.</p>
-          </article>
-        </div>
-      </div>
-      <div class="subsection">
-        <h3 class="subsection-heading">Priority Moves & Metrics</h3>
-        <div class="grid two">
-          <article class="quote-panel">
-            <p class="label">Priority Moves</p>
-            <ul class="body-copy" style="padding-left: 20px;">
-              <li>Build a clearer stewardship platform instead of scattered charity activity.</li>
-              <li>Support local youth wellness or nourishment initiatives.</li>
-              <li>Communicate where support goes with more specificity.</li>
-              <li>Localize community partnerships by region or store.</li>
-            </ul>
-          </article>
-          <article class="quote-panel">
-            <p class="label">Success Metrics</p>
-            <ul class="body-copy" style="padding-left: 20px;">
-              <li>Number and visibility of community partnerships.</li>
-              <li>Participation in local activations.</li>
-              <li>Trust, warmth, and brand relevance metrics.</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-      
-      <div class="subsection" style="margin-top: 60px;">
-        <h3 class="subsection-heading">Reference Artifacts</h3>
-        <div class="grid two">
-          <article class="media-card">
-            <img src="./pdf_exports/MPretakA3/page_03.png" alt="Daily nourishment strategic artifact page">
-          </article>
-          <article class="media-card">
-            <img src="./pdf_exports/MPretakA3/page_05.png" alt="Responsible operations strategic artifact page">
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <footer class="site-footer">
-      <div class="footer-panel">
-        <img src="brand-assets/logos/svg/wordmark-main.svg" alt="Booster">
-        <p class="body-copy" style="color:white;">Strategy defines what the visual and verbal systems are allowed to become.</p>
-      </div>
-    </footer>
+    <site-footer message="Strategy defines what the visual and verbal systems are allowed to become."></site-footer>
   </main>
 
   <script src="js/ecosystem.js"></script>
-  <script src="js/components.js?v=20260415-switcher3"></script>
+  <script src="js/components.js?v=20260415-overhaul"></script>
+  
+  <script>
+    // Strategy Carousel Interactions (Optimized JPG Implementation)
+    (function() {
+      const carousel = document.getElementById('strat-carousel');
+      const prevBtn = document.getElementById('prev-page');
+      const nextBtn = document.getElementById('next-page');
+      const zoomInBtn = document.getElementById('zoom-in');
+      const zoomOutBtn = document.getElementById('zoom-out');
+      
+      let scale = 1;
+      const minScale = 0.5;
+      const maxScale = 1.6;
+      const step = 0.15;
+
+      // Navigation
+      nextBtn.onclick = () => {
+        const itemWidth = carousel.querySelector('.strategy-page').offsetWidth;
+        const gap = parseInt(getComputedStyle(carousel).gap);
+        carousel.scrollBy({ left: itemWidth + gap, behavior: 'smooth' });
+      };
+
+      prevBtn.onclick = () => {
+        const itemWidth = carousel.querySelector('.strategy-page').offsetWidth;
+        const gap = parseInt(getComputedStyle(carousel).gap);
+        carousel.scrollBy({ left: -(itemWidth + gap), behavior: 'smooth' });
+      };
+
+      // Zoom
+      zoomInBtn.onclick = () => {
+        if (scale < maxScale) {
+          scale += step;
+          carousel.style.setProperty('--page-scale', scale);
+        }
+      };
+
+      zoomOutBtn.onclick = () => {
+        if (scale > minScale) {
+          scale -= step;
+          carousel.style.setProperty('--page-scale', scale);
+        }
+      };
+
+      // Keyboard navigation
+      window.addEventListener('keydown', (e) => {
+        const rect = carousel.getBoundingClientRect();
+        const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+        if (!isInView) return;
+
+        if (e.key === 'ArrowRight') nextBtn.click();
+        if (e.key === 'ArrowLeft') prevBtn.click();
+      });
+    })();
+  </script>
 </body>
 </html>

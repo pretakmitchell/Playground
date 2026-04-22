@@ -252,17 +252,19 @@
 
       <div class="subsection">
         <h3 class="subsection-heading">Overview</h3>
-        <div class="text-stack wide">
-          <p class="label">Colour At Booster</p>
-          <p class="body-copy">The palette is deliberately tight. Purple carries the brand system while photography and real product colour provide richness.</p>
-        </div>
-        <div class="text-stack wide">
-          <p class="label">Screen Vs Print</p>
-          <p class="body-copy">Neon and lilac perform best on screen. In print, use them as controlled accents or replace large applications with Booster Purple, Deep Purple, white, or greyscale surfaces.</p>
-        </div>
-        <div class="text-stack wide">
-          <p class="label">Photography As Colour</p>
-          <p class="body-copy">When non-purple colour enters the system, it should primarily come from smoothies, ingredients, people, and real environments. Brand graphics should stay restrained so natural product colour can lead.</p>
+        <div class="grid three">
+          <div class="text-stack">
+            <p class="label">Colour At Booster</p>
+            <p class="body-copy">The palette is deliberately tight. Purple carries the brand system while photography and real product colour provide richness.</p>
+          </div>
+          <div class="text-stack">
+            <p class="label">Screen Vs Print</p>
+            <p class="body-copy">Neon and lilac perform best on screen. In print, use them as controlled accents or replace large applications with Booster Purple, Deep Purple, white, or greyscale surfaces.</p>
+          </div>
+          <div class="text-stack">
+            <p class="label">Photography As Colour</p>
+            <p class="body-copy">When non-purple colour enters the system, it should primarily come from smoothies, ingredients, people, and real environments. Brand graphics should stay restrained so natural product colour can lead.</p>
+          </div>
         </div>
       </div>
 
@@ -293,56 +295,34 @@
 
       <div class="subsection">
         <h3 class="subsection-heading">Type System</h3>
-        <p class="intro-copy">Montserrat is the primary functional and display typeface. Titillium Web Bold is the structural label voice used across cards, controls, captions, and section identifiers.</p>
+        <p class="intro-copy">The Booster type system is built on two functional pillars: Montserrat for display and body, and Titillium Web for structural labeling. Together, they create a transparent, high-fidelity experience.</p>
       </div>
 
       <div class="subsection">
-        <h3 class="subsection-heading">Weight Lineups</h3>
-        <div class="grid two">
-          <article class="card">
-            <div class="type-lineup" style="font-family:'Montserrat',sans-serif;">
-              <p class="label">Montserrat</p>
-              <div style="font-weight:200;">ExtraLight 200</div>
-              <div style="font-weight:300;">Light 300</div>
-              <div style="font-weight:400;">Regular 400</div>
-              <div style="font-weight:500;">Medium 500</div>
-              <div style="font-weight:600;">SemiBold 600</div>
-              <div style="font-weight:700;">Bold 700</div>
-              <div style="font-weight:800;">ExtraBold 800</div>
-              <div style="font-weight:900;">Black 900</div>
-            </div>
-          </article>
-          <article class="card">
-            <div class="type-lineup" style="font-family:'Titillium Web',sans-serif;">
-              <p class="label">Titillium Web</p>
-              <div style="font-weight:400;">Regular 400</div>
-              <div style="font-weight:600;">SemiBold 600</div>
-              <div style="font-weight:700;text-transform:uppercase;">Bold 700 - Labels</div>
-              <div style="font-weight:700;font-style:italic;">Bold Italic 700</div>
-              <p class="body-copy">Use Titillium Web for structural clarity, not long reading passages.</p>
-            </div>
-          </article>
-        </div>
-      </div>
-
-      <div class="subsection">
-        <h3 class="subsection-heading">Live Type Testers</h3>
-        <div class="grid two">
-          <type-tester label="Montserrat Tester" family="Montserrat" start="300" sample="Transparent daily nourishment." weights="200,300,400,500,600,700,800,900"></type-tester>
-          <type-tester label="Titillium Web Tester" family="Titillium Web" start="700" sample="CARD LABEL SYSTEM" weights="400,600,700"></type-tester>
-        </div>
-      </div>
-
-      <div class="subsection">
-        <h3 class="subsection-heading">Hierarchy Guidance</h3>
+        <h3 class="subsection-heading">System Hierarchy</h3>
         <article class="card pad-lg">
-          <div class="text-stack">
-            <p class="label">Display Lettering</p>
-            <p class="body-copy">The custom Booster wordmark is locked artwork. Do not recreate it by typing the word in Montserrat. Use exported logo assets for all marks.</p>
-            <h3 class="section-heading" style="margin-top:22px;">Large moments use Montserrat.</h3>
-            <p class="body-copy">Body copy stays light, concise, and transparent. Labels use Titillium Web Bold Uppercase.</p>
+          <div class="typography-showcase">
+            <div class="showcase-item">
+              <p class="label">Primary Display (Montserrat Light)</p>
+              <h2 style="font-family:'Montserrat',sans-serif; font-weight:300; font-size: clamp(32px, 4vw, 60px); line-height: 1.1; margin: 10px 0 30px;">Transparent nourishment for daily routines.</h2>
+            </div>
+            
+            <div class="showcase-item" style="margin-top: 40px;">
+              <p class="label">Structural Label (Titillium Web Bold)</p>
+              <p style="font-family:'Titillium Web',sans-serif; font-weight:700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 14px; color: var(--bj-purple); margin-top: 8px;">Product Identification &amp; Metadata</p>
+            </div>
+
+            <div class="showcase-item" style="margin-top: 40px;">
+              <p class="label">Body Copy (Montserrat Light)</p>
+              <p class="body-copy" style="max-width: 600px; font-size: 18px; margin-top: 10px;">The identity system is designed to provide clarity and utility. We reduce promotional noise and replace it with direct, source-based information that makes decision-making faster and more intuitive for every guest.</p>
+            </div>
           </div>
         </article>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-heading">Live Montserrat Tester</h3>
+        <type-tester label="Interactive Type Lab" family="Montserrat" start="300" sample="Type here to test the system voice." weights="200,300,400,500,600,700,800,900"></type-tester>
       </div>
     </section>
 
@@ -355,7 +335,7 @@
         <div class="grid three">
           <article class="media-card"><img src="brand-assets/images/cup.jpg" alt="Booster cup"><div class="media-caption"><p class="label">Cups</p><p class="body-copy">Transparent or frosted bodies let smoothie colour become the hero.</p></div></article>
           <article class="media-card"><img src="brand-assets/images/two-bags-wrap.jpg" alt="Booster bags and wrap"><div class="media-caption"><p class="label">Wrappers</p><p class="body-copy">Use high-contrast lockups, clear ingredients, and material guidance.</p></div></article>
-          <article class="media-card"><img src="brand-assets/images/generated/booster_tote_mockup_1776116766320.png" alt="Booster tote mockup"><div class="media-caption"><p class="label">Merch</p><p class="body-copy">Reusable goods should feel durable, simple, and genuinely useful.</p></div></article>
+          <article class="media-card"><img src="brand-assets/images/bag-cup.jpg" alt="Booster takeout bag mockup"><div class="media-caption"><p class="label">Takeaway</p><p class="body-copy">Consistent application across delivery and transport touchpoints.</p></div></article>
         </div>
       </div>
 
@@ -400,25 +380,24 @@
       <h2 class="section-heading">6. Icon Set</h2>
 
       <div class="subsection">
-        <h3 class="subsection-heading">System Overview</h3>
-        <p class="intro-copy">Icons inherit the brand's heavy geometry, rounded confidence, and exclamation-block logic. They should work for app navigation, packaging labels, sourcing content, signage, and utility instructions.</p>
-        <div class="card pad-lg">
-          <div class="icon-system">
-            <div class="system-icon round"><svg viewBox="0 0 64 64"><path d="M20 40V25a12 12 0 0 1 24 0v15"/><path d="M16 40h32"/><path d="M27 48h10"/></svg></div>
-            <div class="system-icon"><svg viewBox="0 0 64 64"><path d="M18 24h28l-3 26H21z"/><path d="M24 24a8 8 0 0 1 16 0"/></svg></div>
-            <div class="system-icon round"><svg viewBox="0 0 64 64"><path d="M32 12v18"/><path d="M22 30h20"/><path d="M18 42h28"/></svg></div>
-            <div class="system-icon"><svg viewBox="0 0 64 64"><path d="M20 46l24-28"/><path d="M21 20h16v16"/><path d="M28 46h16V30"/></svg></div>
-            <div class="system-icon round"><svg viewBox="0 0 64 64"><circle cx="28" cy="28" r="14"/><path d="M39 39l9 9"/></svg></div>
-            <div class="system-icon"><svg viewBox="0 0 64 64"><path d="M32 12l6 14 15 2-11 10 3 15-13-8-13 8 3-15-11-10 15-2z"/></svg></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="subsection">
-        <h3 class="subsection-heading">Artifact Needs</h3>
-        <div class="grid two">
-          <article class="artifact-card"><span class="artifact-mark"></span><p class="label">Complete App Icon Library</p><p class="body-copy">Navigation, search, account, rewards, cart, order states, alerts, and nutrition labels.</p></article>
-          <article class="artifact-card"><span class="artifact-mark"></span><p class="label">Packaging &amp; Signage Symbols</p><p class="body-copy">Material sorting, sourcing, pickup, freshness, and allergen instruction icons.</p></article>
+        <h3 class="subsection-heading">System Development</h3>
+        <p class="intro-copy">The icon system is currently in development. It will inherit the brand's heavy geometry and exclamation-block logic for app navigation, signage, and utility labeling.</p>
+        <div class="grid three">
+          <article class="artifact-card">
+            <span class="artifact-mark"></span>
+            <p class="label">Complete App Library</p>
+            <p class="body-copy">Navigation, account, rewards, cart, and nutrition labels.</p>
+          </article>
+          <article class="artifact-card">
+            <span class="artifact-mark"></span>
+            <p class="label">Packaging Symbols</p>
+            <p class="body-copy">Material sorting, pickup, freshness, and allergen instructions.</p>
+          </article>
+          <article class="artifact-card">
+            <span class="artifact-mark"></span>
+            <p class="label">Signage Set</p>
+            <p class="body-copy">Facility, pathfinding, and operational instructions.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -463,10 +442,10 @@
         <h3 class="subsection-heading">Websites &amp; App Design</h3>
         <div class="grid two">
           <article class="media-card">
-            <img src="brand-assets/images/generated/booster_ui_app_1776116752479.png" alt="Booster app interface mockup">
+            <img src="brand-assets/images/cheers.png" alt="Booster photography showing lifestyle context">
             <div class="media-caption">
-              <p class="label">App Design</p>
-              <p class="body-copy">Need-state navigation, product cards, clear order paths, rewards, and source/nutrition detail.</p>
+              <p class="label">Interface Context</p>
+              <p class="body-copy">Photography should drive the interface, supported by clean, modular layout structures.</p>
             </div>
           </article>
           <article class="card pad-lg">
@@ -492,12 +471,7 @@
       </div>
     </section>
 
-    <footer class="site-footer">
-      <div class="footer-panel">
-        <img src="brand-assets/logos/svg/wordmark-main.svg" alt="Booster">
-        <p class="body-copy" style="color:white;">Visual standards should stay editable, but not arbitrary.</p>
-      </div>
-    </footer>
+    <site-footer message="Visual standards should stay editable, but not arbitrary."></site-footer>
   </main>
 
   <script src="js/components.js?v=20260415-switcher2"></script>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strawberry Scale | Booster Guidelines</title>
+  <meta name="description" content="A procedural exploration of the Booster strawberry icon scaling and detail density.">
+  <link rel="icon" type="image/svg+xml" href="brand-assets/logos/svg/icon-main.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <top-nav></top-nav>
+
+  <main class="site-shell">
+    <header class="page-title">
+      <h1>Strawberry Scale</h1>
+      <p>Procedural grain and scaling logic.</p>
+    </header>
+
+    <div class="scale-tool">
+      <section class="scale-stage" id="strawberry-stage" aria-label="Procedural strawberry preview">
+        <!-- SVG injected here -->
+      </section>
+
+      <section class="scale-controls">
+        <div class="scale-slider-wrap">
+          <p class="label small">Detail & Size Density</p>
+          <input type="range" class="range-input" id="detail-slider" min="0" max="100" value="50">
+          <div class="scale-stats">
+            <div class="scale-stat">
+              <span class="label small" style="opacity: 0.5;">Current Size</span>
+              <span class="intro-copy" id="current-size" style="font-size: 24px;">--</span>
+            </div>
+            <div class="scale-stat">
+              <span class="label small" style="opacity: 0.5;">Seed Density</span>
+              <span class="intro-copy" id="seed-count" style="font-size: 24px;">--</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="button secondary refresh-btn" id="refresh-seeds" type="button">Regenerate Seed Pattern</button>
+        
+        <p class="body-copy" style="margin-top: 20px;">
+          The Booster visual system uses adaptive detail. At small scales (favicon), the icon simplifies to 2-3 seeds to maintain legibility. At larger scales, procedural grain adds texture and richness.
+        </p>
+      </section>
+    </div>
+
+    <site-footer message="Strawberry Scale Internal Tool. Beta V0.1"></site-footer>
+  </main>
+
+  <script src="js/components.js"></script>
+  <script src="js/strawberry-scale.js"></script>
+</body>
+</html>

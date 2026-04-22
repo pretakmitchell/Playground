@@ -446,20 +446,33 @@ class LogoColourSwitcher extends HTMLElement {
   }
 
   bind() {
-    document.addEventListener("click", (e) => {
-      if (!this.contains(e.target)) {
-        this.closeAllDropdowns();
-        return;
-      }
+    this.addEventListener("click", (e) => {
       const trigger = e.target.closest('.sw-trigger');
       if (trigger) {
         const dropdown = trigger.closest('.sw-dropdown');
+        const isMobile = window.innerWidth <= 840;
         const expanding = !dropdown.classList.contains("open");
+        
         this.closeAllDropdowns();
+        
         if (expanding) {
           dropdown.classList.add("open");
           trigger.setAttribute("aria-expanded", "true");
+          
+          if (isMobile) {
+            // Smoothly scroll the expanded box into view on mobile
+            setTimeout(() => {
+              dropdown.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }, 300);
+          }
         }
+      }
+    });
+
+    // Close on outside click for desktop
+    document.addEventListener("click", (e) => {
+      if (!this.contains(e.target) && window.innerWidth > 840) {
+        this.closeAllDropdowns();
       }
     });
 
@@ -538,6 +551,7 @@ class LogoColourSwitcher extends HTMLElement {
     this.normalizeSelection(this.resetAccentOnNextUpdate);
     this.resetAccentOnNextUpdate = false;
 
+    preview.classList.toggle("is-icon", this.lockup === "icon");
     preview.style.background = BoosterConfig.colours[this.bg];
     download?.setAttribute("href", this.lockups[this.lockup].source);
     
@@ -706,7 +720,16 @@ class TypeTester extends HTMLElement {
 
     this.innerHTML = `
       <div class="type-tester">
-        <p class="label" style="margin-bottom:18px;">${label}</p>
+        <div class="type-header" style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:18px;">
+          <p class="label" style="margin:0;">${label}</p>
+          <div class="type-actions" style="display:flex; gap:12px; align-items:center;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="label small" style="opacity:0.6;">Size</span>
+              <input type="range" class="type-size-slider" min="30" max="120" value="64" style="accent-color: var(--bj-purple); cursor:pointer;">
+            </div>
+            <button class="type-italic-toggle" type="button" style="border:0; background:var(--bj-white); border-radius:10px; padding:6px 14px; font-family:var(--font-sans); font-style:italic; font-weight:600; font-size:13px; color:var(--bj-purple); transition:all 0.2s;" title="Toggle Italics">I</button>
+          </div>
+        </div>
         <div class="type-controls">
           ${weights.map((weight) => `
             <button class="type-control ${weight === start ? "active" : ""}" type="button" data-weight="${weight}">
@@ -714,17 +737,31 @@ class TypeTester extends HTMLElement {
             </button>
           `).join("")}
         </div>
-        <div class="type-box" contenteditable="true" spellcheck="false" style="font-family:'${family}', sans-serif; font-weight:${start};">${sample}</div>
+        <div class="type-box" contenteditable="true" spellcheck="false" style="font-family:'${family}', sans-serif; font-weight:${start}; font-size: 64px;">${sample}</div>
       </div>
     `;
 
     const box = this.querySelector(".type-box");
+    const sizeSlider = this.querySelector(".type-size-slider");
+    const italicBtn = this.querySelector(".type-italic-toggle");
+
     this.querySelectorAll("[data-weight]").forEach((button) => {
       button.addEventListener("click", () => {
         this.querySelectorAll("[data-weight]").forEach((item) => item.classList.remove("active"));
         button.classList.add("active");
         if (box) box.style.fontWeight = button.dataset.weight;
       });
+    });
+
+    sizeSlider?.addEventListener("input", (e) => {
+      if (box) box.style.fontSize = `${e.target.value}px`;
+    });
+
+    italicBtn?.addEventListener("click", () => {
+      const isItalic = box.style.fontStyle === "italic";
+      box.style.fontStyle = isItalic ? "normal" : "italic";
+      italicBtn.style.background = isItalic ? "var(--bj-white)" : "var(--bj-purple)";
+      italicBtn.style.color = isItalic ? "var(--bj-purple)" : "var(--bj-white)";
     });
   }
 
@@ -831,6 +868,58 @@ class ColorSwatch extends HTMLElement {
   }
 }
 customElements.define("color-swatch", ColorSwatch);
+
+class SiteFooter extends HTMLElement {
+  connectedCallback() {
+    const activePath = window.location.pathname.split("/").filter(Boolean).pop() || "index.html";
+    const links = [
+      ["index.html", "Brand Guidelines"],
+      ["strategy.html", "Core Strategy"],
+      ["voice.html", "Brand Voice"],
+      ["visuals.html", "Visual Identity"],
+      ["gallery.html", "Asset Gallery"]
+    ];
+
+    const message = this.getAttribute("message") || "A system grounded in clarity, nutrition visibility, and source transparency.";
+
+    this.innerHTML = `
+      <footer class="site-footer">
+        <div class="footer-container">
+          <div class="footer-brand">
+            <img class="footer-logo" src="${BoosterConfig.assets.wordmarkSvg}" alt="Booster">
+            <p class="body-copy white">${message}</p>
+          </div>
+          
+          <div class="footer-nav-block">
+            <p class="label white">Navigation</p>
+            <nav class="footer-links" aria-label="Footer navigation">
+              ${links.map(([href, label]) => `
+                <a class="footer-link ${activePath === href ? "active" : ""}" href="${href}">${label}</a>
+              `).join("")}
+            </nav>
+          </div>
+
+          <div class="footer-nav-block">
+            <p class="label white">Process</p>
+            <nav class="footer-links">
+              <a class="footer-link" href="attributions.html">Attributions</a>
+              <a class="footer-link" href="strawberry-scale.html">Strawberry Scale</a>
+            </nav>
+          </div>
+
+          <div class="footer-bottom">
+            <p class="small lilac">&copy; 2026 Booster Juice. Internal Guidelines Platform V2.1</p>
+            <div class="footer-meta">
+              <span class="small lilac">Confidential / For Internal Use</span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    `;
+  }
+}
+
+customElements.define("site-footer", SiteFooter);
 
 document.addEventListener("DOMContentLoaded", () => {
   new ProgressNav();

@@ -1,0 +1,20 @@
+### Asset Redesign: Global Sourcing Map (Ref: 7862ca60...png)
+
+**Upload Strategy**:
+- **Reference 1 (Structure)**: `7862ca60bb1c43441ef49a213aa4cece5ef2a01d.png` (The old map)
+- **Reference 2 (Brand)**: `wordmark-main.png` (The new Wordmark)
+- **Reference 3 (Style)**: `icon-main.svg` (For the new icon geometry)
+
+---
+
+#### Prompt 1: The Transparent Source (Focus: Data-Driven Clarity)
+"Redesign this global sourcing map (Ref 1) to align with our 'Booster Source' identity. Replace the old 'Booster Juice' text and logo with the new Wordmark (Ref 2) in Montserrat Bold. Use a cleaner, light-grey map base with disciplined purple paths for the ingredient journeys. Remove the heavy purple tints. Add small, high-fidelity photo previews for each ingredient (Matcha, Açai, etc.) in rounded containers like our new packaging (Ref 3). The vibe should be professional, transparent, and data-driven."
+
+#### Prompt 2: The Modern Cartographer (Focus: Premium Minimalism)
+"A high-fidelity minimalist redesign of the sourcing map (Ref 1). Use the new brand icon (Ref 2) as location markers on the map. Typography must be Montserrat. The lines should be subtle, neon-green dotted paths representing the transparency of the supply chain. All legacy branding must be removed. The overall aesthetic should feel like a premium CSR (Corporate Social Responsibility) report from a high-end wellness brand."
+
+#### Prompt 3: Narrative Journey (Focus: Human Traceability)
+"Transform this technical sourcing map (Ref 1) into a more human, narrative-driven graphic. Use the new Wordmark (Ref 2) at the center (Canada). Map countries should be shaded in our new muted brand grey, with the primary sourcing regions highlighted in disciplined purple. Add 'Booster Grower Spotlight' text using our new typography. The map should look like a printed artifact on premium, heavy-stock paper."
+
+#### Prompt 4: The System Map (Focus: Operational Excellence)
+"Redesign Ref 1 to match our 'Supply & Sourcing' pillar. The map should look like an interactive operational dashboard. Use the new icons and Montserrat typography. Focus on the 'Booster Source' name. Replace all old logos. The flow of dotted lines should suggest intelligence and transparency. The color palette is strictly deep purple, neon green accents, and a clean white/light-grey background."

@@ -1,0 +1,20 @@
+### Asset Redesign: Community Poster (Ref: 4299f997...png)
+
+**Upload Strategy**:
+- **Reference 1 (Structure)**: `4299f99777a8e1f37eac4560c9a192c4949dcbbc.png` (The old poster)
+- **Reference 2 (Brand)**: `icon-main.svg` or `wordmark-main.png`
+- **Reference 3 (Style)**: `cup.jpg` (For New Packaging aesthetic)
+
+---
+
+#### Prompt 1: The Editorial Clean (Focus: Professional Narrative)
+"Redesign this legacy community poster (Ref 1) into a high-fidelity editorial layout. Remove the old script logo and replace it with the new Wordmark (Ref 2) in Montserrat Bold. The text should read 'BOOSTER JUICE PROUDLY SUPPORTS THE SUNBURST SLUGGERS'. Use the disciplined purple and neon green accents from our new system (Ref 3). The photography should feature local youth athletes with warm, natural sunlight and shallow depth of field. Background should be a clean, minimalist brick wall or store environment."
+
+#### Prompt 2: The Modern Grid (Focus: Design System Consistency)
+"Transform this poster into a structured, grid-based design. Use a high-contrast layout where the top third is a bold purple header featuring the new Wordmark (Ref 2). Text: 'BOOSTER JUICE PROUDLY SUPPORTS THE SUNBURST SLUGGERS'. Replace the old logo on the jerseys with a simplified, modern version. The lighting should be professional and grounded, focusing on the team's confidence and natural wellness. Style should match the confidence of the new cup design (Ref 3)."
+
+#### Prompt 3: Environmental Texture (Focus: In-Store Realism)
+"Render a photo of a high-fidelity brand poster hanging in a modern, light-filled Booster store. The poster itself should be a redesign of Ref 1, using our new Montserrat Bold typography and Wordmark (Ref 2). Focus on the 'Social & Environmental Stewardship' pillar—photography should feel authentic, not staged. Ensure the color palette is our deep brand purple with subtle neon micro-accents. The jerseys on the team should reflect the revised 2026 identity."
+
+#### Prompt 4: Minimal Narrative (Focus: Grounded Transparency)
+"A minimal, high-fidelity redesign of the Booster community poster. Primary focus on the team photography and the new Wordmark (Ref 2). Text: 'BOOSTER JUICE PROUDLY SUPPORTS THE SUNBURST SLUGGERS'. Remove all legacy graphics and noisy gradients. Use clean, rounded container shapes that reflect the geometry of our new packaging (Ref 3). The vibe should be 'Grounded Transparency'—honest, professional, and community-focused."
