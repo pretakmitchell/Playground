@@ -467,6 +467,54 @@ main {
   gap: 10px;
 }
 
+.card-image {
+  flex: 1;
+  width: 100%;
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-label-box {
+  padding: 18px 25px 22px;
+  background: var(--bj-grey);
+  border-top: 1px solid rgba(83, 40, 110, 0.05);
+}
+
+.touchpoint-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--bj-white);
+  border: 1px solid rgba(83, 40, 110, 0.05);
+}
+
+.touchpoint-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--bj-white);
+}
+
+.touchpoint-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.touchpoint-info {
+  padding: 24px 28px 28px;
+  background: var(--bj-grey);
+  border-top: 1px solid rgba(83, 40, 110, 0.05);
+}
+
 .card.split-aligned {
   display: flex;
   flex-direction: column;
