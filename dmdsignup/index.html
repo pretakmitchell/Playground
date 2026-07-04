@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The Department of Mythical Detection is coming soon. Sign up for updates.">
+    <title>DMD HQ | Coming Soon</title>
+    <link rel="preload" href="./assets/hero.png" as="image">
+    <link rel="preload" href="./assets/dmd-logo.png" as="image">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="site-header" aria-label="Primary">
+      <a class="brand" href="#top" aria-label="DMD HQ home">
+        <img src="./assets/dmd-logo.png" alt="DMD HQ The Department of Mythical Detection">
+      </a>
+      <a class="header-cta" href="#updates">Keep Me Updated</a>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <img class="hero-art" src="./assets/hero.png" alt="">
+        <img class="hero-glow hero-glow-luminosity" src="./assets/glow-luminosity.svg" alt="">
+        <img class="hero-glow" src="./assets/glow.svg" alt="">
+        <div class="hero-shade"></div>
+        <div class="hero-content">
+          <p class="overline">The Department of</p>
+          <h1 id="hero-title">
+            <span class="gold-text gold-hero">Mythical <br class="mobile-break">Detection</span>
+            <span class="coming-soon">- Coming SOOn -</span>
+          </h1>
+          <p class="hero-copy">The Department of Mythical Detection tracks magical activity and investigates the evidence left behind. With the help of Junior Agents around the world, DMD is preparing for its first major operation.</p>
+        </div>
+      </section>
+
+      <section class="signup-section" id="updates" aria-labelledby="updates-title">
+        <h2 id="updates-title">Get Updates</h2>
+        <form id="sib-form" class="signup-form" method="POST" action="https://254c7d3b.sibforms.com/serve/MUIFAHW4m_vG9oHKKvnPP225Ypaz6civpMBAuFpKCJomd7xquPWTU7Px044w8DJOb4R_gv57qCVOF7veG18z-wnX7BSY3G-TTuk3ORHKnzwLCwoPFY8CqYkTxBdI8Pjy368Dg5RqU_XMLYkp_sTtIyTRpSyjr8232r7LUDSrW42mrjCEdmNk0SqG3fgv1C8ZD7hu2OJwkJwRBPajfA==" data-type="subscription">
+          <label>
+            <span class="sr-only">Your name</span>
+            <input id="FIRSTNAME" name="FIRSTNAME" type="text" maxlength="200" autocomplete="name" placeholder="Your Name" required data-required="true">
+          </label>
+          <label>
+            <span class="sr-only">Your email</span>
+            <input id="EMAIL" name="EMAIL" type="email" autocomplete="email" placeholder="Your Email Here" required data-required="true">
+          </label>
+          <button type="submit">Sign Up</button>
+          <input class="input--hidden" type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="locale" value="en">
+        </form>
+        <div id="error-message" class="form-message error-message" role="alert">Your subscription could not be saved. Please try again.</div>
+        <div id="success-message" class="form-message success-message" role="status">Your subscription has been successful.</div>
+      </section>
+
+      <section class="mission" aria-labelledby="mission-title">
+        <img class="mission-logo-bg" src="./assets/dmd-logo.png" alt="">
+        <div class="mission-vignette"></div>
+        <div class="mission-content">
+          <p class="overline">The Department of</p>
+          <h2 id="mission-title" class="gold-text gold-bottom">Mythical <br class="mobile-break">Detection</h2>
+          <p>Monitoring magical activity across the globe. Working with junior agents to separate myth from reality.</p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      window.REQUIRED_CODE_ERROR_MESSAGE = "Please choose a country code";
+      window.LOCALE = "en";
+      window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+      window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
+      window.GENERIC_INVALID_MESSAGE = "The information provided is invalid. Please review the field format and try again.";
+      window.INVALID_NUMBER = "The information provided is invalid. Please review the field format and try again.";
+      window.INVALID_DATE = "Please enter a valid date";
+      window.REQUIRED_MULTISELECT_MESSAGE = "Please select at least 1 option";
+      window.translation = { common: { selectedList: "{quantity} list selected", selectedLists: "{quantity} lists selected", selectedOption: "{quantity} selected", selectedOptions: "{quantity} selected" } };
+      window.AUTOHIDE = false;
+    </script>
+    <script src="./script.js" defer></script>
+    <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
+  </body>
+</html>
