@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="The Department of Mythical Detection is preparing for its first major operation. Join the update list.">
     <title>DMD HQ | The Department of Mythical Detection</title>
+    <base href="/dmd-signup/">
     <link rel="icon" href="data:,">
     <link rel="preload" href="assets/hero.png" as="image">
     <link rel="preload" href="fonts/ibm-plex-sans-700.ttf" as="font" type="font/ttf" crossorigin>
@@ -47,23 +48,34 @@
           <form
             id="signup-form"
             class="signup-form"
-            action="https://YOUR-BREVO-FORM-ACTION-URL"
+            action="https://254c7d3b.sibforms.com/serve/MUIFAHW4m_vG9oHKKvnPP225Ypaz6civpMBAuFpKCJomd7xquPWTU7Px044w8DJOb4R_gv57qCVOF7veG18z-wnX7BSY3G-TTuk3ORHKnzwLCwoPFY8CqYkTxBdI8Pjy368Dg5RqU_XMLYkp_sTtIyTRpSyjr8232r7LUDSrW42mrjCEdmNk0SqG3fgv1C8ZD7hu2OJwkJwRBPajfA=="
             method="post"
             target="brevo-submit-frame"
+            data-type="subscription"
             novalidate
           >
             <label class="field field-name">
               <span class="sr-only">Your name</span>
-              <input type="text" name="FIRSTNAME" autocomplete="name" placeholder="Your Name">
+              <input type="text" id="FIRSTNAME" name="FIRSTNAME" autocomplete="name" placeholder="Your Name" maxlength="200" required>
             </label>
 
             <label class="field field-email">
               <span class="sr-only">Your email address</span>
-              <input type="email" name="EMAIL" autocomplete="email" placeholder="Your Email Here" required>
+              <input type="email" id="EMAIL" name="EMAIL" autocomplete="email" placeholder="Your Email Here" required>
             </label>
 
-            <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <button class="signup-button" type="submit">Sign Up</button>
+            <input class="honeypot" type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <input type="hidden" name="locale" value="en">
+            <button class="signup-button" type="submit" data-state="idle" aria-label="Sign Up" aria-busy="false">
+              <span class="button-label button-label-idle">Sign Up</span>
+              <span class="button-label button-label-loading">Sending</span>
+              <span class="button-label button-label-success" aria-hidden="true">
+                <svg class="button-check" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+                Sent
+              </span>
+            </button>
           </form>
 
           <label class="consent">
