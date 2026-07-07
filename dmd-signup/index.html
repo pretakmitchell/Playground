@@ -16,7 +16,7 @@
 
     <header class="site-header" aria-label="DMD site header">
       <a class="brand" href="#top" aria-label="DMD HQ home">
-        <img src="assets/dmd-logo.png" alt="DMD HQ, The Department of Mythical Detection">
+        <img src="assets/dmd-logo-transparent.svg" alt="DMD HQ, The Department of Mythical Detection">
       </a>
       <a class="header-cta" href="#signup">Keep Me Updated</a>
     </header>
@@ -67,14 +67,7 @@
             <input class="honeypot" type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" aria-hidden="true">
             <input type="hidden" name="locale" value="en">
             <button class="signup-button" type="submit" data-state="idle" aria-label="Sign Up" aria-busy="false">
-              <span class="button-label button-label-idle">Sign Up</span>
-              <span class="button-label button-label-loading">Sending</span>
-              <span class="button-label button-label-success" aria-hidden="true">
-                <svg class="button-check" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-                Sent
-              </span>
+              <span class="button-text">Sign Up</span>
             </button>
           </form>
 
@@ -93,8 +86,9 @@
         <div class="closing-gradient" aria-hidden="true"></div>
         <div class="closing-content">
           <p class="eyebrow">The Department of</p>
-          <h2 id="closing-title" class="sr-only">Mythical Detection</h2>
-          <img class="lockup-image closing-lockup" src="assets/lockup-footer-title.png" alt="" aria-hidden="true">
+          <h2 id="closing-title" class="display-lockup closing-lockup">
+            <span class="display-line display-primary">Mythical Detection</span>
+          </h2>
           <p class="closing-copy">
             Monitoring magical activity across the globe. Working with junior agents to separate myth from reality.
           </p>
