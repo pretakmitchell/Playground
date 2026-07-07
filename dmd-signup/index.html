@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The Department of Mythical Detection is preparing for its first major operation. Join the update list.">
+    <title>DMD HQ | The Department of Mythical Detection</title>
+    <link rel="icon" href="data:,">
+    <link rel="preload" href="assets/hero.png" as="image">
+    <link rel="preload" href="fonts/ibm-plex-sans-700.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#signup">Skip to signup</a>
+
+    <header class="site-header" aria-label="DMD site header">
+      <a class="brand" href="#top" aria-label="DMD HQ home">
+        <img src="assets/dmd-logo.png" alt="DMD HQ, The Department of Mythical Detection">
+      </a>
+      <a class="header-cta" href="#signup">Keep Me Updated</a>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <img class="hero-image" src="assets/hero.png" alt="" aria-hidden="true">
+        <div class="hero-gradient" aria-hidden="true"></div>
+        <img class="hero-ellipse hero-ellipse-luminosity" src="assets/ellipse-luminosity.svg" alt="" aria-hidden="true">
+        <img class="hero-ellipse hero-ellipse-overlay" src="assets/ellipse-overlay.svg" alt="" aria-hidden="true">
+
+        <div class="hero-content">
+          <p class="eyebrow">The Department of</p>
+          <h1 id="hero-title" class="display-lockup">
+            <span class="display-line display-primary">Mythical Detection</span>
+            <span class="display-line display-secondary">- Coming Soon -</span>
+          </h1>
+          <p class="hero-copy">
+            The Department of Mythical Detection tracks magical activity and investigates the evidence left behind.
+            With the help of Junior Agents around the world, DMD is preparing for its first major operation.
+          </p>
+        </div>
+      </section>
+
+      <section id="signup" class="signup" aria-labelledby="signup-title">
+        <div class="signup-inner">
+          <h2 id="signup-title">Get Updates</h2>
+
+          <form
+            id="signup-form"
+            class="signup-form"
+            action="https://YOUR-BREVO-FORM-ACTION-URL"
+            method="post"
+            target="brevo-submit-frame"
+            novalidate
+          >
+            <label class="field field-name">
+              <span class="sr-only">Your name</span>
+              <input type="text" name="FIRSTNAME" autocomplete="name" placeholder="Your Name">
+            </label>
+
+            <label class="field field-email">
+              <span class="sr-only">Your email address</span>
+              <input type="email" name="EMAIL" autocomplete="email" placeholder="Your Email Here" required>
+            </label>
+
+            <input class="honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button class="signup-button" type="submit">Sign Up</button>
+          </form>
+
+          <label class="consent">
+            <input id="marketing-consent" type="checkbox" name="OPT_IN" value="yes" form="signup-form" required>
+            <span>I agree to receive DMD launch updates by email and can unsubscribe at any time. See the <a href="privacy.html">privacy notice</a>.</span>
+          </label>
+
+          <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+          <iframe class="submit-frame" name="brevo-submit-frame" title="Signup submission"></iframe>
+        </div>
+      </section>
+
+      <section class="closing" aria-labelledby="closing-title">
+        <img class="closing-mark" src="assets/dmd-logo.png" alt="" aria-hidden="true">
+        <div class="closing-gradient" aria-hidden="true"></div>
+        <div class="closing-content">
+          <p class="eyebrow">The Department of</p>
+          <h2 id="closing-title" class="sr-only">Mythical Detection</h2>
+          <img class="lockup-image closing-lockup" src="assets/lockup-footer-title.png" alt="" aria-hidden="true">
+          <p class="closing-copy">
+            Monitoring magical activity across the globe. Working with junior agents to separate myth from reality.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
